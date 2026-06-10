@@ -1,0 +1,25 @@
+[project]
+name = "orderflow-bot"
+version = "0.1.0"
+description = "Bot trading orderflow - qualite avant vitesse"
+requires-python = ">=3.11"
+dependencies = [
+    "websockets>=12.0",
+    "pydantic>=2.5",
+    "pyyaml>=6.0",
+    "pyarrow>=15.0",
+    "duckdb>=0.10",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
