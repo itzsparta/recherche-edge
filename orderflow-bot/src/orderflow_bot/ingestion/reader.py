@@ -28,7 +28,11 @@ def read_trades(
     if conds:
         q += " WHERE " + " AND ".join(conds)
     q += " ORDER BY ts"
-    cur = duckdb.connect().execute(q, params)
-    while batch := cur.fetchmany(50_000):
-        for ts, price, qty, mkr in batch:
-            yield Trade(ts=ts, price=price, qty=qty, is_buyer_maker=mkr)
+    con = duckdb.connect()
+    try:
+        cur = con.execute(q, params)
+        while batch := cur.fetchmany(50_000):
+            for ts, price, qty, mkr in batch:
+                yield Trade(ts=ts, price=price, qty=qty, is_buyer_maker=mkr)
+    finally:
+        con.close()

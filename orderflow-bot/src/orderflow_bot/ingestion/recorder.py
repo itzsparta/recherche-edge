@@ -40,6 +40,12 @@ class TradeRecorder:
             },
             schema=_SCHEMA,
         )
-        name = f"{self._buf[0].ts}_{self._buf[-1].ts}.parquet"
-        pq.write_table(table, self._dir / name)
+        # jamais d'ecrasement : un flush aux memes bornes ts prend un suffixe
+        stem = f"{self._buf[0].ts}_{self._buf[-1].ts}"
+        path = self._dir / f"{stem}.parquet"
+        seq = 0
+        while path.exists():
+            seq += 1
+            path = self._dir / f"{stem}_{seq}.parquet"
+        pq.write_table(table, path)
         self._buf.clear()

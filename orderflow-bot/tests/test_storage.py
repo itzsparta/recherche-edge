@@ -34,3 +34,19 @@ def test_read_time_window(tmp_path):
 
 def test_read_empty_dir(tmp_path):
     assert list(read_trades(tmp_path, "BTCUSDT")) == []
+
+
+def test_read_symbol_folder_without_parquet(tmp_path):
+    (tmp_path / "BTCUSDT").mkdir()
+    assert list(read_trades(tmp_path, "BTCUSDT")) == []
+
+
+def test_flush_never_overwrites(tmp_path):
+    rec = TradeRecorder(tmp_path, "BTCUSDT", flush_every=100)
+    t = Trade(ts=1_700_000_000_000, price=100.0, qty=1.0, is_buyer_maker=False)
+    rec.append(t)
+    rec.flush()
+    rec.append(t)
+    rec.flush()                     # memes bornes ts -> suffixe, pas d'ecrasement
+    assert len(list((tmp_path / "BTCUSDT").glob("*.parquet"))) == 2
+    assert list(read_trades(tmp_path, "BTCUSDT")) == [t, t]
