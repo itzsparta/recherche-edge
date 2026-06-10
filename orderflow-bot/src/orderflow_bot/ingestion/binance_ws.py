@@ -13,13 +13,19 @@ log = logging.getLogger(__name__)
 FUTURES_WS = "wss://fstream.binance.com/ws"
 
 
+class HandlerError(Exception):
+    """Le handler a echoue (ex: disque plein). Distincte des erreurs transport :
+    une erreur handler doit ARRETER le stream, pas declencher une reconnexion
+    silencieuse qui perdrait tous les trades suivants."""
+
+
 async def stream_trades(
     symbol: str,
     handler: Callable[[Trade], None],
     url_base: str = FUTURES_WS,
 ) -> None:
     """Boucle infinie : connecte, pousse chaque Trade au handler, reconnecte
-    avec backoff exponentiel (1s -> 60s) sur toute coupure."""
+    avec backoff exponentiel (1s -> 60s) sur toute coupure transport."""
     url = f"{url_base}/{symbol.lower()}@aggTrade"
     backoff = 1.0
     while True:
@@ -28,9 +34,18 @@ async def stream_trades(
                 log.info("connecte a %s", url)
                 backoff = 1.0
                 async for raw in ws:
-                    t = parse_agg_trade(json.loads(raw))
-                    if t is not None:
+                    try:
+                        msg = json.loads(raw)
+                    except json.JSONDecodeError:
+                        log.warning("trame non-JSON ignoree: %.200r", raw)
+                        continue
+                    t = parse_agg_trade(msg)
+                    if t is None:
+                        continue
+                    try:
                         handler(t)
+                    except Exception as e:
+                        raise HandlerError("handler en echec, arret du stream") from e
         except (websockets.WebSocketException, OSError) as e:
             log.warning("deconnexion ws (%s), reconnexion dans %.0fs", e, backoff)
             await asyncio.sleep(backoff)
