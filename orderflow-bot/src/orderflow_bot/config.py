@@ -1,10 +1,17 @@
 from pathlib import Path
 
 import yaml
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
-class AbsorptionCfg(BaseModel):
+class StrictModel(BaseModel):
+    """Une cle inconnue dans la config est une erreur, jamais un silence :
+    une typo ne doit pas faire tourner le bot sur des valeurs par defaut."""
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class AbsorptionCfg(StrictModel):
     window_ms: int = 30_000
     vol_factor: float = 3.0          # volume fenetre >= facteur x mediane baseline
     max_range_ticks: int = 15        # le prix ne progresse plus
@@ -12,12 +19,12 @@ class AbsorptionCfg(BaseModel):
     baseline_windows: int = 20
 
 
-class ImbalanceCfg(BaseModel):
+class ImbalanceCfg(StrictModel):
     ratio: float = 3.0
     min_stack: int = 3
 
 
-class StrategyCfg(BaseModel):
+class StrategyCfg(StrictModel):
     zone_margin_pct: float = 0.001       # demi-largeur de zone, en % du prix
     stop_buffer_ticks: int = 20          # stop derriere la zone
     entry_expire_minutes: int = 15       # ordre limit non rempli -> annule
@@ -27,7 +34,7 @@ class StrategyCfg(BaseModel):
     imbalance: ImbalanceCfg = ImbalanceCfg()
 
 
-class RiskCfg(BaseModel):
+class RiskCfg(StrictModel):
     risk_pct: float = 0.0075             # 0.75 % par trade
     daily_stop_pct: float = 0.02         # -2 % -> stop jusqu'au lendemain
     max_consecutive_losses: int = 3      # 3 pertes -> pause jusqu'au lendemain
@@ -38,12 +45,12 @@ class RiskCfg(BaseModel):
     qty_step: float = 0.001
 
 
-class SessionCfg(BaseModel):
+class SessionCfg(StrictModel):
     start: str   # "HH:MM" UTC
     end: str
 
 
-class BotConfig(BaseModel):
+class BotConfig(StrictModel):
     symbol: str = "BTCUSDT"
     tick_size: float = 0.1
     bin_size: float = 1.0

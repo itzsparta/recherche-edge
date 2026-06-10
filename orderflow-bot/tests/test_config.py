@@ -1,3 +1,6 @@
+import pytest
+from pydantic import ValidationError
+
 from orderflow_bot.config import BotConfig, load_config
 
 
@@ -18,3 +21,11 @@ def test_load_yaml(tmp_path):
     assert cfg.symbol == "ETHUSDT"
     assert cfg.risk.risk_pct == 0.005
     assert cfg.risk.min_rr == 2.0   # defaut conserve
+
+
+def test_unknown_key_rejected(tmp_path):
+    # une typo dans la config doit faire planter le demarrage, pas etre ignoree
+    p = tmp_path / "c.yaml"
+    p.write_text("symbol: BTCUSDT\nriskk:\n  risk_pct: 0.005\n", encoding="utf-8")
+    with pytest.raises(ValidationError):
+        load_config(p)
