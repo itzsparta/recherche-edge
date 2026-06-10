@@ -20,14 +20,15 @@ def test_value_area_70pct():
 
 
 def test_lvn_groups_valley():
-    # mean = 86/6 ; seuil 0.3*mean ~ 4.3 ; vallee [97, 98] -> representant 98
+    # mean = 88/6 ~ 14.67 ; seuil 0.3*mean ~ 4.4 ; vallee [97, 98] -> representant 98
     p = _profile({95: 20, 96: 18, 97: 2, 98: 1, 99: 22, 100: 25})
     assert p.lvns(0.3) == [98]
 
 
 def test_hvn():
+    # seuil 1.5 * (88/6) = 22.0 ; inclusif (>=) : 99 (22) et 100 (25) qualifient
     p = _profile({95: 20, 96: 18, 97: 2, 98: 1, 99: 22, 100: 25})
-    assert p.hvns(1.5) == [99, 100]   # > 1.5 * (86/6) ~ 21.5
+    assert p.hvns(1.5) == [99, 100]
 
 
 def test_merge():
