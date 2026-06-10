@@ -1,0 +1,20 @@
+from orderflow_bot.config import BotConfig, load_config
+
+
+def test_defaults():
+    cfg = BotConfig()
+    assert cfg.symbol == "BTCUSDT"
+    assert cfg.risk.risk_pct == 0.0075
+    assert cfg.risk.daily_stop_pct == 0.02
+    assert cfg.risk.max_consecutive_losses == 3
+    assert cfg.risk.min_rr == 2.0
+    assert cfg.strategy.absorption.window_ms == 30_000
+
+
+def test_load_yaml(tmp_path):
+    p = tmp_path / "c.yaml"
+    p.write_text("symbol: ETHUSDT\nrisk:\n  risk_pct: 0.005\n", encoding="utf-8")
+    cfg = load_config(p)
+    assert cfg.symbol == "ETHUSDT"
+    assert cfg.risk.risk_pct == 0.005
+    assert cfg.risk.min_rr == 2.0   # defaut conserve

@@ -1,0 +1,37 @@
+symbol: BTCUSDT
+tick_size: 0.1
+bin_size: 1.0
+bar_minutes: 1
+data_dir: data
+journal_path: journal.jsonl
+equity: 10000
+
+risk:
+  risk_pct: 0.0075
+  daily_stop_pct: 0.02
+  max_consecutive_losses: 3
+  max_trades_per_day: 3
+  min_rr: 2.0
+  partial_at_r: 1.0
+  partial_fraction: 0.5
+  qty_step: 0.001
+
+strategy:
+  zone_margin_pct: 0.001
+  stop_buffer_ticks: 20
+  entry_expire_minutes: 15
+  profile_days: 5
+  npoc_lookback_days: 20
+  absorption:
+    window_ms: 30000
+    vol_factor: 3.0
+    max_range_ticks: 15
+    min_delta_frac: 0.3
+    baseline_windows: 20
+  imbalance:
+    ratio: 3.0
+    min_stack: 3
+
+# Overlap Londres-NY, UTC
+sessions:
+  - {start: "13:00", end: "17:00"}
