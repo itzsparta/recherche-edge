@@ -19,7 +19,22 @@ def main() -> None:
         from orderflow_bot.live import run_record
         asyncio.run(run_record(cfg))
     elif args.command == "backtest":
-        raise SystemExit("backtest: implemente en Task 17")
+        import json as _json
+        from datetime import datetime, timezone
+
+        from orderflow_bot.ingestion.reader import read_trades
+        from orderflow_bot.pipeline import run_backtest
+
+        def _ms(d: str | None) -> int | None:
+            if d is None:
+                return None
+            dt = datetime.strptime(d, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+            return int(dt.timestamp() * 1000)
+
+        trades = read_trades(cfg.data_dir, cfg.symbol,
+                             start_ms=_ms(args.start), end_ms=_ms(args.end))
+        report = run_backtest(cfg, trades)
+        print(_json.dumps(report, indent=2))
     else:
         raise SystemExit("paper: implemente en Task 18")
 
