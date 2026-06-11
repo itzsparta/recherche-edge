@@ -36,7 +36,8 @@ def main() -> None:
         report = run_backtest(cfg, trades)
         print(_json.dumps(report, indent=2))
     else:
-        raise SystemExit("paper: implemente en Task 18")
+        from orderflow_bot.live import run_paper
+        asyncio.run(run_paper(cfg))
 
 
 if __name__ == "__main__":
