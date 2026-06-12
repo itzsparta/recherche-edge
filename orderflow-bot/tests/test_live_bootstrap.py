@@ -16,7 +16,7 @@ def test_bootstrap_replays_history_without_trading(tmp_path):
         strategy=StrategyCfg(profile_days=1),
         sessions=[SessionCfg(start="00:00", end="23:59")],
     )
-    rec = TradeRecorder(cfg.data_dir, cfg.symbol)
+    rec = TradeRecorder(cfg.market_data_dir, cfg.symbol)
     ts = DAY1
     for p in range(95, 106):
         for _ in range(10 - abs(p - 100)):

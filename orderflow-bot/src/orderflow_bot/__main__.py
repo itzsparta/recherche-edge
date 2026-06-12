@@ -39,7 +39,7 @@ def main() -> None:
             dt = datetime.strptime(d, "%Y-%m-%d").replace(tzinfo=timezone.utc)
             return int(dt.timestamp() * 1000)
 
-        trades = read_trades(cfg.data_dir, cfg.symbol,
+        trades = read_trades(cfg.market_data_dir, cfg.symbol,
                              start_ms=_ms(args.start), end_ms=_ms(args.end))
         print(json.dumps(run_backtest(cfg, trades), indent=2))
     elif args.command == "validate":

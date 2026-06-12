@@ -37,3 +37,23 @@ def test_fees_defaults():
     assert cfg.fees.maker_pct == 0.0002
     assert cfg.fees.taker_pct == 0.0005
     assert cfg.fees.slippage_ticks == 2
+
+
+def test_market_default_is_spot():
+    cfg = BotConfig()
+    assert cfg.market == "spot"
+
+
+def test_market_data_dir_spot():
+    cfg = BotConfig(data_dir="data")
+    assert cfg.market_data_dir == "data/spot"
+
+
+def test_market_data_dir_futures():
+    cfg = BotConfig(data_dir="data", market="futures")
+    assert cfg.market_data_dir == "data/futures"
+
+
+def test_market_invalid():
+    with pytest.raises(Exception):
+        BotConfig(market="perp")

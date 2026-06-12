@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 from collections.abc import Callable
+from typing import Literal
 
 import websockets
 
@@ -11,6 +12,16 @@ from orderflow_bot.models import Trade
 log = logging.getLogger(__name__)
 
 FUTURES_WS = "wss://fstream.binance.com/ws"
+SPOT_WS = "wss://stream.binance.com:9443/ws"
+
+
+def ws_url(market: Literal["spot", "futures"]) -> str:
+    """Retourne l'URL de base WebSocket Binance pour le marche donne."""
+    if market == "spot":
+        return SPOT_WS
+    if market == "futures":
+        return FUTURES_WS
+    raise ValueError(f"market doit etre 'spot' ou 'futures', recu : {market!r}")
 
 
 class HandlerError(Exception):

@@ -1,7 +1,8 @@
 from pathlib import Path
+from typing import Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 
 class StrictModel(BaseModel):
@@ -65,12 +66,19 @@ class BotConfig(StrictModel):
     bin_size: float = 1.0
     bar_minutes: int = 1
     data_dir: str = "data"
+    market: Literal["spot", "futures"] = "spot"
     journal_path: str = "journal.jsonl"
     equity: float = 10_000.0
     risk: RiskCfg = RiskCfg()
     fees: FeesCfg = FeesCfg()
     strategy: StrategyCfg = StrategyCfg()
     sessions: list[SessionCfg] = [SessionCfg(start="13:00", end="17:00")]
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def market_data_dir(self) -> str:
+        """Chemin data segregue par marche : data_dir/market."""
+        return f"{self.data_dir}/{self.market}"
 
 
 def load_config(path: str | Path) -> BotConfig:

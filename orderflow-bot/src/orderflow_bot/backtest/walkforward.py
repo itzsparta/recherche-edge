@@ -27,7 +27,7 @@ def fold_bounds(days: list[int], n_folds: int) -> list[tuple[int, int]]:
 
 
 def walk_forward(cfg: BotConfig, n_folds: int = 4, warmup_days: int = 20) -> dict:
-    days = available_days(cfg.data_dir, cfg.symbol)
+    days = available_days(cfg.market_data_dir, cfg.symbol)
     if len(days) < n_folds:
         return {"folds": [],
                 "error": f"{len(days)} jours disponibles < {n_folds} folds"}
@@ -36,7 +36,7 @@ def walk_forward(cfg: BotConfig, n_folds: int = 4, warmup_days: int = 20) -> dic
                             deep=True)
     folds: list[dict] = []
     for start_day, end_day in fold_bounds(days, n_folds):
-        trades = read_trades(cfg.data_dir, cfg.symbol,
+        trades = read_trades(cfg.market_data_dir, cfg.symbol,
                              start_ms=(start_day - warmup_days) * _DAY_MS,
                              end_ms=end_day * _DAY_MS)
         m = run_backtest_window(wf_cfg, trades, trade_from_ts=start_day * _DAY_MS)

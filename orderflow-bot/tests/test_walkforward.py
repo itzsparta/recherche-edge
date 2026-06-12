@@ -9,9 +9,10 @@ from orderflow_bot.pipeline import window_active
 _DAY = 86_400_000
 
 
-def _write_parquet(tmp_path, symbol="BTCUSDT"):
-    folder = tmp_path / symbol
-    folder.mkdir()
+def _write_parquet(tmp_path, symbol="BTCUSDT", market="spot"):
+    """Ecrit les données dans data_dir/market/symbol/ (layout post-Task1)."""
+    folder = tmp_path / market / symbol
+    folder.mkdir(parents=True)
     t = pa.table({
         "ts": [5 * _DAY + 1, 5 * _DAY + 2, 7 * _DAY + 1],
         "price": [100.0, 101.0, 102.0],
@@ -23,11 +24,11 @@ def _write_parquet(tmp_path, symbol="BTCUSDT"):
 
 def test_available_days(tmp_path):
     _write_parquet(tmp_path)
-    assert available_days(tmp_path, "BTCUSDT") == [5, 7]
+    assert available_days(tmp_path / "spot", "BTCUSDT") == [5, 7]
 
 
 def test_available_days_empty(tmp_path):
-    assert available_days(tmp_path, "BTCUSDT") == []
+    assert available_days(tmp_path / "spot", "BTCUSDT") == []
 
 
 def test_fold_bounds_consecutive():
