@@ -16,6 +16,11 @@ risk:
   partial_fraction: 0.5
   qty_step: 0.001
 
+fees:
+  maker_pct: 0.0002
+  taker_pct: 0.0005
+  slippage_ticks: 2
+
 strategy:
   zone_margin_pct: 0.001
   stop_buffer_ticks: 20

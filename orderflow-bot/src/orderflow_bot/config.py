@@ -24,6 +24,15 @@ class ImbalanceCfg(StrictModel):
     min_stack: int = 3
 
 
+class FeesCfg(StrictModel):
+    """Frais Binance USDT-M par defaut. Les fills limit (entry/partial/target)
+    paient maker, les fills market (stop/eod) paient taker + slippage."""
+
+    maker_pct: float = 0.0002        # 0.02 %
+    taker_pct: float = 0.0005        # 0.05 %
+    slippage_ticks: int = 2          # decalage defavorable des fills market
+
+
 class StrategyCfg(StrictModel):
     zone_margin_pct: float = 0.001       # demi-largeur de zone, en % du prix
     stop_buffer_ticks: int = 20          # stop derriere la zone
@@ -59,6 +68,7 @@ class BotConfig(StrictModel):
     journal_path: str = "journal.jsonl"
     equity: float = 10_000.0
     risk: RiskCfg = RiskCfg()
+    fees: FeesCfg = FeesCfg()
     strategy: StrategyCfg = StrategyCfg()
     sessions: list[SessionCfg] = [SessionCfg(start="13:00", end="17:00")]
 

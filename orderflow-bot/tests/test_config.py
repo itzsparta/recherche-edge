@@ -29,3 +29,11 @@ def test_unknown_key_rejected(tmp_path):
     p.write_text("symbol: BTCUSDT\nriskk:\n  risk_pct: 0.005\n", encoding="utf-8")
     with pytest.raises(ValidationError):
         load_config(p)
+
+
+def test_fees_defaults():
+    from orderflow_bot.config import BotConfig
+    cfg = BotConfig()
+    assert cfg.fees.maker_pct == 0.0002
+    assert cfg.fees.taker_pct == 0.0005
+    assert cfg.fees.slippage_ticks == 2

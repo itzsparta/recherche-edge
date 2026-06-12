@@ -51,10 +51,11 @@ class ClosedTrade:
     plan: OrderPlan
     qty: float
     fills: list[Fill]
-    pnl: float
-    r_multiple: float
+    pnl: float                         # NET de frais
+    r_multiple: float                 # calcule sur le pnl net
     opened_ts: int
     closed_ts: int
+    fees: float = 0.0                 # total des frais payes sur tous les fills
 
 
 @dataclass(frozen=True, slots=True)
