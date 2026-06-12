@@ -1,5 +1,6 @@
 symbol: BTCUSDT
-tick_size: 0.1
+market: spot          # spot | futures — live futures geo-bloque depuis la France
+tick_size: 0.01       # tick spot BTCUSDT (futures : 0.1)
 bin_size: 1.0
 bar_minutes: 1
 data_dir: data

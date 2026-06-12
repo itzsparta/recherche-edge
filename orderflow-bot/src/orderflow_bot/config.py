@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, computed_field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class StrictModel(BaseModel):
@@ -74,10 +74,10 @@ class BotConfig(StrictModel):
     strategy: StrategyCfg = StrategyCfg()
     sessions: list[SessionCfg] = [SessionCfg(start="13:00", end="17:00")]
 
-    @computed_field  # type: ignore[prop-decorator]
     @property
     def market_data_dir(self) -> str:
-        """Chemin data segregue par marche : data_dir/market."""
+        """Racine des donnees du marche courant : data_dir/market.
+        Spot et futures du meme symbole ne se melangent jamais."""
         return f"{self.data_dir}/{self.market}"
 
 
