@@ -1,5 +1,11 @@
-from orderflow_bot.ingestion.importer import convert_csv
-from orderflow_bot.ingestion.reader import read_trades
+import io
+import zipfile
+from datetime import date
+from urllib.error import HTTPError
+
+from orderflow_bot.config import BotConfig
+from orderflow_bot.ingestion.importer import archive_url, convert_csv, import_range
+from orderflow_bot.ingestion.reader import available_days, read_trades
 
 # format spot reel : 8 colonnes, PAS de header, transact_time en MICROsecondes,
 # booleens True/False
@@ -54,3 +60,66 @@ def test_convert_orders_by_ts(tmp_path):
     n, trades = _convert(tmp_path, shuffled)
     assert n == 2
     assert [t.ts for t in trades] == [1781049600100, 1781049600200]
+
+
+def test_archive_url():
+    d = date(2026, 6, 10)
+    assert archive_url("spot", "BTCUSDT", d) == (
+        "https://data.binance.vision/data/spot/daily/aggTrades/"
+        "BTCUSDT/BTCUSDT-aggTrades-2026-06-10.zip")
+    assert archive_url("futures", "BTCUSDT", d) == (
+        "https://data.binance.vision/data/futures/um/daily/aggTrades/"
+        "BTCUSDT/BTCUSDT-aggTrades-2026-06-10.zip")
+
+
+def _zip_bytes(csv_content: str, name: str) -> bytes:
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr(name, csv_content)
+    return buf.getvalue()
+
+
+def _fake_download(day_ms: int):
+    """Fabrique un downloader qui sert un zip futures-style pour chaque jour."""
+    def dl(url: str) -> bytes:
+        csv = ("agg_trade_id,price,quantity,first_trade_id,last_trade_id,"
+               "transact_time,is_buyer_maker\n"
+               f"1,100.0,1.0,1,1,{day_ms},true\n")
+        return _zip_bytes(csv, "x.csv")
+    return dl
+
+
+def test_import_range_writes_one_parquet_per_day(tmp_path, monkeypatch):
+    import orderflow_bot.ingestion.importer as imp
+    day = date(2026, 6, 10)
+    day_ms = 1781049600000
+    monkeypatch.setattr(imp, "_download", _fake_download(day_ms))
+    cfg = BotConfig(data_dir=str(tmp_path))
+    report = imp.import_range(cfg, day, day)
+    assert report == {"days_imported": 1, "days_skipped": 0,
+                      "days_missing": 0, "trades": 1}
+    assert available_days(cfg.market_data_dir, cfg.symbol) == [day_ms // 86_400_000]
+
+
+def test_import_range_idempotent(tmp_path, monkeypatch):
+    import orderflow_bot.ingestion.importer as imp
+    day = date(2026, 6, 10)
+    monkeypatch.setattr(imp, "_download", _fake_download(1781049600000))
+    cfg = BotConfig(data_dir=str(tmp_path))
+    imp.import_range(cfg, day, day)
+    report = imp.import_range(cfg, day, day)          # deuxieme run : skip
+    assert report["days_imported"] == 0
+    assert report["days_skipped"] == 1
+
+
+def test_import_range_404_counts_missing(tmp_path, monkeypatch):
+    import orderflow_bot.ingestion.importer as imp
+
+    def dl_404(url: str) -> bytes:
+        raise HTTPError(url, 404, "Not Found", None, None)
+
+    monkeypatch.setattr(imp, "_download", dl_404)
+    cfg = BotConfig(data_dir=str(tmp_path))
+    report = imp.import_range(cfg, date(2026, 6, 10), date(2026, 6, 10))
+    assert report == {"days_imported": 0, "days_skipped": 0,
+                      "days_missing": 1, "trades": 0}
