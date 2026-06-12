@@ -1,3 +1,5 @@
+import pytest
+
 from orderflow_bot.config import FeesCfg, RiskCfg
 from orderflow_bot.execution.paper import PaperBroker
 from orderflow_bot.models import Cancelled, ClosedTrade, OrderPlan
@@ -102,9 +104,9 @@ def test_fees_deducted_on_target():
     assert isinstance(ct, ClosedTrade)
     # brut = 0.5*2 + 0.5*6 = 4.0
     # frais maker : 100*1*0.001 + 102*0.5*0.001 + 106*0.5*0.001 = 0.204
-    assert ct.fees == 0.204
-    assert ct.pnl == 4.0 - 0.204
-    assert ct.r_multiple == (4.0 - 0.204) / 2.0           # risk0 = 2.0, qty = 1
+    assert ct.fees == pytest.approx(0.204, rel=1e-9)
+    assert ct.pnl == pytest.approx(4.0 - 0.204, rel=1e-9)
+    assert ct.r_multiple == pytest.approx((4.0 - 0.204) / 2.0, rel=1e-9)  # risk0 = 2.0, qty = 1
 
 
 def test_stop_pays_taker_and_slippage():
@@ -116,8 +118,8 @@ def test_stop_pays_taker_and_slippage():
     # pire prix 97.5, slip 10 ticks * 0.1 = 1.0 defavorable -> fill @96.5
     assert ct.fills[-1].price == 96.5
     # brut = 96.5 - 100 = -3.5 ; frais = 100*0.001 (maker entry) + 96.5*0.002 (taker stop)
-    assert ct.fees == round(0.1 + 0.193, 10)
-    assert ct.pnl == round(-3.5 - 0.293, 10)
+    assert ct.fees == pytest.approx(0.1 + 0.193, rel=1e-9)
+    assert ct.pnl == pytest.approx(-3.5 - 0.293, rel=1e-9)
 
 
 def test_eod_pays_taker_and_slippage():
@@ -128,6 +130,9 @@ def test_eod_pays_taker_and_slippage():
     assert isinstance(ct, ClosedTrade)
     assert ct.fills[-1].price == 100.0                     # 101 - slip 1.0
     assert ct.fills[-1].kind == "eod"
+    # frais : entry maker 100*1*0.001 + eod taker 100*1*0.002 = 0.3 ; brut = 0
+    assert ct.fees == pytest.approx(0.3, rel=1e-9)
+    assert ct.pnl == pytest.approx(-0.3, rel=1e-9)
 
 
 def test_short_stop_slippage_is_adverse():

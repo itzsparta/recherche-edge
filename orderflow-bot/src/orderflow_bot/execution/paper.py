@@ -94,6 +94,7 @@ class PaperBroker:
         s = p.plan.side
         entry = p.plan.entry
         gross = sum((f.price - entry) * s * f.qty for f in p.fills if f.kind != "entry")
+        # somme sur TOUS les fills, y compris le fill de cloture ajoute ci-dessus
         fees = sum(f.price * f.qty * self._fee_rate(f.kind) for f in p.fills)
         pnl = gross - fees
         risk0 = (entry - p.plan.stop) * s

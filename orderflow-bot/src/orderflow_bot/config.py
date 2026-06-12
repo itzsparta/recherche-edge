@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import yaml
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class StrictModel(BaseModel):
@@ -30,7 +30,7 @@ class FeesCfg(StrictModel):
 
     maker_pct: float = 0.0002        # 0.02 %
     taker_pct: float = 0.0005        # 0.05 %
-    slippage_ticks: int = 2          # decalage defavorable des fills market
+    slippage_ticks: int = Field(2, ge=0)   # decalage defavorable des fills market
 
 
 class StrategyCfg(StrictModel):
