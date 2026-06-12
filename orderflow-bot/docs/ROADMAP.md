@@ -2,7 +2,11 @@
 
 ## Protocole de mise en production (spec « Évaluation & validation »)
 
-1. **Collecte** : `record` en continu (plusieurs semaines de ticks Parquet).
+1. **Données** : `import --start --end` (historique gratuit data.binance.vision,
+   spot et futures) pour le backtest/walk-forward immédiat ; `record` en continu
+   pour le flux temps réel. ATTENTION : le websocket live futures est géo-bloqué
+   depuis la France (connexion acceptée, zéro message) — le live (record/paper)
+   ne fonctionne qu'en `market: spot`.
 2. **Backtest** : `backtest` sur tout l'historique — frais + slippage inclus
    d'office. Comparer les itérations sur Sortino, Calmar, max DD, profit
    factor (offline uniquement, jamais en input de décision live).

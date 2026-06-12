@@ -10,10 +10,11 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     ap = argparse.ArgumentParser(prog="orderflow_bot")
     ap.add_argument("command",
-                    choices=["record", "backtest", "paper", "validate", "walkforward"])
+                    choices=["record", "backtest", "paper", "validate",
+                             "walkforward", "import"])
     ap.add_argument("--config", default="config.yaml")
-    ap.add_argument("--start", default=None, help="YYYY-MM-DD (backtest)")
-    ap.add_argument("--end", default=None, help="YYYY-MM-DD (backtest)")
+    ap.add_argument("--start", default=None, help="YYYY-MM-DD (backtest, import)")
+    ap.add_argument("--end", default=None, help="YYYY-MM-DD (backtest, import)")
     ap.add_argument("--journal", default=None, help="journal JSONL (validate)")
     ap.add_argument("--sims", type=int, default=5_000, help="simulations Monte Carlo")
     ap.add_argument("--ruin-dd", type=float, default=0.5,
@@ -64,6 +65,16 @@ def main() -> None:
 
         print(json.dumps(walk_forward(cfg, n_folds=args.folds,
                                       warmup_days=args.warmup_days), indent=2))
+    elif args.command == "import":
+        from datetime import date
+
+        from orderflow_bot.ingestion.importer import import_range
+
+        if not args.start:
+            ap.error("import exige --start (et --end, sinon --start seul)")
+        start = date.fromisoformat(args.start)
+        end = date.fromisoformat(args.end) if args.end else start
+        print(json.dumps(import_range(cfg, start, end), indent=2))
     else:
         from orderflow_bot.live import run_paper
         asyncio.run(run_paper(cfg))
