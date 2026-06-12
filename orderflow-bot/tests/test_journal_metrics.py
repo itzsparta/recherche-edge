@@ -1,3 +1,5 @@
+import math
+
 from orderflow_bot.backtest.metrics import compute_metrics
 from orderflow_bot.execution.journal import TradeJournal
 from orderflow_bot.models import ClosedTrade, Fill, OrderPlan
@@ -41,3 +43,29 @@ def test_metrics():
 
 def test_metrics_empty():
     assert compute_metrics([]) == {"trades": 0}
+
+
+def _row(pnl: float, r: float) -> dict:
+    return {"pnl": pnl, "r_multiple": r}
+
+
+def test_sortino_on_r_multiples():
+    # rs = [2.0, -1.0] : mean = 0.5, downside dev = sqrt((0 + 1)/2)
+    m = compute_metrics([_row(200.0, 2.0), _row(-100.0, -1.0)])
+    assert math.isclose(m["sortino_r"], 0.5 / math.sqrt(0.5))
+
+
+def test_sortino_inf_when_no_loss():
+    m = compute_metrics([_row(100.0, 1.0), _row(50.0, 0.5)])
+    assert m["sortino_r"] == float("inf")
+
+
+def test_calmar_total_pnl_over_max_dd():
+    # equity 100 -> 50 : peak 100, dd 50, total 50 -> calmar 1.0
+    m = compute_metrics([_row(100.0, 1.0), _row(-50.0, -0.5)])
+    assert m["calmar"] == 1.0
+
+
+def test_calmar_inf_when_no_drawdown():
+    m = compute_metrics([_row(100.0, 1.0)])
+    assert m["calmar"] == float("inf")
