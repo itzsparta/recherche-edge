@@ -46,7 +46,8 @@ class Pipeline:
             tick_size=cfg.tick_size,
         )
         self.risk = RiskManager(cfg.risk, cfg.sessions, cfg.equity)
-        self.broker = PaperBroker(cfg.risk, st.entry_expire_minutes * 60_000)
+        self.broker = PaperBroker(cfg.risk, st.entry_expire_minutes * 60_000,
+                                  cfg.fees, cfg.tick_size)
         self._day = -1
         self._levels: list[DailyLevels] = []
         self._profiles: list[VolumeProfile] = []

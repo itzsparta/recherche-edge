@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from orderflow_bot.config import RiskCfg
+from orderflow_bot.config import FeesCfg, RiskCfg
 from orderflow_bot.models import Cancelled, ClosedTrade, Fill, OrderPlan, Trade
 
 
@@ -22,9 +22,11 @@ class PaperBroker:
     STRICT (un trade imprime au-dela). Le stop accepte les gaps au pire prix.
     Au plus une position. Verifications dans l'ordre du pire cas : stop d'abord."""
 
-    def __init__(self, cfg: RiskCfg, expire_ms: int):
+    def __init__(self, cfg: RiskCfg, expire_ms: int, fees: FeesCfg, tick_size: float):
         self.cfg = cfg
         self.expire_ms = expire_ms
+        self.fees = fees
+        self.tick_size = tick_size
         self._pos: _Position | None = None
 
     @property
@@ -54,7 +56,7 @@ class PaperBroker:
         # position ouverte : pire cas d'abord
         if (t.price - p.stop) * s <= 0:
             worst = min(p.stop, t.price) if s == 1 else max(p.stop, t.price)
-            return self._close(t.ts, worst, "stop")
+            return self._close(t.ts, worst - s * self._slip(), "stop")
         risk0 = (p.plan.entry - p.plan.stop) * s
         partial_level = p.plan.entry + s * self.cfg.partial_at_r * risk0
         if not p.partial_done and (t.price - partial_level) * s > 0:
@@ -69,14 +71,21 @@ class PaperBroker:
         return None
 
     def force_close(self, t: Trade) -> ClosedTrade | None:
-        """Flat EOD : ferme le restant au prix courant."""
+        """Flat EOD : ferme le restant au prix courant avec slippage."""
         p = self._pos
         if p is None:
             return None
         if p.state == "pending":
             self._pos = None
             return None
-        return self._close(t.ts, t.price, "eod")
+        return self._close(t.ts, t.price - p.plan.side * self._slip(), "eod")
+
+    def _slip(self) -> float:
+        return self.fees.slippage_ticks * self.tick_size
+
+    def _fee_rate(self, kind: str) -> float:
+        # limit (entry/partial/target) = maker ; market (stop/eod) = taker
+        return self.fees.taker_pct if kind in ("stop", "eod") else self.fees.maker_pct
 
     def _close(self, ts: int, price: float, kind: str) -> ClosedTrade:
         p = self._pos
@@ -84,10 +93,13 @@ class PaperBroker:
         p.fills.append(Fill(ts=ts, price=price, qty=p.remaining, kind=kind))
         s = p.plan.side
         entry = p.plan.entry
-        pnl = sum((f.price - entry) * s * f.qty for f in p.fills if f.kind != "entry")
+        gross = sum((f.price - entry) * s * f.qty for f in p.fills if f.kind != "entry")
+        fees = sum(f.price * f.qty * self._fee_rate(f.kind) for f in p.fills)
+        pnl = gross - fees
         risk0 = (entry - p.plan.stop) * s
         r = pnl / (risk0 * p.qty) if risk0 > 0 and p.qty > 0 else 0.0
         ct = ClosedTrade(plan=p.plan, qty=p.qty, fills=p.fills, pnl=round(pnl, 10),
-                         r_multiple=round(r, 10), opened_ts=p.opened_ts, closed_ts=ts)
+                         r_multiple=round(r, 10), opened_ts=p.opened_ts, closed_ts=ts,
+                         fees=round(fees, 10))
         self._pos = None
         return ct

@@ -1,5 +1,5 @@
 from orderflow_bot.config import (
-    AbsorptionCfg, BotConfig, RiskCfg, SessionCfg, StrategyCfg,
+    AbsorptionCfg, BotConfig, FeesCfg, RiskCfg, SessionCfg, StrategyCfg,
 )
 from orderflow_bot.execution.journal import TradeJournal
 from orderflow_bot.models import Trade
@@ -22,6 +22,7 @@ def _cfg(tmp_path) -> BotConfig:
                                      baseline_windows=8),
         ),
         sessions=[SessionCfg(start="00:00", end="23:59")],
+        fees=FeesCfg(maker_pct=0.0, taker_pct=0.0, slippage_ticks=0),
     )
 
 
