@@ -124,11 +124,30 @@ class Pipeline:
         log.info("trade ferme: pnl=%.2f r=%.2f", ev.pnl, ev.r_multiple)
 
 
-def run_backtest(cfg: BotConfig, trades: Iterable[Trade]) -> dict:
+def window_active(ts: int, from_ts: int | None, to_ts: int | None) -> bool:
+    """Fenetre [from_ts, to_ts) pendant laquelle les ENTREES sont autorisees."""
+    return (from_ts is None or ts >= from_ts) and (to_ts is None or ts < to_ts)
+
+
+def run_backtest_window(
+    cfg: BotConfig,
+    trades: Iterable[Trade],
+    trade_from_ts: int | None = None,
+    trade_to_ts: int | None = None,
+) -> dict:
+    """Replay du pipeline complet. Les trades AVANT trade_from_ts servent de
+    warmup : profils, zones et CVD s'alimentent mais aucune entree n'est prise.
+    Une position ouverte dans la fenetre se gere normalement (stop/target/EOD)
+    meme apres la fin de la fenetre."""
     # journal purge en debut de run : le rapport ne doit refleter que ce replay
     Path(cfg.journal_path).unlink(missing_ok=True)
     journal = TradeJournal(cfg.journal_path)
     pipe = Pipeline(cfg, journal)
     for t in trades:
+        pipe.trading_enabled = window_active(t.ts, trade_from_ts, trade_to_ts)
         pipe.on_trade(t)
     return compute_metrics(TradeJournal.load(cfg.journal_path))
+
+
+def run_backtest(cfg: BotConfig, trades: Iterable[Trade]) -> dict:
+    return run_backtest_window(cfg, trades)

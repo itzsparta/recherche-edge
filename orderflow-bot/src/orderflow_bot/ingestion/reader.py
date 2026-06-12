@@ -36,3 +36,19 @@ def read_trades(
                 yield Trade(ts=ts, price=price, qty=qty, is_buyer_maker=mkr)
     finally:
         con.close()
+
+
+def available_days(data_dir: str | Path, symbol: str) -> list[int]:
+    """Jours (epoch ms // 86_400_000) presents dans les Parquet, tries."""
+    folder = Path(data_dir) / symbol
+    if not folder.exists() or not any(folder.glob("*.parquet")):
+        return []
+    con = duckdb.connect()
+    try:
+        rows = con.execute(
+            "SELECT DISTINCT ts // 86400000 AS d FROM read_parquet(?) ORDER BY d",
+            [str(folder / "*.parquet")],
+        ).fetchall()
+    finally:
+        con.close()
+    return [int(r[0]) for r in rows]
