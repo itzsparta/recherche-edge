@@ -16,6 +16,7 @@ risk:
   min_rr: 2.0
   partial_at_r: 1.0
   partial_fraction: 0.5
+  trail_r: null                # BE fige. (trailing 1R teste 2026-06-13 : -0.298R vs -0.267R, ecrete les gros wins +2.3R->+1.2R)
   qty_step: 0.001
   max_leverage: 1.0            # notionnel <= equity x levier (1 = spot sans marge)
   min_stop_friction_mult: 3.0  # distance stop >= 3x (frais maker+taker + slippage)

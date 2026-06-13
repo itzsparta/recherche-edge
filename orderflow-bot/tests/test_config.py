@@ -14,6 +14,10 @@ def test_defaults():
     assert cfg.strategy.absorption.window_ms == 30_000
 
 
+def test_move_to_be_default_true():
+    assert BotConfig().risk.move_to_be is True
+
+
 def test_load_yaml(tmp_path):
     p = tmp_path / "c.yaml"
     p.write_text("symbol: ETHUSDT\nrisk:\n  risk_pct: 0.005\n", encoding="utf-8")
@@ -57,3 +61,40 @@ def test_market_data_dir_futures():
 def test_market_invalid():
     with pytest.raises(Exception):
         BotConfig(market="perp")
+
+
+def test_signal_mode_default_reversal():
+    from orderflow_bot.config import StrategyCfg
+    assert StrategyCfg().signal_mode == "reversal"
+
+
+def test_signal_mode_accepts_continuation():
+    from orderflow_bot.config import StrategyCfg
+    assert StrategyCfg(signal_mode="continuation").signal_mode == "continuation"
+
+
+def test_signal_mode_rejects_unknown():
+    from orderflow_bot.config import StrategyCfg
+    with pytest.raises(Exception):
+        StrategyCfg(signal_mode="momentum")
+
+
+def test_entry_mode_default_limit():
+    from orderflow_bot.config import StrategyCfg
+    assert StrategyCfg().entry_mode == "limit"
+
+
+def test_entry_mode_accepts_stop():
+    from orderflow_bot.config import StrategyCfg
+    assert StrategyCfg(entry_mode="stop").entry_mode == "stop"
+
+
+def test_entry_mode_rejects_unknown():
+    from orderflow_bot.config import StrategyCfg
+    with pytest.raises(ValidationError):
+        StrategyCfg(entry_mode="market")
+
+
+def test_entry_confirm_frac_default_zero():
+    from orderflow_bot.config import StrategyCfg
+    assert StrategyCfg().entry_confirm_frac == 0.0

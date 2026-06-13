@@ -40,6 +40,14 @@ class StrategyCfg(StrictModel):
     entry_expire_minutes: int = 15       # ordre limit non rempli -> annule
     profile_days: int = 5                # composite pour LVN
     npoc_lookback_days: int = 20
+    # reversal : fade le niveau (rebond vers POC). continuation : trade la
+    # cassure (extension vers l'extreme du range, stop = reclaim du niveau).
+    signal_mode: Literal["reversal", "continuation"] = "reversal"
+    # limit : ordre au niveau du trigger (rempli quand le prix y revient, maker).
+    # stop : entree marche apres confirmation du mouvement (taker+slippage), pour
+    # casser l'adverse-selection des morts-nes (rempli pile au break a contresens).
+    entry_mode: Literal["limit", "stop"] = "limit"
+    entry_confirm_frac: float = 0.0      # stop : confirme apres frac*risk0 dans le sens du trade
     absorption: AbsorptionCfg = AbsorptionCfg()
     imbalance: ImbalanceCfg = ImbalanceCfg()
 
@@ -52,6 +60,8 @@ class RiskCfg(StrictModel):
     min_rr: float = 2.0
     partial_at_r: float = 1.0            # partiel a 1R
     partial_fraction: float = 0.5        # 50 % de la position
+    trail_r: float | None = None         # apres le partiel : stop suit le plus-haut a N*R, plancher BE. None = BE fige
+    move_to_be: bool = True              # apres le partiel, stop -> BE. False = garde le stop d'origine (runner risque 1R plein)
     qty_step: float = 0.001
     max_leverage: float = 1.0            # notionnel <= equity x levier (1 = spot)
     min_stop_friction_mult: float = 3.0  # distance stop >= N x friction (frais+slippage)
