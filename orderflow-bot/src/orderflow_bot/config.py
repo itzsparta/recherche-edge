@@ -53,6 +53,8 @@ class RiskCfg(StrictModel):
     partial_at_r: float = 1.0            # partiel a 1R
     partial_fraction: float = 0.5        # 50 % de la position
     qty_step: float = 0.001
+    max_leverage: float = 1.0            # notionnel <= equity x levier (1 = spot)
+    min_stop_friction_mult: float = 3.0  # distance stop >= N x friction (frais+slippage)
 
 
 class SessionCfg(StrictModel):
@@ -63,7 +65,8 @@ class SessionCfg(StrictModel):
 class BotConfig(StrictModel):
     symbol: str = "BTCUSDT"
     tick_size: float = 0.1
-    bin_size: float = 1.0
+    bin_size: float = 1.0                       # footprint bars (imbalances)
+    profile_bin_size: float | None = None       # profils/zones ; None = bin_size
     bar_minutes: int = 1
     data_dir: str = "data"
     market: Literal["spot", "futures"] = "spot"

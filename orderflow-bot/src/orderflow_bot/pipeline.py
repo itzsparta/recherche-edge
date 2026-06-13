@@ -44,14 +44,19 @@ class Pipeline:
             min_rr=cfg.risk.min_rr,
             stop_buffer_ticks=st.stop_buffer_ticks,
             tick_size=cfg.tick_size,
+            fees=cfg.fees,
+            min_stop_friction_mult=cfg.risk.min_stop_friction_mult,
         )
         self.risk = RiskManager(cfg.risk, cfg.sessions, cfg.equity)
         self.broker = PaperBroker(cfg.risk, st.entry_expire_minutes * 60_000,
                                   cfg.fees, cfg.tick_size)
+        # bins des profils decouples des footprint bars : zones larges
+        # sans degrader la detection d'imbalances par niveau
+        self.profile_bin = cfg.profile_bin_size or cfg.bin_size
         self._day = -1
         self._levels: list[DailyLevels] = []
         self._profiles: list[VolumeProfile] = []
-        self._day_profile = VolumeProfile(cfg.bin_size)
+        self._day_profile = VolumeProfile(self.profile_bin)
         self._day_high = float("-inf")
         self._day_low = float("inf")
 
@@ -91,7 +96,7 @@ class Pipeline:
                 self.triggers.on_bar(bar)
             self._finalize_day()
         self._day = day
-        self._day_profile = VolumeProfile(self.cfg.bin_size)
+        self._day_profile = VolumeProfile(self.profile_bin)
         self._day_high = float("-inf")
         self._day_low = float("inf")
         self.triggers.cvd.reset()
@@ -103,10 +108,10 @@ class Pipeline:
         self._levels = self._levels[-st.npoc_lookback_days:]
         self._profiles.append(self._day_profile)
         self._profiles = self._profiles[-st.profile_days:]
-        composite = VolumeProfile(self.cfg.bin_size)
+        composite = VolumeProfile(self.profile_bin)
         for p in self._profiles:
             composite.merge(p)
-        lvn_prices = [price_of(b, self.cfg.bin_size) for b in composite.lvns()]
+        lvn_prices = [price_of(b, self.profile_bin) for b in composite.lvns()]
         prev = self._levels[-1]
         zones = build_zones(prev, naked_pocs(self._levels), lvn_prices,
                             st.zone_margin_pct)

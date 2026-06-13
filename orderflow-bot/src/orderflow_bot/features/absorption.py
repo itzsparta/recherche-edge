@@ -26,6 +26,16 @@ class AbsorptionDetector:
         self._baseline: deque[float] = deque(maxlen=cfg.baseline_windows)
         self._slot: int | None = None
         self._slot_vol = 0.0
+        # sommes glissantes maintenues en O(1) (append/popleft/clear) au lieu
+        # de re-sommer toute la fenetre a chaque tick : ~90 % du temps pipeline
+        self._win_vol = 0.0                 # sum(x.qty for x in _win)
+        self._win_delta = 0.0               # sum(x.qty * x.aggressor for x in _win)
+        self._med: float | None = None      # mediane baseline, recalculee au slot
+
+    def _clear_window(self) -> None:
+        self._win.clear()
+        self._win_vol = 0.0
+        self._win_delta = 0.0
 
     def on_trade(self, t: Trade) -> Absorption | None:
         c = self.cfg
@@ -36,28 +46,35 @@ class AbsorptionDetector:
             self._baseline.append(self._slot_vol)
             self._slot_vol = 0.0
             self._slot += 1
+            self._med = None                # la baseline a change -> cache invalide
         self._slot_vol += t.qty
 
         self._win.append(t)
+        self._win_vol += t.qty
+        self._win_delta += t.qty * t.aggressor
         cutoff = t.ts - c.window_ms
         while self._win and self._win[0].ts < cutoff:
-            self._win.popleft()
+            old = self._win.popleft()
+            self._win_vol -= old.qty
+            self._win_delta -= old.qty * old.aggressor
 
         if len(self._baseline) < 3:
             return None
-        med = statistics.median(self._baseline)
-        vol = sum(x.qty for x in self._win)
+        if self._med is None:
+            self._med = statistics.median(self._baseline)
+        med = self._med
+        vol = self._win_vol
         if med <= 0 or vol < c.vol_factor * med:
             return None
         prices = [x.price for x in self._win]
         if max(prices) - min(prices) > c.max_range_ticks * self.tick:
             return None
-        delta = sum(x.qty * x.aggressor for x in self._win)
+        delta = self._win_delta
         first, last = self._win[0].price, self._win[-1].price
         if delta <= -c.min_delta_frac * vol and last >= first:
-            self._win.clear()
+            self._clear_window()
             return Absorption(ts=t.ts, side=1, price=t.price)
         if delta >= c.min_delta_frac * vol and last <= first:
-            self._win.clear()
+            self._clear_window()
             return Absorption(ts=t.ts, side=-1, price=t.price)
         return None

@@ -15,7 +15,8 @@ _SCHEMA = pa.schema([
 
 class TradeRecorder:
     """Bufferise puis ecrit des fichiers Parquet immuables nommes par plage de ts.
-    Pas d'append Parquet : un fichier par flush, le reader recolle via ORDER BY."""
+    Pas d'append Parquet : un fichier par flush, le reader recolle via les
+    bornes de ts du footer (tri global DuckDB en repli si chevauchement)."""
 
     def __init__(self, data_dir: str | Path, symbol: str, flush_every: int = 5000):
         self.flush_every = flush_every

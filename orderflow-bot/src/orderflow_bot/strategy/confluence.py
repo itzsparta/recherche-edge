@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from orderflow_bot.config import ImbalanceCfg
+from orderflow_bot.config import FeesCfg, ImbalanceCfg
 from orderflow_bot.features.absorption import AbsorptionDetector
 from orderflow_bot.features.cvd import CvdTracker
 from orderflow_bot.features.imbalance import stacked_imbalances
@@ -52,11 +52,22 @@ class ConfluenceEngine:
     """Confluence des 3 couches : bias (contexte) x zone x trigger.
     Emet un OrderPlan complet (entry limit, stop structurel, target, R:R>=min)."""
 
-    def __init__(self, min_rr: float, stop_buffer_ticks: int, tick_size: float):
+    def __init__(self, min_rr: float, stop_buffer_ticks: int, tick_size: float,
+                 fees: FeesCfg | None = None, min_stop_friction_mult: float = 0.0):
         self.min_rr = min_rr
         self.buffer = stop_buffer_ticks * tick_size
+        self.tick_size = tick_size
+        self.fees = fees
+        self.friction_mult = min_stop_friction_mult
         self.zones: list[Zone] = []
         self.bias = Bias.BOTH
+
+    def _friction(self, entry: float) -> float:
+        """Cout incompressible par unite : frais maker (entree limit) + taker
+        (sortie stop, pire cas) + slippage du fill market."""
+        assert self.fees is not None
+        return (entry * (self.fees.maker_pct + self.fees.taker_pct)
+                + self.fees.slippage_ticks * self.tick_size)
 
     def update_day(self, zones: list[Zone], bias: Bias) -> None:
         self.zones = zones
@@ -77,6 +88,12 @@ class ConfluenceEngine:
         risk = (entry - stop) * trig.side
         reward = (z.target - entry) * trig.side
         if risk <= 0 or reward / risk < self.min_rr:
+            return None
+        # stop trop serre vs frais+slippage : trade mathematiquement perdant
+        # (la friction fixe vaudrait plusieurs R), et sizing inverse au risque
+        # -> position geante. Rejet a la source.
+        if (self.fees is not None and self.friction_mult > 0
+                and risk < self.friction_mult * self._friction(entry)):
             return None
         return OrderPlan(
             ts=trig.ts, side=trig.side, entry=entry, stop=stop, target=z.target,

@@ -56,6 +56,8 @@ class RiskManager:
         if risk_per_unit <= 0:
             return None
         qty = self.equity * self.cfg.risk_pct / risk_per_unit
+        # cap notionnel : jamais plus de equity x levier (1 = spot sans marge)
+        qty = min(qty, self.equity * self.cfg.max_leverage / plan.entry)
         qty = math.floor(qty / self.cfg.qty_step) * self.cfg.qty_step
         qty = round(qty, 10)
         return qty if qty >= self.cfg.qty_step else None

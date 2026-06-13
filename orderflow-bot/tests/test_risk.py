@@ -21,6 +21,19 @@ def test_size_from_stop_distance():
     assert rm.size(_plan()) == 57.692
 
 
+def test_size_capped_by_notional():
+    # stop ultra-serre : qty par risque = 75/0.5 = 150 unites a 100 $ = 15 000 $
+    # de notionnel sur 10 000 $ d'equity -> cap levier 1 : qty = 10000/100 = 100
+    rm = _rm()
+    assert rm.size(_plan(entry=100.0, stop=99.5)) == 100.0
+
+
+def test_size_cap_scales_with_max_leverage():
+    # qty par risque = 75/0.2 = 375 > cap ; levier 2 -> cap = 20000/100 = 200
+    rm = RiskManager(RiskCfg(max_leverage=2.0), SESSIONS, 10_000.0)
+    assert rm.size(_plan(entry=100.0, stop=99.8)) == 200.0
+
+
 def test_size_none_when_too_small():
     rm = _rm(equity=0.1)
     assert rm.size(_plan()) is None

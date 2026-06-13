@@ -145,6 +145,30 @@ def test_short_stop_slippage_is_adverse():
     assert ct.fills[-1].price == 103.5                     # 102.5 + slip 1.0 (racheter plus haut)
 
 
+def test_mfe_mae_tracked_on_stop():
+    br = _broker()
+    br.submit(PLAN, qty=1.0, ts=1_000)
+    br.on_trade(make_trade(2_000, 99.9))        # entry @100, risk0 = 2
+    br.on_trade(make_trade(3_000, 101.0))       # excursion favorable +0.5R
+    br.on_trade(make_trade(4_000, 99.0))        # défavorable -0.5R
+    ct = br.on_trade(make_trade(5_000, 97.9))   # stop : pire tick -1.05R
+    assert isinstance(ct, ClosedTrade)
+    assert ct.mfe_r == pytest.approx(0.5)
+    assert ct.mae_r == pytest.approx(-1.05)
+
+
+def test_mfe_mae_short_eod():
+    plan = OrderPlan(ts=1_000, side=-1, entry=100.0, stop=102.0, target=94.0)
+    br = _broker()
+    br.submit(plan, qty=1.0, ts=1_000)
+    br.on_trade(make_trade(2_000, 100.1))       # fill short @100, risk0 = 2
+    br.on_trade(make_trade(3_000, 99.0))        # favorable +0.5R
+    ct = br.force_close(make_trade(4_000, 100.4))
+    assert isinstance(ct, ClosedTrade)
+    assert ct.mfe_r == pytest.approx(0.5)
+    assert ct.mae_r == pytest.approx(-0.2)
+
+
 def test_zero_fees_keeps_old_behavior():
     br = _broker()                                         # ZERO_FEES
     br.submit(PLAN, qty=1.0, ts=1_000)

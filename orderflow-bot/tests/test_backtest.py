@@ -85,6 +85,21 @@ def test_no_trading_during_warmup(tmp_path):
     assert report["trades"] == 0
 
 
+def test_profile_bin_size_separate_from_footprint_bin(tmp_path):
+    # profils/zones en gros bins, footprint bars en bins fins : independants
+    cfg = _cfg(tmp_path)
+    cfg = BotConfig(**{**cfg.model_dump(), "profile_bin_size": 25.0})
+    pipe = Pipeline(cfg, TradeJournal(cfg.journal_path))
+    assert pipe.aggregator.bin_size == 1.0       # imbalances intactes
+    assert pipe._day_profile.bin_size == 25.0    # profil en bins larges
+
+
+def test_profile_bin_size_defaults_to_bin_size(tmp_path):
+    cfg = _cfg(tmp_path)
+    pipe = Pipeline(cfg, TradeJournal(cfg.journal_path))
+    assert pipe._day_profile.bin_size == cfg.bin_size
+
+
 def test_trading_disabled_flag(tmp_path):
     cfg = _cfg(tmp_path)
     pipe = Pipeline(cfg, TradeJournal(cfg.journal_path))

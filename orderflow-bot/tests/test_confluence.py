@@ -48,6 +48,27 @@ def test_rejects_poor_rr():
     assert eng.evaluate(Trigger(ts=1, side=1, kind="absorption", price=97.1)) is None
 
 
+def test_rejects_stop_thinner_than_friction_floor():
+    # friction/unite = 97.1x(0.0002+0.0005) + 2 ticks x 0.1 ~ 0.268
+    # seuil 3x ~ 0.80 ; buffer 1 tick -> distance stop 0.4 < 0.80 -> rejet
+    # (RR brut = 2.9/0.4 = 7.25 > 2 : sans le filtre friction, le plan passerait)
+    from orderflow_bot.config import FeesCfg
+    eng = ConfluenceEngine(min_rr=2.0, stop_buffer_ticks=1, tick_size=0.1,
+                           fees=FeesCfg(), min_stop_friction_mult=3.0)
+    eng.update_day(build_zones(PREV, [], [], 0.002), Bias.BOTH)
+    assert eng.evaluate(Trigger(ts=1, side=1, kind="absorption", price=97.1)) is None
+
+
+def test_accepts_stop_wider_than_friction_floor():
+    # buffer 10 ticks -> distance stop 1.3 > seuil 0.80 -> plan emis
+    from orderflow_bot.config import FeesCfg
+    eng = ConfluenceEngine(min_rr=2.0, stop_buffer_ticks=10, tick_size=0.1,
+                           fees=FeesCfg(), min_stop_friction_mult=3.0)
+    eng.update_day(build_zones(PREV, [], [], 0.002), Bias.BOTH)
+    plan = eng.evaluate(Trigger(ts=1, side=1, kind="absorption", price=97.1))
+    assert plan is not None
+
+
 def test_trigger_engine_emits_on_bar_signals():
     from orderflow_bot.config import AbsorptionCfg
     from orderflow_bot.features.absorption import AbsorptionDetector

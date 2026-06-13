@@ -56,6 +56,8 @@ class ClosedTrade:
     opened_ts: int
     closed_ts: int
     fees: float = 0.0                 # total des frais payes sur tous les fills
+    mfe_r: float = 0.0                # excursion max favorable, en R du risque initial
+    mae_r: float = 0.0                # excursion max defavorable (negatif), en R
 
 
 @dataclass(frozen=True, slots=True)

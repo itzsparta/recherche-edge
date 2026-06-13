@@ -15,6 +15,8 @@ class _Position:
     stop: float = 0.0               # stop courant (deplace a BE apres partiel)
     partial_done: bool = False
     fills: list[Fill] = field(default_factory=list)
+    best: float = 0.0               # excursion max favorable depuis l'entry (points)
+    worst: float = 0.0              # excursion max defavorable (points, negatif)
 
 
 class PaperBroker:
@@ -53,7 +55,11 @@ class PaperBroker:
                 p.fills.append(Fill(ts=t.ts, price=p.plan.entry, qty=p.qty, kind="entry"))
             return None
 
-        # position ouverte : pire cas d'abord
+        # position ouverte : excursion d'abord (le tick declencheur en fait partie)
+        fav = (t.price - p.plan.entry) * s
+        p.best = max(p.best, fav)
+        p.worst = min(p.worst, fav)
+        # pire cas d'abord
         if (t.price - p.stop) * s <= 0:
             worst = min(p.stop, t.price) if s == 1 else max(p.stop, t.price)
             return self._close(t.ts, worst - s * self._slip(), "stop")
@@ -78,6 +84,9 @@ class PaperBroker:
         if p.state == "pending":
             self._pos = None
             return None
+        fav = (t.price - p.plan.entry) * p.plan.side
+        p.best = max(p.best, fav)
+        p.worst = min(p.worst, fav)
         return self._close(t.ts, t.price - p.plan.side * self._slip(), "eod")
 
     def _slip(self) -> float:
@@ -99,8 +108,11 @@ class PaperBroker:
         pnl = gross - fees
         risk0 = (entry - p.plan.stop) * s
         r = pnl / (risk0 * p.qty) if risk0 > 0 and p.qty > 0 else 0.0
+        mfe = p.best / risk0 if risk0 > 0 else 0.0
+        mae = p.worst / risk0 if risk0 > 0 else 0.0
         ct = ClosedTrade(plan=p.plan, qty=p.qty, fills=p.fills, pnl=round(pnl, 10),
                          r_multiple=round(r, 10), opened_ts=p.opened_ts, closed_ts=ts,
-                         fees=round(fees, 10))
+                         fees=round(fees, 10),
+                         mfe_r=round(mfe, 10), mae_r=round(mae, 10))
         self._pos = None
         return ct
