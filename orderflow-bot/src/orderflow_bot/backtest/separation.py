@@ -43,3 +43,47 @@ def quartile_lift(scores: list[float], labels: list[bool], q: int = 4) -> list[f
         out.append(sum(1 for _, l in chunk if l) / len(chunk)
                    if chunk else float("nan"))
     return out
+
+
+def evaluate_greenlight(rows, days, orient, tape_feats, *, auc_min=0.60,
+                        delta_min=0.05, day_min=6, day_min_n=5):
+    """Applique les 4 conditions pre-enregistrees (cf. spec). orient = {feat: +/-1}
+    (signe tel que haut -> plus de morts-nes). tape_feats = liste de features tape
+    baseline (sens libre -> on prend max(auc, 1-auc)). Retourne un dict de verdict."""
+    labels = [r["mort_ne"] for r in rows]
+
+    def oriented(rs, feat):
+        sign = orient[feat]
+        return [sign * r[feat] for r in rs], [r["mort_ne"] for r in rs]
+
+    book_auc = {f: auc(*oriented(rows, f)) for f in orient}
+    best_feat = max(book_auc, key=lambda f: book_auc[f] if not math.isnan(book_auc[f]) else -1.0)
+    best_auc = book_auc[best_feat]
+
+    tape_auc = {}
+    for f in tape_feats:
+        a = auc([r[f] for r in rows], labels)
+        tape_auc[f] = max(a, 1 - a) if not math.isnan(a) else float("nan")
+    best_tape = max((v for v in tape_auc.values() if not math.isnan(v)), default=0.5)
+
+    lift = quartile_lift(*oriented(rows, best_feat))
+    clean = [x for x in lift if not math.isnan(x)]
+    monotone = all(clean[k] <= clean[k + 1] for k in range(len(clean) - 1)) and len(clean) >= 2
+
+    by_day_ok = 0
+    for day in days:
+        dr = [r for r in rows if r["day"] == day]
+        if len(dr) < day_min_n:
+            continue
+        a = auc(*oriented(dr, best_feat))
+        if not math.isnan(a) and a > 0.5:
+            by_day_ok += 1
+
+    c1 = (not math.isnan(best_auc)) and best_auc >= auc_min
+    c2 = monotone
+    c3 = by_day_ok >= day_min
+    c4 = (not math.isnan(best_auc)) and (best_auc - best_tape) >= delta_min
+    return {"best_feat": best_feat, "best_auc": best_auc, "best_tape": best_tape,
+            "book_auc": book_auc, "tape_auc": tape_auc, "lift": lift,
+            "by_day_ok": by_day_ok, "c1": c1, "c2": c2, "c3": c3, "c4": c4,
+            "green": bool(c1 and c2 and c3 and c4)}
