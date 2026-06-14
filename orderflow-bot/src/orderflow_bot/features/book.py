@@ -11,6 +11,7 @@ chaque niveau i in 0..24 : asks[i].price, asks[i].amount, bids[i].price, bids[i]
 from __future__ import annotations
 
 from dataclasses import dataclass
+from os import PathLike
 
 import duckdb
 import numpy as np
@@ -44,26 +45,35 @@ class BookDay:
         return float(np.median(self.total[lo:hi]))
 
 
-def load_book_day(path: str) -> BookDay:
+def load_book_day(path: str | PathLike[str]) -> BookDay:
     """Charge un CSV.gz book_snapshot_25 -> BookDay (timestamp us -> ms)."""
+    sql_path = str(path).replace("'", "''")               # echappe ' pour le SQL
     con = duckdb.connect()
     try:
         d = con.execute(
-            f"SELECT * FROM read_csv_auto('{path}', header=true)"
+            f"SELECT * FROM read_csv_auto('{sql_path}', header=true)"
         ).fetchnumpy()
     finally:
         con.close()
 
-    def col(name: str) -> np.ndarray:
+    def _filled(name: str) -> np.ndarray:
         a = d[name]
         a = np.ma.filled(a, np.nan) if np.ma.isMaskedArray(a) else np.asarray(a)
-        return np.nan_to_num(a.astype("float64"), nan=0.0)
+        return a.astype("float64")
+
+    def col_amt(name: str) -> np.ndarray:
+        # niveau absent -> 0.0 (pas de volume affiche)
+        return np.nan_to_num(_filled(name), nan=0.0)
+
+    def col_px(name: str) -> np.ndarray:
+        # niveau absent -> NaN preserve (un prix manquant n'est pas un prix de 0)
+        return _filled(name)
 
     ts = np.asarray(d["timestamp"], dtype="int64") // 1000        # us -> ms
-    ask_px = np.column_stack([col(f"asks[{i}].price") for i in range(LEVELS)])
-    ask_amt = np.column_stack([col(f"asks[{i}].amount") for i in range(LEVELS)])
-    bid_px = np.column_stack([col(f"bids[{i}].price") for i in range(LEVELS)])
-    bid_amt = np.column_stack([col(f"bids[{i}].amount") for i in range(LEVELS)])
+    ask_px = np.column_stack([col_px(f"asks[{i}].price") for i in range(LEVELS)])
+    ask_amt = np.column_stack([col_amt(f"asks[{i}].amount") for i in range(LEVELS)])
+    bid_px = np.column_stack([col_px(f"bids[{i}].price") for i in range(LEVELS)])
+    bid_amt = np.column_stack([col_amt(f"bids[{i}].amount") for i in range(LEVELS)])
     total = ask_amt.sum(1) + bid_amt.sum(1)
     order = np.argsort(ts, kind="stable")
     return BookDay(ts[order], ask_px[order], ask_amt[order],

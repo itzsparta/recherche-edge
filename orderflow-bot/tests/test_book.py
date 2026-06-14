@@ -1,4 +1,6 @@
 import gzip
+import math
+
 import numpy as np
 from orderflow_bot.features import book as bk
 
@@ -47,3 +49,18 @@ def test_idx_at_and_window():
     assert book.idx_at(200) == 1                       # pile
     assert book.idx_at(250) == 1                       # entre deux -> dernier <=
     assert book.window_idx(150, 300) == (1, 3)
+
+
+def test_trailing_median_total():
+    ts = np.array([100, 200, 300, 400], dtype="int64")
+    total = np.array([10.0, 20.0, 30.0, 100.0])
+    z = np.zeros((4, 25))
+    book = bk.BookDay(ts, z.copy(), z.copy(), z.copy(), z.copy(), total)
+    # fenetre vide (aucun snapshot dans [50, 99]) -> NaN
+    assert math.isnan(book.trailing_median_total(99, 49))
+    # fenetre a un seul element [200, 200] -> ce total
+    assert book.trailing_median_total(200, 0) == 20.0
+    # impair, 3 elements dans [100, 300] -> mediane de {10, 20, 30} = 20
+    assert book.trailing_median_total(300, 200) == 20.0
+    # pair, 4 elements dans [100, 400] -> moyenne des 2 centraux {20, 30} = 25
+    assert book.trailing_median_total(400, 300) == 25.0
