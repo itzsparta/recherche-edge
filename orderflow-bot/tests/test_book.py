@@ -128,3 +128,16 @@ def test_pull_rate_cancel_vs_consumed():
     t_ts = np.array([500], dtype="int64"); t_px = np.array([100.0]); t_qty = np.array([3.0])
     pull0 = bk.pull_rate(book, t_ts, t_px, t_qty, 100.0, 1, 2000, 2000, 5.0)
     assert pull0 == 0.0
+
+
+def test_pull_rate_boundary_trade_counted_once():
+    # bid niveau0 : 4 -> 3 -> 1 (drop 1 puis 2). trade pile sur le snapshot interieur t=1000.
+    book = _one_level_book([0, 1000, 2000],
+                           ask=[(101.0, 1.0)] * 3,
+                           bid=[(100.0, 4.0), (100.0, 3.0), (100.0, 1.0)])
+    t_ts = np.array([1000], dtype="int64"); t_px = np.array([100.0]); t_qty = np.array([1.0])
+    # le trade (qty 1) explique le drop de l'etape 1 (4->3) UNE fois ; etape 2 (3->1) = pull pur = 2
+    # pull = 2 / start 4 = 0.5  (avant le fix il etait double-compte -> 0.25, faux)
+    pull = bk.pull_rate(book, t_ts, t_px, t_qty, entry=100.0, side=1,
+                        opened_ts=2000, W=2000, band=5.0)
+    assert abs(pull - 0.5) < 1e-9

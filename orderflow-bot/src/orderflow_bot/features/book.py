@@ -158,8 +158,8 @@ def pull_rate(book: BookDay, tape_ts, tape_px, tape_qty, entry: float, side: int
         drop = prev - cur
         if drop > 0:
             traded = tape_vol_in_band(tape_ts, tape_px, tape_qty,
-                                      int(book.ts[j - 1]), int(book.ts[j]),
-                                      entry, band)
+                                      int(book.ts[j - 1]) + 1, int(book.ts[j]),
+                                      entry, band)  # (ts[j-1], ts[j]] demi-ouvert : pas de double-comptage a la frontiere
             pull += max(0.0, drop - traded)
         prev = cur
     return pull / start
