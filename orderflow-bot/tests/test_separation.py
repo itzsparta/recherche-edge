@@ -64,3 +64,16 @@ def test_greenlight_fails_when_no_book_signal():
     days = [f"d{d}" for d in range(7)]
     v = evaluate_greenlight(rows, days, orient={"good": +1}, tape_feats=["noise"])
     assert v["green"] is False
+
+
+def test_greenlight_c2_false_on_nan_lift():
+    # peu de candidats -> quartile vide -> NaN dans le lift. un lift incomplet ne
+    # confirme PAS la monotonie -> c2 doit echouer (anti-mirage : pas de "pontage"
+    # des trous). 3 candidats -> lift = [nan, 0.0, 0.0, 1.0].
+    rows = [{"day": "d0", "mort_ne": False, "good": 0.0, "noise": 0.0},
+            {"day": "d0", "mort_ne": False, "good": 1.0, "noise": 0.0},
+            {"day": "d0", "mort_ne": True,  "good": 2.0, "noise": 0.0}]
+    v = evaluate_greenlight(rows, ["d0"], orient={"good": +1}, tape_feats=["noise"])
+    assert math.isnan(v["lift"][0])          # trou (quartile vide) en tete
+    assert v["c2"] is False                  # lift incomplet -> monotonie non confirmable
+    assert v["green"] is False

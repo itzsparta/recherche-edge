@@ -68,7 +68,10 @@ def evaluate_greenlight(rows, days, orient, tape_feats, *, auc_min=0.60,
 
     lift = quartile_lift(*oriented(rows, best_feat))
     clean = [x for x in lift if not math.isnan(x)]
-    monotone = all(clean[k] <= clean[k + 1] for k in range(len(clean) - 1)) and len(clean) >= 2
+    # anti-mirage : un lift incomplet (NaN = quartile vide) ne permet PAS de confirmer
+    # la monotonie -> c2 echoue plutot que de "ponter" les trous vers un faux-green
+    monotone = (len(clean) == len(lift) and len(clean) >= 2
+                and all(clean[k] <= clean[k + 1] for k in range(len(clean) - 1)))
 
     by_day_ok = 0
     for day in days:
