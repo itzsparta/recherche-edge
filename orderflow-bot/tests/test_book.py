@@ -95,3 +95,36 @@ def test_touch_imbalance_sign():
     assert bk.touch_imbalance(book, 0, entry=100.5, side=-1, band=5.0) == -0.6
     # bande trop etroite -> rien -> NaN
     assert np.isnan(bk.touch_imbalance(book, 0, entry=200.0, side=1, band=0.5))
+
+
+def test_replenish_ratio():
+    # snapshot a t=0 : bid niveau0 = (100, 2.0). fill a opened_ts=2000, W=2000.
+    book = _one_level_book([0, 1000, 2000], ask=[(101.0, 1.0)] * 3,
+                           bid=[(100.0, 2.0)] * 3)
+    # tape : 5.0 de volume traverse dans la bande sur [0, 2000]
+    t_ts = np.array([500, 1500], dtype="int64")
+    t_px = np.array([100.0, 100.0])
+    t_qty = np.array([3.0, 2.0])
+    # affiche au debut W = 2.0 ; mange = 5.0 -> 2.5 (recharge cachee)
+    r = bk.replenish(book, t_ts, t_px, t_qty, entry=100.0, side=1,
+                     opened_ts=2000, W=2000, band=5.0)
+    assert abs(r - 2.5) < 1e-9
+    # pas de tape -> 0
+    r0 = bk.replenish(book, np.array([], "int64"), np.array([]), np.array([]),
+                      100.0, 1, 2000, 2000, 5.0)
+    assert r0 == 0.0
+
+
+def test_pull_rate_cancel_vs_consumed():
+    # bid niveau0 : 4.0 -> 1.0 entre deux snapshots (chute de 3.0)
+    book = _one_level_book([0, 1000, 2000],
+                           ask=[(101.0, 1.0)] * 3,
+                           bid=[(100.0, 4.0), (100.0, 1.0), (100.0, 1.0)])
+    # CAS spoof : aucun trade -> toute la chute = annulation. pull = 3.0/4.0 = 0.75
+    pull = bk.pull_rate(book, np.array([], "int64"), np.array([]), np.array([]),
+                        entry=100.0, side=1, opened_ts=2000, W=2000, band=5.0)
+    assert abs(pull - 0.75) < 1e-9
+    # CAS consomme : 3.0 de tape entre snapshot 0 et 1 -> chute expliquee -> pull = 0
+    t_ts = np.array([500], dtype="int64"); t_px = np.array([100.0]); t_qty = np.array([3.0])
+    pull0 = bk.pull_rate(book, t_ts, t_px, t_qty, 100.0, 1, 2000, 2000, 5.0)
+    assert pull0 == 0.0

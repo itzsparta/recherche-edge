@@ -109,3 +109,57 @@ def touch_imbalance(book: BookDay, i: int, entry: float, side: int,
     o = _band_sum(opx, oamt, entry, band)
     tot = d + o
     return (d - o) / tot if tot > 0 else float("nan")
+
+
+def tape_vol_in_band(tape_ts: np.ndarray, tape_px: np.ndarray, tape_qty: np.ndarray,
+                     t0: int, t1: int, entry: float, band: float) -> float:
+    """Volume tape avec t0 <= ts <= t1 et |price - entry| <= band."""
+    if tape_ts.size == 0:
+        return 0.0
+    m = (tape_ts >= t0) & (tape_ts <= t1) & (np.abs(tape_px - entry) <= band)
+    return float(tape_qty[m].sum())
+
+
+def replenish(book: BookDay, tape_ts, tape_px, tape_qty, entry: float, side: int,
+              opened_ts: int, W: int, band: float) -> float:
+    """Volume tape consomme dans la bande sur W / liq defensive affichee au debut
+    de W. >1 = plus mange qu'affiche = recharge cachee (iceberg). Haut -> tient."""
+    i0 = book.idx_at(opened_ts - W)
+    if i0 < 0:
+        return float("nan")
+    dpx, damt, _, _ = _defend_oppose(book, i0, side)
+    displayed = _band_sum(dpx, damt, entry, band)
+    if displayed <= 0:
+        return float("nan")
+    traded = tape_vol_in_band(tape_ts, tape_px, tape_qty,
+                              opened_ts - W, opened_ts, entry, band)
+    return traded / displayed
+
+
+def pull_rate(book: BookDay, tape_ts, tape_px, tape_qty, entry: float, side: int,
+              opened_ts: int, W: int, band: float) -> float:
+    """Baisses de liq defensive affichee NON expliquees par le tape (annulations)
+    sur W / liq affichee au debut. Haut -> spoof retire -> meurt."""
+    lo, hi = book.window_idx(opened_ts - W, opened_ts)
+    if hi - lo < 2:
+        return float("nan")
+
+    def defend_band(j: int) -> float:
+        dpx, damt, _, _ = _defend_oppose(book, j, side)
+        return _band_sum(dpx, damt, entry, band)
+
+    start = defend_band(lo)
+    if start <= 0:
+        return float("nan")
+    pull = 0.0
+    prev = start
+    for j in range(lo + 1, hi):
+        cur = defend_band(j)
+        drop = prev - cur
+        if drop > 0:
+            traded = tape_vol_in_band(tape_ts, tape_px, tape_qty,
+                                      int(book.ts[j - 1]), int(book.ts[j]),
+                                      entry, band)
+            pull += max(0.0, drop - traded)
+        prev = cur
+    return pull / start
