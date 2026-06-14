@@ -78,3 +78,34 @@ def load_book_day(path: str | PathLike[str]) -> BookDay:
     order = np.argsort(ts, kind="stable")
     return BookDay(ts[order], ask_px[order], ask_amt[order],
                    bid_px[order], bid_amt[order], total[order])
+
+
+def _defend_oppose(book: BookDay, i: int, side: int):
+    """Retourne (defend_px, defend_amt, oppose_px, oppose_amt) au snapshot i.
+    Fade long (+1) -> defenseurs = bids ; fade short (-1) -> defenseurs = asks."""
+    if side > 0:
+        return book.bid_px[i], book.bid_amt[i], book.ask_px[i], book.ask_amt[i]
+    return book.ask_px[i], book.ask_amt[i], book.bid_px[i], book.bid_amt[i]
+
+
+def _band_sum(px: np.ndarray, amt: np.ndarray, entry: float, band: float) -> float:
+    return float(amt[np.abs(px - entry) <= band].sum())
+
+
+def book_defense(book: BookDay, i: int, entry: float, side: int,
+                 band: float, norm_total: float) -> float:
+    """Liq defensive dans la bande / mediane trailing du book total. Haut -> tient."""
+    if not (norm_total > 0):
+        return float("nan")
+    dpx, damt, _, _ = _defend_oppose(book, i, side)
+    return _band_sum(dpx, damt, entry, band) / norm_total
+
+
+def touch_imbalance(book: BookDay, i: int, entry: float, side: int,
+                    band: float) -> float:
+    """(defend - oppose)/(defend + oppose) dans la bande, in [-1, 1]. Haut -> tient."""
+    dpx, damt, opx, oamt = _defend_oppose(book, i, side)
+    d = _band_sum(dpx, damt, entry, band)
+    o = _band_sum(opx, oamt, entry, band)
+    tot = d + o
+    return (d - o) / tot if tot > 0 else float("nan")

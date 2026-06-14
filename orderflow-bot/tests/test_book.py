@@ -64,3 +64,34 @@ def test_trailing_median_total():
     assert book.trailing_median_total(300, 200) == 20.0
     # pair, 4 elements dans [100, 400] -> moyenne des 2 centraux {20, 30} = 25
     assert book.trailing_median_total(400, 300) == 25.0
+
+
+def _one_level_book(ts, ask, bid):
+    """ask/bid = (price, amount) au niveau 0 ; reste 0. ts = liste ms."""
+    n = len(ts)
+    ax = np.zeros((n, 25)); aa = np.zeros((n, 25))
+    bx = np.zeros((n, 25)); ba = np.zeros((n, 25))
+    for k in range(n):
+        ax[k, 0], aa[k, 0] = ask[k]
+        bx[k, 0], ba[k, 0] = bid[k]
+    total = aa.sum(1) + ba.sum(1)
+    return bk.BookDay(np.array(ts, dtype="int64"), ax, aa, bx, ba, total)
+
+
+def test_book_defense_normalised():
+    # long -> defenseurs = bids ; entry=100, band large
+    book = _one_level_book([0], ask=[(101.0, 1.0)], bid=[(100.0, 4.0)])
+    # defense brute = 4.0 ; normalisee par norm_total=2.0 -> 2.0
+    assert bk.book_defense(book, 0, entry=100.0, side=1, band=5.0, norm_total=2.0) == 2.0
+    # norm_total invalide -> NaN
+    assert np.isnan(bk.book_defense(book, 0, 100.0, 1, 5.0, 0.0))
+
+
+def test_touch_imbalance_sign():
+    book = _one_level_book([0], ask=[(101.0, 1.0)], bid=[(100.0, 4.0)])
+    # long : defend(bids)=4, oppose(asks)=1 -> (4-1)/5 = 0.6
+    assert bk.touch_imbalance(book, 0, entry=100.5, side=1, band=5.0) == 0.6
+    # short : defend(asks)=1, oppose(bids)=4 -> (1-4)/5 = -0.6
+    assert bk.touch_imbalance(book, 0, entry=100.5, side=-1, band=5.0) == -0.6
+    # bande trop etroite -> rien -> NaN
+    assert np.isnan(bk.touch_imbalance(book, 0, entry=200.0, side=1, band=0.5))
