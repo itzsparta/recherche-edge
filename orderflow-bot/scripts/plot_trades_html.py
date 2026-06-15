@@ -7,10 +7,13 @@ charteraient leur propre flux).
 
 Usage:
   python scripts/plot_trades_html.py [config.yaml] [cache.jsonl] [YYYY-MM-DD]
-         [--filter all|morts|wins|loss] [--max N] [--out FICHIER.html]
+         [--filter all|morts|wins|loss] [--max N] [--out FICHIER.html] [--no-open]
+
+Ouvre le HTML au navigateur par defaut a la fin (--no-open pour suffire en batch).
 """
 import datetime as dt
 import sys
+import webbrowser
 from collections import Counter
 from pathlib import Path
 
@@ -91,12 +94,20 @@ def main() -> None:
         return
 
     candles = ohlc_1min(cfg, day, day + _DAY)
+    times = [tdt(m) for m, *_ in candles]
+    closes = [c for *_, c in candles]
     fig = go.Figure(go.Candlestick(
-        x=[tdt(m) for m, *_ in candles],
+        x=times,
         open=[o for _, o, *_ in candles], high=[h for _, _, h, _, _ in candles],
-        low=[l for _, _, _, l, _ in candles], close=[c for *_, c in candles],
+        low=[l for _, _, _, l, _ in candles], close=closes,
         name="prix", increasing_line_color="#26a69a", decreasing_line_color="#ef5350",
         opacity=0.55))
+    # MA30 = tendance locale (le "sens" que l'oeil lit sur le chart)
+    win = 30
+    ma = [sum(closes[i - win + 1:i + 1]) / win if i >= win - 1 else None
+          for i in range(len(closes))]
+    fig.add_trace(go.Scatter(x=times, y=ma, mode="lines", name="MA30 (tendance locale)",
+                             line=dict(color="#ffb74d", width=1.2), hoverinfo="skip"))
 
     draw_levels = len(sel) <= 40
     for ct in sel:
@@ -104,8 +115,11 @@ def main() -> None:
         win = ct.r_multiple > 0
         col = "#26a69a" if win else "#ef5350"
         t0, t1 = tdt(ct.opened_ts), tdt(ct.fills[-1].ts)
+        dur = (ct.fills[-1].ts - ct.opened_ts) // 60000
         info = (f"{'LONG' if p.side == 1 else 'SHORT'}  r={ct.r_multiple:+.2f}  "
-                f"mfe={ct.mfe_r:.2f}  mae={ct.mae_r:.2f}  sortie={ct.fills[-1].kind}")
+                f"mfe={ct.mfe_r:.2f}  mae={ct.mae_r:.2f}  "
+                f"entry={p.entry:.1f} stop={p.stop:.1f} tgt={p.target:.1f}  "
+                f"{dur}min  sortie={ct.fills[-1].kind}")
         # entree -> sortie : ligne + marqueurs
         fig.add_trace(go.Scatter(
             x=[t0, t1], y=[ct.fills[0].price, ct.fills[-1].price], mode="lines+markers",
@@ -120,12 +134,14 @@ def main() -> None:
                               line=dict(color=lc, width=0.8, dash=dash), opacity=0.5)
 
     fig.update_layout(
-        title=f"{cfg_path} | {date_s} | filtre={mode} | {len(sel)} trades "
-              f"(▲long ▼short, x=sortie, vert=win rouge=loss)",
+        title=f"{cfg_path} | {date_s} | filtre={mode} | {len(sel)}/{len(trades)} remplis affiches "
+              f"(--max {maxn}) — ▲long ▼short, x=sortie, vert=win rouge=loss",
         xaxis_rangeslider_visible=False, template="plotly_dark",
         hovermode="closest", height=800)
     fig.write_html(out, include_plotlyjs=True)
-    print(f"-> {out}  (HTML autonome, ouvrir au navigateur)")
+    print(f"-> {out}  (HTML autonome)")
+    if "--no-open" not in sys.argv:
+        webbrowser.open(Path(out).resolve().as_uri())   # ouvre au navigateur defaut
 
 
 if __name__ == "__main__":
