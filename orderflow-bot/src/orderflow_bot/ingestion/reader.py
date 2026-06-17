@@ -5,6 +5,7 @@ from pathlib import Path
 import duckdb
 import pyarrow.parquet as pq
 
+from orderflow_bot.config import BotConfig
 from orderflow_bot.models import Trade
 
 log = logging.getLogger(__name__)
@@ -142,6 +143,17 @@ def read_klines_as_ticks(
                 yield from _stream_klines(con.execute(q, [str(f), *params]))
     finally:
         con.close()
+
+
+def read_market(
+    cfg: BotConfig, start_ms: int | None = None, end_ms: int | None = None
+) -> Iterator[Trade]:
+    """Dispatch unique trades|klines selon cfg.data_format. Point d'entree du
+    chemin swing (parallele et sequentiel) ; les outils trades intraday gardent
+    read_trades en direct."""
+    if cfg.data_format == "klines":
+        return read_klines_as_ticks(cfg.kline_data_dir, cfg.symbol, start_ms, end_ms)
+    return read_trades(cfg.market_data_dir, cfg.symbol, start_ms, end_ms)
 
 
 def available_days(data_dir: str | Path, symbol: str) -> list[int]:
