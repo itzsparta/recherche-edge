@@ -1,0 +1,39 @@
+# config.swing.yaml — run swing (fade-vers-value), etage 1 smoke gate brut
+symbol: BTCUSDT
+market: spot
+tick_size: 0.01
+bin_size: 1.0
+profile_bin_size: 25.0
+bar_minutes: 240            # barres 4h pour le declencheur de rejet
+eod_flat: false            # holds swing multi-jours (pas de flat EOD)
+data_dir: data
+journal_path: journal.swing.jsonl
+equity: 10000
+
+risk:
+  risk_pct: 0.0075
+  daily_stop_pct: 1.0          # relache : le gate brut juge le signal nu
+  max_consecutive_losses: 100000
+  max_trades_per_day: 100000
+  min_rr: 2.0
+  partial_at_r: 1.0
+  partial_fraction: 0.5
+  min_stop_friction_mult: 3.0
+
+fees:
+  maker_pct: 0.0002
+  taker_pct: 0.0005
+  slippage_ticks: 2
+
+strategy:
+  trigger: level_rejection
+  signal_mode: reversal
+  entry_mode: stop             # entree sur confirmation : quasi-gratuite au swing
+  entry_confirm_frac: 0.0      # la cloture de rejet est la confirmation
+  zone_margin_pct: 0.002
+  stop_buffer_ticks: 20
+  entry_expire_minutes: 240
+  profile_days: 5
+  npoc_lookback_days: 20
+
+sessions: []                   # pas de filtre de session au swing
