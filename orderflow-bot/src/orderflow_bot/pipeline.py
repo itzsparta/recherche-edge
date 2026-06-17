@@ -304,9 +304,8 @@ def generate_plans_blocked(
 
 def _block_worker(args: tuple[BotConfig, int, int, int]) -> list[OrderPlan]:
     cfg, read_from, b_start, b_end = args
-    from orderflow_bot.ingestion.reader import read_trades
-    trades = read_trades(cfg.market_data_dir, cfg.symbol,
-                         start_ms=max(0, read_from), end_ms=b_end)
+    from orderflow_bot.ingestion.reader import read_market
+    trades = read_market(cfg, start_ms=max(0, read_from), end_ms=b_end)
     return generate_plans(cfg, trades, b_start, b_end)
 
 
