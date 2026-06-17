@@ -92,10 +92,10 @@ def kline_data_dir(self) -> str:
 
 ### 4.2 Downloader (`scripts/download_klines.py`, nouveau)
 Télécharge les zips mensuels `data.binance.vision/data/spot/monthly/klines/{SYMBOL}/1m/
-{SYMBOL}-1m-{YYYY}-{MM}.zip` (URL confirmée par la 1re tâche), vérifie le `.CHECKSUM` SHA256,
-extrait le CSV, écrit un Parquet/mois. **Idempotent** : un mois déjà présent est sauté (comme
-`ingestion/importer.py`). Couverture mensuelle ≈ T−1 mois ; le mois courant (dumps *daily*)
-est hors-périmètre 2a.
+{SYMBOL}-1m-{YYYY}-{MM}.zip` (URL confirmée par la 1re tâche), extrait le CSV, écrit un
+Parquet/mois. **Pas de checksum** (comme `ingestion/importer.py`) : un zip tronqué échoue
+bruyamment à l'unzip et l'idempotence le re-télécharge. **Idempotent** : un mois déjà présent
+est sauté. Couverture mensuelle ≈ T−1 mois ; le mois courant (dumps *daily*) est hors-périmètre 2a.
 
 ### 4.3 Parser (`src/orderflow_bot/ingestion/klines.py`, nouveau)
 `parse_kline_csv(path) -> pyarrow.Table` (colonnes `ts,open,high,low,close,volume`).
