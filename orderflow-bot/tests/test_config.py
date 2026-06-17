@@ -98,3 +98,17 @@ def test_entry_mode_rejects_unknown():
 def test_entry_confirm_frac_default_zero():
     from orderflow_bot.config import StrategyCfg
     assert StrategyCfg().entry_confirm_frac == 0.0
+
+
+def test_kline_data_dir_distinct_from_trades():
+    cfg = BotConfig(data_dir="data", market="spot")
+    assert cfg.market_data_dir == "data/spot"
+    assert cfg.kline_data_dir == "data/klines/spot"
+
+
+def test_data_format_defaults_to_trades():
+    assert BotConfig().data_format == "trades"
+
+
+def test_data_format_klines_accepted():
+    assert BotConfig(data_format="klines").data_format == "klines"

@@ -84,6 +84,7 @@ class BotConfig(StrictModel):
     eod_flat: bool = True                        # swing tourne en False : holds multi-jours
     data_dir: str = "data"
     market: Literal["spot", "futures"] = "spot"
+    data_format: Literal["trades", "klines"] = "trades"
     journal_path: str = "journal.jsonl"
     equity: float = 10_000.0
     risk: RiskCfg = RiskCfg()
@@ -96,6 +97,12 @@ class BotConfig(StrictModel):
         """Racine des donnees du marche courant : data_dir/market.
         Spot et futures du meme symbole ne se melangent jamais."""
         return f"{self.data_dir}/{self.market}"
+
+    @property
+    def kline_data_dir(self) -> str:
+        """Racine des klines : data_dir/klines/market. Distincte des trades
+        (data_dir/market) — schemas Parquet incompatibles, jamais melanges."""
+        return f"{self.data_dir}/klines/{self.market}"
 
 
 def load_config(path: str | Path) -> BotConfig:
