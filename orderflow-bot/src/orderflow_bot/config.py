@@ -48,6 +48,9 @@ class StrategyCfg(StrictModel):
     # casser l'adverse-selection des morts-nes (rempli pile au break a contresens).
     entry_mode: Literal["limit", "stop"] = "limit"
     entry_confirm_frac: float = 0.0      # stop : confirme apres frac*risk0 dans le sens du trade
+    # footprint : declencheurs intraday (absorption/cvd/imbalances empilees).
+    # level_rejection : declencheur swing (rejet de zone sur barre resamplee).
+    trigger: Literal["footprint", "level_rejection"] = "footprint"
     absorption: AbsorptionCfg = AbsorptionCfg()
     imbalance: ImbalanceCfg = ImbalanceCfg()
 

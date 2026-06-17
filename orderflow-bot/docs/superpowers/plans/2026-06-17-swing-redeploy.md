@@ -343,7 +343,7 @@ def test_level_rejection_generates_reversal_plan():
         fees=FeesCfg(maker_pct=0.0, taker_pct=0.0, slippage_ticks=0),
         strategy=StrategyCfg(trigger="level_rejection", profile_days=1,
                              npoc_lookback_days=1, zone_margin_pct=0.002,
-                             stop_buffer_ticks=10, entry_expire_minutes=600),
+                             stop_buffer_ticks=5, entry_expire_minutes=600),  # buffer 5 -> RR ~3.1 (evite la borne RR=2.0 knife-edge en float)
         risk=RiskCfg(min_rr=2.0, min_stop_friction_mult=0.0),
     )
     plans = generate_plans(cfg, _swing_synth())

@@ -33,6 +33,7 @@ from orderflow_bot.strategy.confluence import ConfluenceEngine, TriggerEngine
 from orderflow_bot.strategy.context import (
     DailyLevels, levels_from_profile, market_bias, naked_pocs,
 )
+from orderflow_bot.strategy.level_rejection import level_rejection_triggers
 from orderflow_bot.strategy.zones import build_zones
 
 log = logging.getLogger(__name__)
@@ -62,6 +63,7 @@ class PlanGenerator:
             min_stop_friction_mult=cfg.risk.min_stop_friction_mult,
             mode=st.signal_mode,
         )
+        self._level_rejection = st.trigger == "level_rejection"
         # bins des profils decouples des footprint bars : zones larges
         # sans degrader la detection d'imbalances par niveau
         self.profile_bin = cfg.profile_bin_size or cfg.bin_size
@@ -80,8 +82,12 @@ class PlanGenerator:
         trigs = []
         bar = self.aggregator.on_trade(t)
         if bar is not None:
-            trigs += self.triggers.on_bar(bar)
-        trigs += self.triggers.on_trade(t)
+            if self._level_rejection:
+                trigs += level_rejection_triggers(bar, self.confluence.zones)
+            else:
+                trigs += self.triggers.on_bar(bar)
+        if not self._level_rejection:
+            trigs += self.triggers.on_trade(t)
         plans = []
         for trig in trigs:
             plan = self.confluence.evaluate(trig)
