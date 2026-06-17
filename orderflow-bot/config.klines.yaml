@@ -1,0 +1,24 @@
+symbol: BTCUSDT
+market: spot
+data_format: klines
+data_dir: data
+tick_size: 0.01
+bin_size: 1.0
+profile_bin_size: 10.0
+bar_minutes: 240
+eod_flat: false
+journal_path: journal.klines.jsonl
+strategy:
+  trigger: level_rejection
+  zone_margin_pct: 0.002
+  stop_buffer_ticks: 20
+  entry_expire_minutes: 600
+  profile_days: 5
+  npoc_lookback_days: 20
+risk:
+  min_rr: 2.0
+  min_stop_friction_mult: 0.0
+  max_trades_per_day: 999
+  max_consecutive_losses: 999
+  daily_stop_pct: 1.0
+sessions: []
