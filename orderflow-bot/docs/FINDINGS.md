@@ -91,6 +91,38 @@ Le reste corrobore : aux frais BTC-spot **atteignables** (plancher maker spot �
 
 **Le mur structurel (le finding le plus profond du fil).** L'**anti-corrélation** edge↔frais : l'edge vit en basse-vol (petit R) ; les frais mordent la **plus grosse fraction-R** en basse-vol (petits moves → petit R → frais fixes pèsent plus). Le signal habite exactement le territoire fee-expensive. Une venue moins chère (NQ, rebate) ne rétrécit que le **numérateur frais** — on reste piégé en territoire petit-R. Le seul move qui **dissout** le mur au lieu de le grignoter : un **timeframe où R est assez gros pour que la fraction-frais → négligeable**.
 
+## Redeploy swing étage 1 — fade-vers-value (KILL gate 1, 2026-06-17)
+
+Premier redeploy post-gel (option #1 par EV : le swing dissout le **mur structurel**
+via un gros R, au lieu de le grignoter comme une venue moins chère). Hypothèse
+**pré-enregistrée** (spec `docs/superpowers/specs/2026-06-17-swing-redeploy-design.md`)
+**H1** : les niveaux VP nus (naked POC, bords de value area) portent une info
+directionnelle à l'échelle swing (défense positionnelle) absente au 1-min ; un rejet
+de niveau (barre 4h qui pique une zone puis re-clôture dehors) → fade vers POC, hold
+structurel sans limite (`eod_flat=False`). Infra (réutilisable) : flag `eod_flat`,
+`strategy/level_rejection.py`, `backtest/swing_gate.py`, `config.swing.yaml`,
+`scripts/swing_smoke.py` ; 183 tests.
+
+Gate 1 (smoke, stock 6 mois, frais=0) : **235 plans, n=234, brut_fade = −0.073R,
+brut_miroir = +0.271R, both_halves_pos = False → KILL** (les 3 conditions échouent).
+
+**Le miroir +0.271R est du DRIFT, pas un edge.** BTC a chuté de **−29.6 %** sur
+l'échantillon (−24.7 % H1, −6.4 % H2). Le fade achète les supports (longs) dans un
+crash → perd ; le miroir (RR 1:2 réfléchi à travers l'entry = short) touche sa cible
+2R-dessous facilement dans la pente → gagne **par la pente, pas par le niveau**. Même
+confound de drift H2 que #11, amplifié. **Leçon structurelle neuve : un smoke
+mono-régime (6 mois de bear monotone) ne peut PAS séparer un edge-de-niveau d'un drift
+directionnel.** Le fade est tué proprement (acheter les creux dans un crash est mort de
+toute façon) ; mais tester un edge swing *directionnel* (continuation/breakout) exige un
+échantillon **multi-régime** (klines multi-années bull+bear, le drift s'annule) + un
+contrôle de drift pré-enregistré. Le « hint continuation » du miroir est trop
+drift-contaminé pour conclure ici.
+
+**Suite** : thèse **fade-vers-value gelée**. Pivot pré-enregistré → **swing-continuation
+sur klines multi-années** (seul chemin qui dissout le mur structurel ET teste le hint
+directionnel, sur données multi-régime). Infra swing mergée, réutilisable telle quelle
+(le déclencheur change : acceptance/breakout au lieu de rejet).
+
 ## Conclusion
 
 Tous les leviers orderflow-natifs (sortie, features, cible, force, direction, timeframe, mécanique d'entrée, BE, régime HTF, tendance locale, découpage temporel, **régime de volatilité, mur d'exécution frais×cible×entrée**) sont épuisés. Le brut est ≈ 0 partout ; le net est négatif partout, **fee-bound**. Cohorte survivante du régime vol incluse, le signal n'a **pas** d'edge directionnel récoltable sur BTCUSDT spot, déc. 2025 – juin 2026. **Thèse gelée.**
