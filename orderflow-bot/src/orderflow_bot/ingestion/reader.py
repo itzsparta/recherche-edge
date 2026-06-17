@@ -37,43 +37,35 @@ def _stream(cur) -> Iterator[Trade]:
             yield Trade(ts=ts, price=price, qty=qty, is_buyer_maker=mkr)
 
 
-def read_trades(
-    data_dir: str | Path,
-    symbol: str,
-    start_ms: int | None = None,
-    end_ms: int | None = None,
-) -> Iterator[Trade]:
-    """Relit les Parquet du symbole en streaming, ordonnes par ts.
-
-    Chemin rapide : les fichiers sont ordonnes par leurs bornes de ts (stats
-    du footer Parquet, lues sans scan), ceux entierement hors fenetre sont
-    sautes, puis chacun est lu et trie individuellement -- pas de tri global
-    du dataset. Ce chemin n'est valide que si les fichiers ne se chevauchent
-    pas dans le temps ; en cas de chevauchement ou de stats absentes, repli
-    sur le tri global DuckDB, plus lent mais toujours correct."""
-    folder = Path(data_dir) / symbol
+def _ordered_parquet(
+    folder: Path, start_ms: int | None, end_ms: int | None
+) -> tuple[list[Path], bool]:
+    """(fichiers a lire dans l'ordre, global_sort?). global_sort=True => lire
+    tous les fichiers en un seul scan trie (stats absentes ou chevauchement).
+    Sinon, fichiers hors fenetre sautes, ordonnes par leurs bornes ts."""
     files = sorted(folder.glob("*.parquet")) if folder.exists() else []
     if not files:
-        return
-    plan: list[tuple[int, int, Path]] | None = []
+        return [], False
+    plan: list[tuple[int, int, Path]] = []
     for f in files:
         md = pq.read_metadata(f)
         if md.num_rows == 0:
             continue
         bounds = _ts_bounds(md)
         if bounds is None:
-            plan = None
-            break
+            return files, True
         lo, hi = bounds
         if (start_ms is not None and hi < start_ms) or \
                 (end_ms is not None and lo >= end_ms):
-            continue                    # fichier entierement hors fenetre
+            continue
         plan.append((lo, hi, f))
-    if plan is not None:
-        plan.sort(key=lambda p: p[:2])
-        if any(prev[1] > nxt[0] for prev, nxt in zip(plan, plan[1:])):
-            plan = None                 # chevauchement -> ordre par fichier invalide
+    plan.sort(key=lambda p: p[:2])
+    if any(prev[1] > nxt[0] for prev, nxt in zip(plan, plan[1:])):
+        return files, True
+    return [f for _, _, f in plan], False
 
+
+def _window_sql(start_ms: int | None, end_ms: int | None) -> tuple[str, list]:
     conds: list[str] = []
     params: list = []
     if start_ms is not None:
@@ -83,17 +75,71 @@ def read_trades(
         conds.append("ts < ?")
         params.append(end_ms)
     where = (" WHERE " + " AND ".join(conds)) if conds else ""
-    q = f"SELECT ts, price, qty, is_buyer_maker FROM read_parquet(?){where} ORDER BY ts"
+    return where, params
 
+
+def read_trades(
+    data_dir: str | Path,
+    symbol: str,
+    start_ms: int | None = None,
+    end_ms: int | None = None,
+) -> Iterator[Trade]:
+    """Relit les Parquet trades du symbole en streaming, ordonnes par ts.
+    Chemin rapide par bornes de footer (fichiers non chevauchants) ; repli sur
+    tri global DuckDB si stats absentes ou chevauchement."""
+    folder = Path(data_dir) / symbol
+    files, global_sort = _ordered_parquet(folder, start_ms, end_ms)
+    if not files:
+        return
+    where, params = _window_sql(start_ms, end_ms)
+    q = f"SELECT ts, price, qty, is_buyer_maker FROM read_parquet(?){where} ORDER BY ts"
     con = duckdb.connect()
     try:
-        if plan is None:
+        if global_sort:
             log.warning("stats absentes ou fichiers chevauchants : tri global")
             yield from _stream(con.execute(q, [[str(f) for f in files], *params]))
         else:
-            for i, (_, _, f) in enumerate(plan, 1):
-                log.info("lecture %d/%d: %s", i, len(plan), f.name)
+            for i, f in enumerate(files, 1):
+                log.info("lecture %d/%d: %s", i, len(files), f.name)
                 yield from _stream(con.execute(q, [str(f), *params]))
+    finally:
+        con.close()
+
+
+def _stream_klines(cur) -> Iterator[Trade]:
+    """Chaque kline (ts,O,H,L,C,V) -> 4 Trade synthetiques {O,H,L,C}, close
+    en dernier, V/4 chacun, offsets ts 0/20k/40k/59999 (spec contrat tick)."""
+    while batch := cur.fetchmany(_BATCH):
+        for ts, o, h, l, c, v in batch:
+            q = v / 4.0
+            yield Trade(ts=ts, price=o, qty=q, is_buyer_maker=False)
+            yield Trade(ts=ts + 20_000, price=h, qty=q, is_buyer_maker=False)
+            yield Trade(ts=ts + 40_000, price=l, qty=q, is_buyer_maker=False)
+            yield Trade(ts=ts + 59_999, price=c, qty=q, is_buyer_maker=False)
+
+
+def read_klines_as_ticks(
+    data_dir: str | Path,
+    symbol: str,
+    start_ms: int | None = None,
+    end_ms: int | None = None,
+) -> Iterator[Trade]:
+    """Streame les klines Parquet (ordonnees par ts = open_time) et yield 4
+    Trade synthetiques/kline. Signature drop-in de read_trades. La fenetre
+    [start_ms, end_ms) filtre sur open_time."""
+    folder = Path(data_dir) / symbol
+    files, global_sort = _ordered_parquet(folder, start_ms, end_ms)
+    if not files:
+        return
+    where, params = _window_sql(start_ms, end_ms)
+    q = f"SELECT ts, open, high, low, close, volume FROM read_parquet(?){where} ORDER BY ts"
+    con = duckdb.connect()
+    try:
+        if global_sort:
+            yield from _stream_klines(con.execute(q, [[str(f) for f in files], *params]))
+        else:
+            for f in files:
+                yield from _stream_klines(con.execute(q, [str(f), *params]))
     finally:
         con.close()
 
