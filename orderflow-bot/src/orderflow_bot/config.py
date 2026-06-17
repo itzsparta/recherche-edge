@@ -78,6 +78,7 @@ class BotConfig(StrictModel):
     bin_size: float = 1.0                       # footprint bars (imbalances)
     profile_bin_size: float | None = None       # profils/zones ; None = bin_size
     bar_minutes: int = 1
+    eod_flat: bool = True                        # swing tourne en False : holds multi-jours
     data_dir: str = "data"
     market: Literal["spot", "futures"] = "spot"
     journal_path: str = "journal.jsonl"

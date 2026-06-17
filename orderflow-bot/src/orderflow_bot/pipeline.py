@@ -345,25 +345,32 @@ def execute_plans(
 
 
 def simulate_isolated(
-    cfg: BotConfig, plans: list[OrderPlan], trades: Iterable[Trade]
+    cfg: BotConfig, plans: list[OrderPlan], trades: Iterable[Trade],
+    eod_flat: bool = True,
 ) -> list[ClosedTrade]:
     """Outcome intrinseque de chaque plan candidat, pris isolement : un broker
     independant par plan, sans contrainte de slot ni de risque, qty=1 (r/mfe/mae
-    invariants en qty). Meme mecanique d'exit/EOD que l'execution reelle, meme
-    ordre par tick (EOD -> on_trade -> submit), donc un plan seul donne le meme
-    label qu'en portefeuille. Renvoie un ClosedTrade par plan rempli ; les
-    ordres expires sans fill sont omis. Sert a etiqueter les candidats (morts-nes
-    vs gagnants) pour le filtre d'entree, sans re-streamer par plan."""
+    invariants en qty). Meme mecanique d'exit que l'execution reelle, meme ordre
+    par tick (EOD -> on_trade -> submit), donc un plan seul donne le meme label
+    qu'en portefeuille. Renvoie un ClosedTrade par plan rempli ; les ordres
+    expires sans fill sont omis. Sert a etiqueter les candidats (morts-nes vs
+    gagnants) pour le filtre d'entree, sans re-streamer par plan.
+
+    eod_flat=True : flat au changement de jour (intraday). eod_flat=False (swing) :
+    les positions courent jusqu'au stop/target structurel sur plusieurs jours ;
+    le restant ouvert en fin de fenetre est ferme (kind 'eod' = censure)."""
     pending = sorted(plans, key=lambda p: p.ts)
     i, n = 0, len(pending)
     expire = cfg.strategy.entry_expire_minutes * 60_000
     active: list[PaperBroker] = []
     out: list[ClosedTrade] = []
     day = -1
+    last_t: Trade | None = None
     for t in trades:
+        last_t = t
         d = t.ts // _DAY_MS
         if d != day:
-            if day >= 0:                       # flat EOD : ferme/annule tout l'actif
+            if day >= 0 and eod_flat:          # flat EOD seulement si demande
                 for b in active:
                     ct = b.force_close(t)
                     if ct is not None:
@@ -386,6 +393,11 @@ def simulate_isolated(
             b.submit(pending[i], 1.0, pending[i].ts)
             active.append(b)
             i += 1
+    if not eod_flat and last_t is not None:    # censure : ferme le restant en fin de data
+        for b in active:
+            ct = b.force_close(last_t)
+            if ct is not None:
+                out.append(ct)
     return out
 
 
