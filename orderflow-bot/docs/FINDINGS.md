@@ -123,12 +123,57 @@ sur klines multi-années** (seul chemin qui dissout le mur structurel ET teste l
 directionnel, sur données multi-régime). Infra swing mergée, réutilisable telle quelle
 (le déclencheur change : acceptance/breakout au lieu de rejet).
 
+## Redeploy swing étage 2b — breakout-continuation (KILL gate 2b multi-régime, 2026-06-18)
+
+Le pivot pré-enregistré après le KILL du fade : si un échantillon mono-régime ne peut
+pas séparer un edge-de-niveau d'un drift, tester le **breakout/acceptance au-delà** d'un
+bord de value area — le complément géométrique du rejet : le **corps** de la barre 4h
+**traverse** le bord (ouvre d'un côté, clôture de l'autre = acceptance) — sur klines 1m
+**multi-années** (le drift s'annule sur bull+bear), avec un **gate drift-contrôlé
+pré-enregistré**. Hypothèse **H2b** : le niveau franchi porte une info directionnelle
+(continuation) séparable du drift. Neuf : `strategy/level_breakout.py`,
+`backtest/swing_gate2.py`, `scripts/continuation_run.py` ; cible continuation
+**structurelle** (niveau-suivant + fallback measured-move) ; cycle subagent-driven, 229 tests.
+
+**Gate 2b (noyau kill-fast, pré-enregistré)** : `core_greenlight = brut>0 ∧ t>2 ∧
+brut_long>0 ∧ brut_short>0 ∧ net>0 ∧ brut>brut_miroir ∧ n_long≥30 ∧ n_short≥30`. Le KILL
+dur central est **both-sides** (`brut_long>0 ∧ brut_short>0`) : un edge qui gagne long ET
+short ne peut pas vivre du drift directionnel (l'histoire BTC est haussière nette → des
+shorts profitables prouveraient un edge de niveau surmontant le vent contraire). Le
+plancher `n≥30` par côté (durci en revue finale, dans le sens difficile, **pré-run** donc
+non-overfit) ferme le greenlight vacant : `brut_short>0` sur une poignée de trades est du
+bruit, pas une preuve. Le split régime (signe du retour 90j glissant) est **diagnostic,
+non-gating**.
+
+Run multi-régime (klines 1m 2021-01 → 2023-12, 1.45 M barres 4h) : **jours=1095,
+plans=1043, PLOMBERIE PASS, core_greenlight=False → KILL.**
+
+```
+brut −0.2498R   t=−7.1   net −0.4758R   miroir −0.7022R
+brut_long −0.2507 (n=486)   brut_short −0.2490 (n=557)   plancher 30 largement satisfait
+régime UP   (+1, n=452) : brut −0.168   long −0.199   short −0.136
+régime DOWN (−1, n=454) : brut −0.223   long −0.197   short −0.243
+```
+
+**Distinct d'étage 1 : ce KILL n'est PAS un artefact de drift.** À étage 1 le miroir
+gagnait (+0.271R) parce que le drift bear faisait gagner les shorts — niveau et drift
+inséparables. Ici le multi-régime **annule** le drift (le miroir est maintenant −0.70R,
+plus +0.27R), et le signal **perd long ET short dans les DEUX régimes** : `t=−7.1` sur
+n=1043 = espérance **intrinsèquement négative**, indépendante du sens et du régime. Le
+plancher par côté est largement satisfait (486/557 ≫ 30) → ce n'est pas un manque de
+données, c'est le signal nu qui est mauvais. Le breakout-au-delà-du-bord-VA n'a aucune
+information directionnelle récoltable — comme le stacked-imbalance (#5 / continuation
+intraday), les deux sens du même signal perdent identiquement, à l'échelle swing aussi.
+Pas de DSR/CSCV (réservés au greenlight, non atteint). **La thèse level-edge — fade
+(étage 1) ET continuation (2b) — est définitivement morte ; le timeframe-swing, le move
+qui devait dissoudre le mur structurel, est épuisé dans les deux sens.**
+
 ## Conclusion
 
 Tous les leviers orderflow-natifs (sortie, features, cible, force, direction, timeframe, mécanique d'entrée, BE, régime HTF, tendance locale, découpage temporel, **régime de volatilité, mur d'exécution frais×cible×entrée**) sont épuisés. Le brut est ≈ 0 partout ; le net est négatif partout, **fee-bound**. Cohorte survivante du régime vol incluse, le signal n'a **pas** d'edge directionnel récoltable sur BTCUSDT spot, déc. 2025 – juin 2026. **Thèse gelée.**
 
 Le closer décisif n'est pas le mur de frais (contournable en théorie par une venue moins chère) mais l'**inversion de cellule** (#13) : la seule cellule de régime positive dépend du chemin d'entrée → sous-population sélectionnée par l'exécution, pas un edge ; un artefact ne devient pas réel moins cher. Et structurellement, l'**anti-corrélation** edge↔frais signifie qu'une venue moins chère ne **grignote** que le numérateur — elle ne dissout pas le mur.
 
-**Redeploy (classé par EV)** : (1) **timeframe supérieur / swing** — dissout le mur structurel (R écrase les frais), garde volume-profile + niveaux comme contexte ; (2) **rerun NQ-intraday** — seule cellule positive sur instrument **accessible** (NQ/ES via IBKR pour un résident FR ; gated par données payantes ~dizaines €/mois — **pas** un géo-block, contrairement aux futures crypto Binance), conditionnel à l'hypothèse que l'inversion de cellule est spécifique à la mauvaise microstructure BTC-spot (spreads larges, taker-out punitif) et se nettoie sur le carnet plus serré de NQ ; (3) **rebate-crypto** — mort. Tout redeploy s'entre comme une **hypothèse pré-spécifiée que le rerun confirme ou tue**, jamais de l'infra bâtie sur un espoir (« on a la machinerie, autant s'en servir » = version-hop).
+**Redeploy (classé par EV, mis à jour 2026-06-18)** : (1) ~~**timeframe supérieur / swing**~~ — **ÉPUISÉ DANS LES DEUX SENS** : le swing dissout bien le mur de *frais* (R écrase les frais), mais le niveau VP nu ne porte **aucun edge directionnel récoltable** — fade KILL (étage 1, mono-régime) ET continuation KILL (gate 2b, multi-régime 2021-2023, both-sides négatif dans les deux régimes, `t=−7.1`). Le mur de frais n'était pas le seul obstacle : il n'y a pas de signal en dessous. (2) **rerun NQ-intraday** — désormais tête de liste : seule cellule positive sur instrument **accessible** (NQ/ES via IBKR pour un résident FR ; gated par données payantes ~dizaines €/mois — **pas** un géo-block, contrairement aux futures crypto Binance), conditionnel à l'hypothèse que l'inversion de cellule est spécifique à la mauvaise microstructure BTC-spot (spreads larges, taker-out punitif) et se nettoie sur le carnet plus serré de NQ ; (3) **rebate-crypto** — mort ; (4) **gel total du projet** — défendable : trois familles (footprint intraday, fade swing, continuation swing) toutes no-edge sur BTC, la valeur restante est l'infra+méthode, pas une thèse vivante. Tout redeploy s'entre comme une **hypothèse pré-spécifiée que le rerun confirme ou tue**, jamais de l'infra bâtie sur un espoir (« on a la machinerie, autant s'en servir » = version-hop).
 
 **La valeur conservée** = l'infrastructure et la méthode (backtest 2-passes + labeling isolé + décomposition brut/net rigoureuse + **décomposition de frais analytique** + pré-enregistrement à **bornes instrument-spécifiques** + viz interactive + audit anti-overfit DSR/PBO/CSCV + séparation DOM/L2 + partition de régime IS/OOS-gardée), réutilisables pour tout futur pivot.
