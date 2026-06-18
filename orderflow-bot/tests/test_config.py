@@ -112,3 +112,9 @@ def test_data_format_defaults_to_trades():
 
 def test_data_format_klines_accepted():
     assert BotConfig(data_format="klines").data_format == "klines"
+
+
+def test_trigger_level_breakout_accepted():
+    from orderflow_bot.config import StrategyCfg
+    st = StrategyCfg(trigger="level_breakout", signal_mode="continuation")
+    assert st.trigger == "level_breakout"
