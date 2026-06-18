@@ -128,7 +128,8 @@ def _cont_engine() -> ConfluenceEngine:
     eng = ConfluenceEngine(min_rr=1.5, stop_buffer_ticks=10, tick_size=0.1,
                            mode="continuation")
     zones = build_zones(PREV, npocs=[], lvn_prices=[], margin_pct=0.002)
-    eng.update_day(zones, Bias.BOTH, day_high=PREV.high, day_low=PREV.low)
+    eng.update_day(zones, Bias.BOTH, day_high=PREV.high, day_low=PREV.low,
+                   struct_levels=[PREV.low, PREV.high])
     return eng
 
 

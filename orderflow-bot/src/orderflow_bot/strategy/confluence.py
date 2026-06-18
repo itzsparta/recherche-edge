@@ -89,6 +89,8 @@ class ConfluenceEngine:
         self.bias = Bias.BOTH
         self.day_high: float | None = None
         self.day_low: float | None = None
+        self.struct_levels: list[float] = []
+        self.va_width: float | None = None
 
     def _friction(self, entry: float) -> float:
         """Cout incompressible par unite : frais maker (entree limit) + taker
@@ -98,11 +100,26 @@ class ConfluenceEngine:
                 + self.fees.slippage_ticks * self.tick_size)
 
     def update_day(self, zones: list[Zone], bias: Bias,
-                   day_high: float | None = None, day_low: float | None = None) -> None:
+                   day_high: float | None = None, day_low: float | None = None,
+                   struct_levels: list[float] | None = None,
+                   va_width: float | None = None) -> None:
         self.zones = zones
         self.bias = bias
         self.day_high = day_high
         self.day_low = day_low
+        self.struct_levels = struct_levels or []
+        self.va_width = va_width
+
+    def _continuation_target(self, entry: float, side: int) -> float | None:
+        """Cible swing du breakout : niveau structurel le plus proche AU-DELA de
+        l'entree dans le sens du trade ; fallback = mesure de range (entry +
+        side*largeur_VA). None si aucun des deux -> pas de plan."""
+        beyond = [lv for lv in self.struct_levels if (lv - entry) * side > 0]
+        if beyond:
+            return min(beyond, key=lambda lv: (lv - entry) * side)
+        if self.va_width and self.va_width > 0:
+            return entry + side * self.va_width
+        return None
 
     def evaluate(self, trig: Trigger) -> OrderPlan | None:
         z = zone_at(self.zones, trig.price)
@@ -113,7 +130,7 @@ class ConfluenceEngine:
             # VAH casse en haut (long) ; nPOC/LVN selon le trigger. Cible =
             # extreme du range, stop = reclaim (formule stop identique au fade).
             eff_side = {"val": -1, "vah": 1}.get(z.kind, 0)
-            target = self.day_high if trig.side == 1 else self.day_low
+            target = self._continuation_target(trig.price, trig.side)
         else:
             eff_side = z.side
             target = z.target
