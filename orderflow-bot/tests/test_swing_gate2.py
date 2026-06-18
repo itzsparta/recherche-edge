@@ -56,7 +56,7 @@ def test_gate2_core_greenlight_when_both_sides_positive():
     fade = [_ct(2.0, i, side=1) for i in range(1, 8)] + [_ct(1.5, i, side=-1) for i in range(8, 15)]
     mirror = [_ct(-1.5, i, side=-1) for i in range(1, 15)]
     net = [_ct(1.6, i, side=1) for i in range(1, 8)] + [_ct(1.1, i, side=-1) for i in range(8, 15)]
-    v = gate2(fade, mirror, net, lambda ts: 1)
+    v = gate2(fade, mirror, net, lambda ts: 1, min_side_n=7)   # plancher satisfait (7/cote)
     assert v["brut_long"] > 0 and v["brut_short"] > 0 and v["t"] > 2
     assert v["core_greenlight"] is True
 
@@ -66,7 +66,7 @@ def test_gate2_kills_when_one_side_negative_drift():
     fade = [_ct(2.0, i, side=1) for i in range(1, 8)] + [_ct(-1.0, i, side=-1) for i in range(8, 15)]
     mirror = [_ct(0.0, i, side=1) for i in range(1, 15)]
     net = [_ct(1.6, i, side=1) for i in range(1, 8)] + [_ct(-1.2, i, side=-1) for i in range(8, 15)]
-    v = gate2(fade, mirror, net, lambda ts: 1)
+    v = gate2(fade, mirror, net, lambda ts: 1, min_side_n=7)   # plancher satisfait -> bs<0 tue
     assert v["brut_short"] < 0
     assert v["core_greenlight"] is False
 
@@ -80,7 +80,7 @@ def test_gate2_kill_attributable_to_short_side_alone():
     mirror = [_ct(0.0, i, side=1) for i in range(1, 25)]          # b_mirror=0 < brut
     net = ([_ct(0.8, i, side=1) for i in range(1, 21)]
            + [_ct(-0.05, i, side=-1) for i in range(21, 25)])     # net>0
-    v = gate2(fade, mirror, net, lambda ts: 1)
+    v = gate2(fade, mirror, net, lambda ts: 1, min_side_n=4)   # plancher satisfait (4 shorts) -> bs<0 SEUL tueur
     assert v["brut"] > 0          # agregat positif (le drift "deguise" l'edge)
     assert v["t"] > 2             # significatif
     assert v["net"] > 0           # survit aux frais
@@ -88,3 +88,23 @@ def test_gate2_kill_attributable_to_short_side_alone():
     assert v["brut_long"] > 0
     assert v["brut_short"] < 0    # SEUL conjonct qui echoue
     assert v["core_greenlight"] is False   # ... et il suffit a tuer
+
+
+def test_gate2_kill_attributable_to_thin_side_alone():
+    # Pendant du both-sides pour le nouveau conjonct (plancher n par cote).
+    # Tous les autres conjoncts PASSENT — y compris brut_long>0 ET brut_short>0 ;
+    # seul n_short < min_side_n doit tuer. 30 longs varies + 5 shorts gagnants :
+    # le cote short est POSITIF mais trop mince pour etre une preuve.
+    fade = ([_ct(2.0, i, side=1) for i in range(1, 21)]
+            + [_ct(1.0, i, side=1) for i in range(21, 31)]
+            + [_ct(1.5, i, side=-1) for i in range(31, 36)])
+    mirror = [_ct(-1.0, i, side=1) for i in range(1, 36)]        # b_mirror<0 < brut
+    net = ([_ct(1.6, i, side=1) for i in range(1, 21)]
+           + [_ct(0.8, i, side=1) for i in range(21, 31)]
+           + [_ct(1.2, i, side=-1) for i in range(31, 36)])      # net>0
+    v = gate2(fade, mirror, net, lambda ts: 1)                   # min_side_n=30 par defaut
+    assert v["brut_long"] > 0 and v["brut_short"] > 0            # both-sides POSITIF
+    assert v["t"] > 2 and v["net"] > 0 and v["brut"] > v["brut_mirror"]
+    assert v["n_long"] == 30 and v["n_short"] == 5
+    assert v["n_short"] < v["min_side_n"]                        # SEUL conjonct qui echoue
+    assert v["core_greenlight"] is False                        # ... et il suffit a tuer

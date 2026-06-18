@@ -65,9 +65,9 @@ def main() -> int:
     def ticks():
         return read_klines_as_ticks(cfg.kline_data_dir, cfg.symbol)
 
-    brut_l = simulate_isolated(cfg0, plans, ticks(), eod_flat=False)
-    mirror = simulate_isolated(cfg0, [mirror_plan(p) for p in plans], ticks(), eod_flat=False)
-    net_l = simulate_isolated(cfg, plans, ticks(), eod_flat=False)
+    brut_l = simulate_isolated(cfg0, plans, ticks(), eod_flat=cfg.eod_flat)
+    mirror = simulate_isolated(cfg0, [mirror_plan(p) for p in plans], ticks(), eod_flat=cfg.eod_flat)
+    net_l = simulate_isolated(cfg, plans, ticks(), eod_flat=cfg.eod_flat)
 
     problems = (zone_violations(levels)
                 + plan_violations(plans, cfg.risk.min_rr)

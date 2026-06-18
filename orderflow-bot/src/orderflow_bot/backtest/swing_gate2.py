@@ -82,19 +82,32 @@ def gate2(
     mirror: list[ClosedTrade],
     net_labels: list[ClosedTrade],
     regime_of_ts: Callable[[int], int],
+    min_side_n: int = 30,
 ) -> dict:
     """Noyau kill-fast du gate 2b. core_greenlight = brut>0 ET t>2 ET
-    brut_long>0 ET brut_short>0 ET net>0 ET brut>brut_miroir. DSR/CSCV
-    (full-history) ajoutes en aval par l'orchestrateur si le noyau passe."""
+    brut_long>0 ET brut_short>0 ET net>0 ET brut>brut_miroir ET au moins
+    min_side_n trades realises de CHAQUE cote. Le plancher par cote ferme le
+    greenlight vacant : brut_short>0 sur une poignee de trades est du bruit, pas
+    la preuve d'un edge short — la regle both-sides n'a de sens que si chaque cote
+    porte une vraie masse de preuves. 30 ~ seuil CLT : large sur une slice
+    multi-annees (ou un trigger symetrique tire des centaines de fois par cote),
+    ne mord que le degenere. DSR/CSCV (full-history) ajoutes en aval par
+    l'orchestrateur si le noyau passe."""
     real = _realized(labels)               # une seule passe ; n = denominateur du brut
+    n_long = sum(1 for c in real if c.plan.side == 1)
+    n_short = sum(1 for c in real if c.plan.side == -1)
     b = brut(labels)                       # frais=0
     bl, bs = brut_by_side(labels)
     t = t_stat(labels)
     b_mirror = brut(mirror)
     net = brut(net_labels)                 # MEME jeu relabele aux frais reels -> R net moyen
-    core = bool(b > 0 and t > 2 and bl > 0 and bs > 0 and net > 0 and b > b_mirror)
+    core = bool(b > 0 and t > 2 and bl > 0 and bs > 0 and net > 0 and b > b_mirror
+                and n_long >= min_side_n and n_short >= min_side_n)
     return {
         "n": len(real),
+        "n_long": n_long,
+        "n_short": n_short,
+        "min_side_n": min_side_n,
         "brut": round(b, 4),
         "t": round(t, 2),
         "brut_long": round(bl, 4),

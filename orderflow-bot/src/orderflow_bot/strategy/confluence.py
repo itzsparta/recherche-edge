@@ -13,7 +13,7 @@ from orderflow_bot.strategy.zones import Zone, zone_at
 class Trigger:
     ts: int
     side: int
-    kind: str     # absorption | cvd_divergence | stacked_imbalance
+    kind: str     # absorption | cvd_divergence | stacked_imbalance | level_rejection | level_breakout
     price: float
     features: dict = field(default_factory=dict)   # force quantitative -> meta du plan
 

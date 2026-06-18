@@ -148,6 +148,12 @@ toute lecture d'edge — sanity du nouveau trigger + cible. Violation ⇒ bug, p
 2. **`brut_long > 0` ∧ `brut_short > 0`** — *contrôle de drift central* : un edge qui
    gagne long ET short ne peut pas vivre du drift (BTC-histoire est net haussier → des
    shorts profitables prouvent un edge de niveau qui surmonte le vent contraire) ;
+   **plancher par côté** : ≥ `min_side_n` trades réalisés de CHAQUE côté (défaut 30,
+   seuil CLT — large sur multi-années, ne mord que le dégénéré). `brut_short > 0` sur
+   une poignée de trades est du bruit, pas une preuve d'edge short ; la règle both-sides
+   n'est évidentiaire que si chaque côté porte une vraie masse. *Durcissement pré-run
+   (revue finale 2b) : ferme le greenlight vacant — serrage dans le sens difficile, donc
+   non-overfit (aucun greenlight observé au moment du serrage).*
 3. `brut > brut_miroir` — info directionnelle au-delà du pile-ou-face (miroir =
    `mirror_plan`, mêmes candidats sens inversé, géométrie d'exit reflétée, levier #5) ;
 4. `net > 0` aux frais BTC-spot **atteignables** (plancher maker ≈ +0.01 %, taker
