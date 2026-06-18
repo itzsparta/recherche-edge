@@ -27,15 +27,15 @@ from orderflow_bot.features.absorption import AbsorptionDetector
 from orderflow_bot.features.aggregator import BarAggregator
 from orderflow_bot.features.cvd import CvdTracker
 from orderflow_bot.features.volume_profile import VolumeProfile
-from orderflow_bot.models import Cancelled, ClosedTrade, OrderPlan, Trade
+from orderflow_bot.models import Cancelled, ClosedTrade, FootprintBar, OrderPlan, Trade
 from orderflow_bot.risk.manager import RiskManager
-from orderflow_bot.strategy.confluence import ConfluenceEngine, TriggerEngine
+from orderflow_bot.strategy.confluence import ConfluenceEngine, Trigger, TriggerEngine
 from orderflow_bot.strategy.context import (
     DailyLevels, levels_from_profile, market_bias, naked_pocs,
 )
 from orderflow_bot.strategy.level_breakout import level_breakout_triggers
 from orderflow_bot.strategy.level_rejection import level_rejection_triggers
-from orderflow_bot.strategy.zones import build_zones
+from orderflow_bot.strategy.zones import Zone, build_zones
 
 log = logging.getLogger(__name__)
 
@@ -65,7 +65,8 @@ class PlanGenerator:
             mode=st.signal_mode,
         )
         # triggers niveau-based (barre resamplee), vs triggers footprint (tick/bar)
-        self._level_fn = {
+        # None = chemin footprint (triggers tick+bar). Callable = chemin niveau-based (bar uniquement).
+        self._level_fn: Callable[[FootprintBar, list[Zone]], list[Trigger]] | None = {
             "level_rejection": level_rejection_triggers,
             "level_breakout": level_breakout_triggers,
         }.get(st.trigger)
