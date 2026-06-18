@@ -50,7 +50,7 @@ class StrategyCfg(StrictModel):
     entry_confirm_frac: float = 0.0      # stop : confirme apres frac*risk0 dans le sens du trade
     # footprint : declencheurs intraday (absorption/cvd/imbalances empilees).
     # level_rejection : declencheur swing (rejet de zone sur barre resamplee).
-    trigger: Literal["footprint", "level_rejection"] = "footprint"
+    trigger: Literal["footprint", "level_rejection", "level_breakout"] = "footprint"
     absorption: AbsorptionCfg = AbsorptionCfg()
     imbalance: ImbalanceCfg = ImbalanceCfg()
 

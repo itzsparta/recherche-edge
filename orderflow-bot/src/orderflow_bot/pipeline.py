@@ -33,6 +33,7 @@ from orderflow_bot.strategy.confluence import ConfluenceEngine, TriggerEngine
 from orderflow_bot.strategy.context import (
     DailyLevels, levels_from_profile, market_bias, naked_pocs,
 )
+from orderflow_bot.strategy.level_breakout import level_breakout_triggers
 from orderflow_bot.strategy.level_rejection import level_rejection_triggers
 from orderflow_bot.strategy.zones import build_zones
 
@@ -63,7 +64,11 @@ class PlanGenerator:
             min_stop_friction_mult=cfg.risk.min_stop_friction_mult,
             mode=st.signal_mode,
         )
-        self._level_rejection = st.trigger == "level_rejection"
+        # triggers niveau-based (barre resamplee), vs triggers footprint (tick/bar)
+        self._level_fn = {
+            "level_rejection": level_rejection_triggers,
+            "level_breakout": level_breakout_triggers,
+        }.get(st.trigger)
         # bins des profils decouples des footprint bars : zones larges
         # sans degrader la detection d'imbalances par niveau
         self.profile_bin = cfg.profile_bin_size or cfg.bin_size
@@ -82,11 +87,11 @@ class PlanGenerator:
         trigs = []
         bar = self.aggregator.on_trade(t)
         if bar is not None:
-            if self._level_rejection:
-                trigs += level_rejection_triggers(bar, self.confluence.zones)
+            if self._level_fn is not None:
+                trigs += self._level_fn(bar, self.confluence.zones)
             else:
                 trigs += self.triggers.on_bar(bar)
-        if not self._level_rejection:
+        if self._level_fn is None:
             trigs += self.triggers.on_trade(t)
         plans = []
         for trig in trigs:
@@ -122,10 +127,13 @@ class PlanGenerator:
             composite.merge(p)
         lvn_prices = [price_of(b, self.profile_bin) for b in composite.lvns()]
         prev = self._levels[-1]
-        zones = build_zones(prev, naked_pocs(self._levels), lvn_prices,
-                            st.zone_margin_pct)
+        npocs = naked_pocs(self._levels)
+        zones = build_zones(prev, npocs, lvn_prices, st.zone_margin_pct)
+        # niveaux structurels candidats pour la cible continuation (ignores en reversal)
+        struct = sorted({*npocs, prev.vah, prev.val, prev.high, prev.low})
         self.confluence.update_day(zones, market_bias(self._levels),
-                                   day_high=prev.high, day_low=prev.low)
+                                   day_high=prev.high, day_low=prev.low,
+                                   struct_levels=struct, va_width=prev.vah - prev.val)
         log.info("nouveau jour: bias=%s zones=%d", self.confluence.bias.value, len(zones))
 
 
