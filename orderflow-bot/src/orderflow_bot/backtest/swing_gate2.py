@@ -66,6 +66,7 @@ def regime_split(
         grp = [c for c in real if regime_of_ts(c.opened_ts) == reg]
         if not grp:
             continue
+        # grp est deja realise ; brut_by_side re-filtre (idempotent, sans effet ici)
         bl, bs = brut_by_side(grp)
         out[reg] = {
             "n": len(grp),
@@ -85,6 +86,7 @@ def gate2(
     """Noyau kill-fast du gate 2b. core_greenlight = brut>0 ET t>2 ET
     brut_long>0 ET brut_short>0 ET net>0 ET brut>brut_miroir. DSR/CSCV
     (full-history) ajoutes en aval par l'orchestrateur si le noyau passe."""
+    real = _realized(labels)               # une seule passe ; n = denominateur du brut
     b = brut(labels)                       # frais=0
     bl, bs = brut_by_side(labels)
     t = t_stat(labels)
@@ -92,7 +94,7 @@ def gate2(
     net = brut(net_labels)                 # MEME jeu relabele aux frais reels -> R net moyen
     core = bool(b > 0 and t > 2 and bl > 0 and bs > 0 and net > 0 and b > b_mirror)
     return {
-        "n": len(_realized(labels)),
+        "n": len(real),
         "brut": round(b, 4),
         "t": round(t, 2),
         "brut_long": round(bl, 4),
