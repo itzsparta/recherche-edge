@@ -69,3 +69,22 @@ def test_gate2_kills_when_one_side_negative_drift():
     v = gate2(fade, mirror, net, lambda ts: 1)
     assert v["brut_short"] < 0
     assert v["core_greenlight"] is False
+
+
+def test_gate2_kill_attributable_to_short_side_alone():
+    # Tous les autres conjoncts PASSENT (brut>0, t>2, net>0, brut>miroir) ;
+    # seul brut_short<0 doit faire basculer core_greenlight a False.
+    # 20 longs +1.0, 4 shorts -0.1 : brut>0, t tres significatif, mais bs<0.
+    fade = ([_ct(1.0, i, side=1) for i in range(1, 21)]
+            + [_ct(-0.1, i, side=-1) for i in range(21, 25)])
+    mirror = [_ct(0.0, i, side=1) for i in range(1, 25)]          # b_mirror=0 < brut
+    net = ([_ct(0.8, i, side=1) for i in range(1, 21)]
+           + [_ct(-0.05, i, side=-1) for i in range(21, 25)])     # net>0
+    v = gate2(fade, mirror, net, lambda ts: 1)
+    assert v["brut"] > 0          # agregat positif (le drift "deguise" l'edge)
+    assert v["t"] > 2             # significatif
+    assert v["net"] > 0           # survit aux frais
+    assert v["brut"] > v["brut_mirror"]
+    assert v["brut_long"] > 0
+    assert v["brut_short"] < 0    # SEUL conjonct qui echoue
+    assert v["core_greenlight"] is False   # ... et il suffit a tuer
