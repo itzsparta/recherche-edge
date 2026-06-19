@@ -1,0 +1,30 @@
+{
+    "_note": "Config VERDICT (dataset Dune events). Filtres USD RELACHES : les colonnes price_usd/bucket_vol/fdv issues du SQL events sont des stand-ins SOL (scale-free), pas de vrais USD -> filtrer dessus n'aurait aucun sens. On teste donc la question coeur : sur TOUTE la distribution reelle de launches pump.fun (rugs inclus, multi-regime), le snipe SL/TP a-t-il une EV>0 APRES le stack de couts (slippage 15% + AMM + priority + Jito) ? Cap de concurrence leve (max_open enorme) car le verdict mesure l'EV PAR TRADE, pas une contrainte de portefeuille. Keyword off, rug off (pas d'historique).",
+    "targeting": { "keywords": [] },
+    "filters": {
+        "min_liquidity_usd": 0,
+        "max_liquidity_usd": 1e18,
+        "min_ratio_liq_fdv": 0,
+        "max_ratio_liq_fdv": 1e18,
+        "min_volume_24h": 0,
+        "min_fdv_usd": 0,
+        "max_fdv_usd": 1e18
+    },
+    "security": { "check_rug": false },
+    "execution": {
+        "amm_fee_pct": 0.0025,
+        "slippage_pct": 0.15,
+        "priority_fee_sol": 0.0005,
+        "jito_tip_sol": 0.001
+    },
+    "trading": {
+        "buy_amount_sol": 0.5,
+        "stop_loss_percent": -40,
+        "max_hold_seconds": 600,
+        "max_open_positions": 100000000,
+        "take_profit_steps": [
+            {"percent": 100, "sell_ratio": 0.5},
+            {"percent": 300, "sell_ratio": 0.5}
+        ]
+    }
+}

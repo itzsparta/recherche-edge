@@ -1,0 +1,34 @@
+{
+    "_note": "Config de BACKTEST : memes filtres venue/FDV que strategy.json, mais filtre NOM desactive (keywords vide) et check_rug off (pas de rug-score historique). Sert a mesurer la MECANIQUE (filtres marche + SL/TP/hold) isolee de la sous-these mot-cle.",
+    "targeting": {
+        "keywords": []
+    },
+    "filters": {
+        "min_liquidity_usd": 2000,
+        "max_liquidity_usd": 1000000,
+        "min_ratio_liq_fdv": 0,
+        "max_ratio_liq_fdv": 100000,
+        "min_volume_24h": 500,
+        "min_fdv_usd": 5000,
+        "max_fdv_usd": 60000
+    },
+    "security": {
+        "check_rug": false
+    },
+    "execution": {
+        "amm_fee_pct": 0.0025,
+        "slippage_pct": 0.15,
+        "priority_fee_sol": 0.0005,
+        "jito_tip_sol": 0.001
+    },
+    "trading": {
+        "buy_amount_sol": 0.5,
+        "stop_loss_percent": -40,
+        "max_hold_seconds": 600,
+        "max_open_positions": 10,
+        "take_profit_steps": [
+            {"percent": 100, "sell_ratio": 0.5},
+            {"percent": 300, "sell_ratio": 0.5}
+        ]
+    }
+}
