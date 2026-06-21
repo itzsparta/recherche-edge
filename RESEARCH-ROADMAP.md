@@ -100,7 +100,16 @@ slippage. → Tester si un résidu net survit *après* le front-running connu.
 **Pré-test cheap.** Event-study sur N unlocks / rebals historiques. Données :
 unlocks via Dune/token vesting trackers ; rebals indices via dates publiques.
 
-**Statut : EN ATTENTE.**
+**Statut : KILL unlocks (2026-06-21)** — sous-piste **token unlocks** attaquée
+(`forced-flows/`, 24 804 cliff events DefiLlama, 10 642 exploitables / 78 tokens, prix
+Binance, tout gratuit). Shorter l'unlock = **≈ zéro** market-adjusted (post +1,+10 :
+−0.22 %/token, t=−0.16). **Priced-in net** : toute la dérive est AVANT la date (pré
+[−10,−1] +1.28 %), rien après — dates publiques anticipées. Dose-réponse non-monotone,
+drop-top-5 t=−1.21, DSR 0.53 : (A) et (B) FAIL. Caveat pré-enregistré : univers
+Binance-listed = large caps arbitrés ; small-caps (capacité) non testés faute de prix
+gratuit, **mais** non-shortables de toute façon → thèse faible aux deux bouts. **Le risque
+priced-in frappe aussi rebal/roll** (dates connues) → pondérer avant d'attaquer ces
+sous-pistes. Détail : [`forced-flows/docs/FINDINGS-unlocks.md`](forced-flows/docs/FINDINGS-unlocks.md).
 
 ---
 
