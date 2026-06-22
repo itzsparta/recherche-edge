@@ -1,0 +1,3 @@
+# Données régénérables via Dune (gros fichiers, hors git)
+data/dune_pumpfun.csv
+data/episodes.dune.json
