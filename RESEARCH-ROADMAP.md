@@ -208,7 +208,19 @@ catégorie est restée non testée : l'edge **non-prédictif et non-arbitrage** 
 d'assurance**. Ouvert dans [`EDGE-PISTES-V2.md`](EDGE-PISTES-V2.md) (pistes 4 VRP, 5 calendrier
 FOMC/overnight, 6 carry, 7 relative-value transverse).
 
-**Piste 4 — VRP : DOWNGRADE (6e kill).** Premium réel (t=4.03, DSR 0.977) mais = compensation
-d'un tail catastrophique (SVXY −95 % de drawdown, −83 % en un jour). Le pipeline a attrapé son
-propre **faux GO** (Sharpe 1.86 = mirage aveugle au skew ; échantillon mensuel lissant
-Volmageddon). Détail : [`vol-risk-premium/docs/FINDINGS.md`](vol-risk-premium/docs/FINDINGS.md).
+**Piste 4 — VRP : DOWNGRADE.** Premium réel (t=4.03, DSR 0.977) mais = compensation d'un tail
+catastrophique (SVXY −95 % de drawdown, −83 % en un jour). Le pipeline a attrapé son propre **faux
+GO** (Sharpe 1.86 = mirage aveugle au skew). [`vol-risk-premium/docs/FINDINGS.md`](vol-risk-premium/docs/FINDINGS.md).
+
+**Piste 5 — calendrier : DOWNGRADE + KILL.** 5a overnight = prime réelle (+10-14 %/an) mangée par
+le turnover quotidien (DOWNGRADE). 5b pré-FOMC = drift réel 1994-2014 mais **priced-in** post-2015
+(+2.3 bps, t=0.20, −93 %). [`calendar-premium/docs/`](calendar-premium/docs/).
+
+**Piste 6 — carry crypto-funding : GO (premier non-kill).** Net +10.5 %/an, **market-neutral**
+(corr +0.09), positif dans chaque régime dont le bear 2022. Survit car **structurel** (pas un edge
+à info/prix public). Caveats : compression (forward ~2-5 %), tail liquidation/exchange = Phase-2.
+[`carry/docs/FINDINGS-funding.md`](carry/docs/FINDINGS-funding.md).
+
+**Le bilan, V1+V2 (7 pistes).** Tout edge à **information/prix public** est mort (trend, unlocks,
+niche, VRP, overnight, pré-FOMC) ; la **seule survivante** est un **carry structurel market-neutral**.
+Confirmation positive de la thèse *edge structurel ≠ prédictif*.
