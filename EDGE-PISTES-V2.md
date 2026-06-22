@@ -135,7 +135,13 @@ de levier (crypto). Différent *kind* de tout ce qui précède : **porter, pas t
 **Tueur probable.** Yield **compressé** (cash-and-carry crypto arbitré, ~basis fin), crowdé,
 risque exchange (cf. niche). Capacité $ réelle à mesurer avant d'écrire une ligne.
 
-**Statut : non démarré.**
+**Statut : GO avec caveats (2026-06-23) — PREMIER non-kill du programme.** Carry funding
+BTCUSDT/ETHUSDT (2019-2026, 7433 pts 8 h) **réel** (t mensuel 6.88), **market-neutral** (corr au
+BTC +0.09), **positif dans chaque régime** dont le bear 2022 (+3.0 %) — net +10.5 %/an > hurdle,
+drop-bull +7.3 %. Survit car **structurel** (payé pour fournir le short aux longs levés), pas un
+edge à info/prix public. Caveats = portes Phase-2 : **compression** (gross 2021 +30.6 % → 2026
++1.0 %, forward ≈ 2-5 %), **tail non modélisé** (liquidation short perp, risque exchange). Détail :
+[`carry/docs/FINDINGS-funding.md`](carry/docs/FINDINGS-funding.md).
 
 ---
 
@@ -162,9 +168,17 @@ Piste 4 d'abord : dimension entièrement neuve + prime la mieux documentée qui 
 le verdict probable (DOWNGRADE « prime réelle mais non-portable ») est un **6e kill propre,
 pré-enregistré** — le vrai capital du programme reste le pipeline, pas le P&L.
 
-> **Piste 4 rendue (2026-06-22) : DOWNGRADE — exactement le verdict anticipé.** Le pipeline a
-> converti un Sharpe 1.86 (que la plupart auraient tradé) en kill motivé, en attrapant son propre
-> faux GO. Prochaine : **piste 5 (calendrier)**, kill le plus cheap.
+> **Bilan V2 (2026-06-23) — 4 pistes rendues, 1 survivante.**
+> - Piste 4 VRP : **DOWNGRADE** (prime réelle, tail SVXY −95 % ; faux GO du runner attrapé).
+> - Piste 5a overnight : **DOWNGRADE** (prime réelle, mangée par le turnover quotidien).
+> - Piste 5b pré-FOMC : **KILL priced-in** (drift réel 1994-2014, mort à la publication).
+> - Piste 6 carry : **GO avec caveats — premier non-kill**.
+>
+> **Le motif tranche net.** Les 5 pistes mortes (V1 + VRP + calendrier) chassaient toutes un edge
+> à **information ou prix public** → toutes mangées. La seule survivante est un **carry structurel
+> market-neutral** (transfert de risque, pas un pari d'info). C'est la **confirmation positive**
+> de la thèse : l'edge *structurel* ≠ *prédictif* est le seul récoltable par un solo — et même
+> lui compresse. Reste piste 7 (relative-value, transverse) + la Phase-2 du carry.
 
 ## Protocole partagé
 
