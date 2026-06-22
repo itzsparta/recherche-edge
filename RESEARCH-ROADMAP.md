@@ -130,7 +130,18 @@ exchange (le vrai tueur, cf. FTX), et surtout **capital petit ⇒ $ minuscules m
 **Pré-test cheap.** Mesurer les spreads cross-exchange réels nets de frais/retrait sur
 un échantillon de petites paires ; estimer la capacité $ avant d'écrire une ligne.
 
-**Statut : EN ATTENTE.**
+**Statut : KILL — spread fantôme (2026-06-22)** — scan cross-exchange 3 venues gratuites
+(Binance/MEXC/Gate, `capacity-niche/`, 25 snapshots × 60 s, régime minutes solo-capturable,
+modèle inventaire pré-positionné = meilleur cas). Le spread **existe et persiste** (79 paires
+net>0 sur ≥60 % des snaps, t cross-paires=+7.07 → **pas du flicker**, tueur « quote périmée »
+réfuté) **mais** : (A) **dose-réponse plate/inversée** (basse-liq +0.30 % vs haute-liq +0.41 %)
+→ **pas** de signature structurelle « trop petit pour un fonds » ; (B) **capacité fantôme** —
+profondeur réelle marchée (`/depth`) = **1 253 $ agrégés** (borne haute), 5 paires seulement, et
+les gros spreads (MEMEFI +2.52 %, EDGEN +2.30 %) ont **0-1 $** derrière le top-of-book. Le spread
+vit au sommet d'un carnet vide. Sanity mega-caps (BTC −0.19 %) valide le pipe. Aller plus obscur =
+même ~1 k$ payé en risque opérationnel (retraits haltés, exit-scams). La **capacité — dernière
+arme structurelle d'un solo — est ici un mirage**. Détail :
+[`capacity-niche/docs/FINDINGS-niche.md`](capacity-niche/docs/FINDINGS-niche.md).
 
 ---
 
@@ -152,11 +163,52 @@ Repris de `orderflow-bot/docs/ROADMAP.md` — la partie réutilisable telle quel
 6. **Kill franc.** Une espérance ≤ 0 ne se sauve par aucun sizing (Kelly d'un edge
    négatif = 0). On gèle et on documente, on ne version-hop pas sur un espoir.
 
-## Note méta — quel est le but ?
+## Bilan (2026-06-22) — 3/3 pistes structurelles traitées
 
-La reco dépend de l'objectif réel, à clarifier avant d'engager du temps :
+Le reframe edge-structurel ≠ prédictif a produit **3 verdicts propres, 3 raisons différentes** :
 
-- **Cash maintenant** → Piste 1 (primes de risque). Accepter lent / borné / pas sexy.
-- **Apprendre / portfolio alternance** → le *pipeline de recherche EST le produit*.
-  La méthodo anti-overfit vaut plus sur un CV ingénieur que n'importe quel P&L.
-- **Battre le marché pour le frisson** → mauvais ratio temps/EV pour un solo. À éviter.
+| Piste | Arme structurelle | Verdict | Raison |
+|---|---|---|---|
+| 1 — primes de risque | aucune (premium réel) | KILL standalone | réel mais trop faible (t=1.87) ; sleeve +0.12 seulement |
+| 2 — flux forcés | non-contraint vs forcé | KILL | **priced-in** : dérive avant la date publique, ≈0 après |
+| 3 — niche capacité | capacité (taille fonds) | KILL | spread **fantôme** : persistant mais ~1 $ de profondeur |
+
+**Le motif unifié.** Tout edge à **déclencheur ou prix public** est mangé : signal trend
+(piste 1, premium compressé), date d'unlock (piste 2, priced-in), quote cross-venue (piste 3,
+arbitrée jusqu'au top-of-book vide). Les 3 confirment la même loi : **là où l'info/le prix est
+public, un solo sans latence/infra n'a pas d'edge récoltable** — y compris quand l'avantage
+théorique est la capacité (le spread existe, mais il n'y a rien derrière à prendre).
+
+**Ce qui reste vivant** : un seul deliverable trading = le **sleeve trend +0.12 Sharpe** (piste 1,
+robuste 2 univers) — modeste, pas un edge. Le vrai capital conservé = **le pipeline lui-même**
+(pré-enregistrement, DSR/PBO, multi-régime, event-study, scan cross-exchange) : 5+ études de kill
+honnêtes et reproductibles.
+
+**Pistes non-explorées** (même risque que les mortes, EV faible *a priori*) : sous-mécanismes
+piste 2 (rebal/roll = dates publiques = priced-in), venues plus obscures piste 3 (= risque
+opérationnel pour le même ~1 k$). Aucune ne change la conclusion sans nouvelle arme structurelle.
+
+## Note méta — quel est le but ? (devenue la décision opérante)
+
+Les 3 pistes mortes **répondent empiriquement** à « un solo retail peut-il récolter un edge ? » :
+pas sur les terrains accessibles, pas avec une info publique. La reco dépend maintenant de
+l'objectif réel :
+
+- **Cash maintenant** → il n'y en a pas ici. Le moins mauvais = sleeve trend (+0.12, lent, borné),
+  pas un edge autonome.
+- **Apprendre / portfolio alternance** → le *pipeline de recherche EST le produit*, et il est
+  **fini et solide**. La méthodo anti-overfit (5 kills pré-enregistrés, data engineering propre)
+  vaut plus sur un CV ingénieur que n'importe quel P&L. **C'est le deliverable à packager.**
+- **Battre le marché pour le frisson** → réfuté par 5 kills. Mauvais ratio temps/EV pour un solo.
+
+## Suite — V2 (2026-06-22) : l'axe non-testé
+
+Les 3 pistes V1 cherchaient toutes le **même type d'edge** (deviner une direction). Une
+catégorie est restée non testée : l'edge **non-prédictif et non-arbitrage** = la **prime
+d'assurance**. Ouvert dans [`EDGE-PISTES-V2.md`](EDGE-PISTES-V2.md) (pistes 4 VRP, 5 calendrier
+FOMC/overnight, 6 carry, 7 relative-value transverse).
+
+**Piste 4 — VRP : DOWNGRADE (6e kill).** Premium réel (t=4.03, DSR 0.977) mais = compensation
+d'un tail catastrophique (SVXY −95 % de drawdown, −83 % en un jour). Le pipeline a attrapé son
+propre **faux GO** (Sharpe 1.86 = mirage aveugle au skew ; échantillon mensuel lissant
+Volmageddon). Détail : [`vol-risk-premium/docs/FINDINGS.md`](vol-risk-premium/docs/FINDINGS.md).
