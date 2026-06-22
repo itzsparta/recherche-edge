@@ -103,7 +103,12 @@ quotidiens). → Tester si un résidu **net** survit *post-publication* et *post
 **Pré-test cheap.** Event-study rendement [-1j, +1j] autour des dates FOMC ; décompo
 overnight/intraday sur SPY. Données : SPY/^GSPC OHLC + dates FOMC (Fed publique).
 
-**Statut : non démarré.**
+**Statut : 5a overnight = DOWNGRADE (2026-06-22).** Effet **réel et robuste** (overnight porte
++10 à +14 %/an, t>5, sur SPY/QQQ/IWM ; intraday ~nul) mais **non capturable net** : 252 cycles/an
+× 5 bps = 12.6 %/an de coût > la prime → net −2.5 %, Sharpe −0.23 vs SPY buy-hold 0.65. Brut, le
+Sharpe overnight (0.95) bat le buy-hold — c'est le coût du turnover quotidien qui tue. Verdict
+cost-driven (breakeven ≈1.3 bps, bord optimiste retail). **5b pré-FOMC = à venir** (nécessite le
+calendrier FOMC). Détail : [`calendar-premium/docs/FINDINGS-overnight.md`](calendar-premium/docs/FINDINGS-overnight.md).
 
 ---
 
