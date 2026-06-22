@@ -107,8 +107,17 @@ overnight/intraday sur SPY. Données : SPY/^GSPC OHLC + dates FOMC (Fed publique
 +10 à +14 %/an, t>5, sur SPY/QQQ/IWM ; intraday ~nul) mais **non capturable net** : 252 cycles/an
 × 5 bps = 12.6 %/an de coût > la prime → net −2.5 %, Sharpe −0.23 vs SPY buy-hold 0.65. Brut, le
 Sharpe overnight (0.95) bat le buy-hold — c'est le coût du turnover quotidien qui tue. Verdict
-cost-driven (breakeven ≈1.3 bps, bord optimiste retail). **5b pré-FOMC = à venir** (nécessite le
-calendrier FOMC). Détail : [`calendar-premium/docs/FINDINGS-overnight.md`](calendar-premium/docs/FINDINGS-overnight.md).
+cost-driven (breakeven ≈1.3 bps, bord optimiste retail). Détail : [`calendar-premium/docs/FINDINGS-overnight.md`](calendar-premium/docs/FINDINGS-overnight.md).
+
+**5b pré-FOMC = KILL priced-in (2026-06-22).** Drift FOMC **réel et fort 1994-2014** (+31 bps/event
+sur le jour du statement, t=3.34) mais **effondré à la publication** Lucca-Moench : 2015→ = +2.3 bps,
+t=0.20 (magnitude −93 %, pas un souci de puissance). Coût non en cause (8 events/an) — c'est la
+**diffusion de l'info** qui tue, comme les unlocks (piste 2). McLean-Pontiff en direct. Calendrier
+FOMC 262 annonces (CSV 1994-2018 + Fed vérifiée 2019-2026). Détail :
+[`calendar-premium/docs/FINDINGS-fomc.md`](calendar-premium/docs/FINDINGS-fomc.md).
+
+**Bilan piste 5** : prime de calendrier morte aux deux bouts — overnight réelle mais mangée par le
+turnover (DOWNGRADE), pré-FOMC réelle mais priced-in post-publication (KILL).
 
 ---
 

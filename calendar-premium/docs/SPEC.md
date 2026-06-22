@@ -49,18 +49,45 @@ Deux conditions requises :
   (252 cycles/an) → pas worth pour un solo. **Verdict attendu.**
 - **¬(A) ⇒ KILL** : effet absent/non robuste cross-instrument.
 
-## 5b — Pré-FOMC drift (À VENIR)
+## 5b — Pré-FOMC drift (PRÉ-ENREGISTRÉ, run à venir)
 
 ### Hypothèse
-Rendement actions anormalement élevé dans les ~24 h **avant** les annonces FOMC programmées
-(Lucca-Moench 2015, J. Finance) — prime de résolution d'incertitude.
+Rendement actions anormalement élevé autour des annonces FOMC **programmées** (Lucca-Moench
+2015, J. Finance : le gros de l'equity premium se réalise dans les ~24 h avant le statement) —
+prime de résolution d'incertitude. Deux conditions :
+1. le drift **existe** sur l'historique (rendement FOMC >> non-FOMC), ET
+2. il **persiste après publication** (2015→) — sinon il est **priced-in/érodé** (tueur du
+   programme, cf. unlocks) et non tradable.
 
-### Plan (pré-spécifié)
-- Event-study du rendement SPY sur la fenêtre [annonce−1, annonce] vs baseline non-FOMC.
-- **Test du tueur priced-in** : l'effet **persiste-t-il post-publication (2015→)** ou s'est-il
-  érodé/déplacé (comme les unlocks) ? Net de coûts.
-- **Bloquant** : nécessite le calendrier des annonces FOMC programmées (≈8/an depuis 1994),
-  à récupérer (Fed). Spec détaillée + gates écrits **avant** le run, comme 5a.
+### Univers & données (FIXE)
+- **SPY** close-to-close. Calendrier des annonces FOMC programmées :
+  - 1994-2018 : CSV public FOMCscrape (GitHub, urllib), colonne `End` = jour du statement.
+  - 2019-2026 : dates vérifiées sur federalreserve.gov (réunions programmées uniquement).
+  - **Urgences intermeeting exclues** (flag CSV incomplet → blocklist 1998-10-15, 2001×3,
+    2008×2, etc. ; 2020 mars préempté par l'urgence du 15 → exclu). Premier event : fév 1994.
+- Échantillon ~250 events, multi-régime. Post-2015 ~90 events (data propre).
+
+### Fenêtres (FIXE — primaire + diagnostics)
+- **Primaire : `announce_day` = close[d−1] → close[d]** (jour du statement).
+- Diagnostics : `day_before` = close[d−2]→close[d−1] ; `window2` = close[d−2]→close[d].
+- Caveat pré-enregistré : la donnée daily **ne peut pas** couper à 14 h (heure du statement) ;
+  `announce_day` mêle drift pré-annonce ET réaction post. C'est la limite assumée du test gratuit.
+
+### Métriques + critères PRÉ-ENREGISTRÉS
+**(A) le drift existe — requis**
+- Excès = `mean(ret FOMC announce_day) − mean(ret non-FOMC)` **> 0**, t-stat (Welch two-sample)
+  **> 2** sur l'échantillon complet.
+
+**(B) encore tradable post-publication — requis**
+- L'excès reste **> 0 et t > 2** sur le sous-échantillon **2015→** (data propre).
+- Coût négligeable ici (≈8 events/an, ~1-2 j d'exposition/event) → ce n'est PAS le tueur ;
+  le tueur testé est l'**érosion / priced-in**.
+
+### Décision pré-enregistrée
+- **(A) ∧ (B) ⇒ GO**.
+- **(A) ∧ ¬(B) ⇒ KILL priced-in** : drift réel historiquement mais mort/érodé après publication
+  (comme les unlocks). **Verdict plausible.**
+- **¬(A) ⇒ KILL** : pas de drift même historiquement dans nos données.
 
 ## Données & implémentation
 - yfinance OHLC ajusté, cache `data/`. Audit : `deflated_sharpe` porté depuis factor-harvest.
