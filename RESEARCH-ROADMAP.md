@@ -216,11 +216,17 @@ GO** (Sharpe 1.86 = mirage aveugle au skew). [`vol-risk-premium/docs/FINDINGS.md
 le turnover quotidien (DOWNGRADE). 5b pré-FOMC = drift réel 1994-2014 mais **priced-in** post-2015
 (+2.3 bps, t=0.20, −93 %). [`calendar-premium/docs/`](calendar-premium/docs/).
 
-**Piste 6 — carry crypto-funding : GO (premier non-kill).** Net +10.5 %/an, **market-neutral**
-(corr +0.09), positif dans chaque régime dont le bear 2022. Survit car **structurel** (pas un edge
-à info/prix public). Caveats : compression (forward ~2-5 %), tail liquidation/exchange = Phase-2.
-[`carry/docs/FINDINGS-funding.md`](carry/docs/FINDINGS-funding.md).
+**Piste 6 — carry crypto-funding : GO Phase-1 → KILL-FORWARD Phase-2.** Phase-1 = net +10.5 %/an,
+**market-neutral** (corr +0.09), positif chaque régime dont le bear 2022 → seul non-kill du
+screening. **Phase-2 (exécution réelle + tail)** = le carry est **réel** (P&L delta-neutre vrai
+reproduit avec legs spot/perp séparés, basis ≈ 0, frais réels 1.14 %) **mais pas déployable** : le
+forward (OOS 24 mois) tombe à **+3.8 %** < hurdle 8 %, et le **break-even faillite exchange 3.6 %/an
+< gate 5 %** (post-FTX → le tail mange l'EV). Liquidation **pas** le tueur (cross-margin offsete). Le
++10.5 % = chance de régime 2020-21. **(C) FAIL, (D) FAIL.** [`carry/docs/FINDINGS-phase2.md`](carry/docs/FINDINGS-phase2.md).
 
-**Le bilan, V1+V2 (7 pistes).** Tout edge à **information/prix public** est mort (trend, unlocks,
-niche, VRP, overnight, pré-FOMC) ; la **seule survivante** est un **carry structurel market-neutral**.
-Confirmation positive de la thèse *edge structurel ≠ prédictif*.
+**Le bilan, V1+V2 (7 pistes, 0 edge déployable).** Tout edge à **information/prix public** est mort
+(trend, unlocks, niche, VRP, overnight, pré-FOMC). Le carry **structurel market-neutral** a survécu
+le screening (réel) mais **échoué le déploiement** : la prime est **arbitrée jusqu'au coût** (tail
+exchange). Conclusion en deux temps : *edge structurel ≠ prédictif* **tient** (le carry est réel là
+où tout le reste est mort) **mais structurel ≠ gratuit** (compressé sous le seuil où il paie son
+risque). Le vrai capital du programme = le **pipeline de 7 kills pré-enregistrés**, pas un P&L.

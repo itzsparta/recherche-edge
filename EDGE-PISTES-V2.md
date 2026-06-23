@@ -143,6 +143,18 @@ edge à info/prix public. Caveats = portes Phase-2 : **compression** (gross 2021
 +1.0 %, forward ≈ 2-5 %), **tail non modélisé** (liquidation short perp, risque exchange). Détail :
 [`carry/docs/FINDINGS-funding.md`](carry/docs/FINDINGS-funding.md).
 
+**Phase-2 = KILL-FORWARD (2026-06-23).** Le carry est **réel** (P&L delta-neutre vrai reproduit
+avec legs spot/perp **séparés** : net full +10.5 %, basis ≈ 0, frais réels 1.14 % ≈ le forfait 1.2 %
+— donc le GO Phase-1 n'était PAS un artefact proxy) **mais pas déployable** : sur le forward
+réaliste (OOS 24 mois) le net tombe à **+3.8 %** < hurdle 8 %, et le **break-even faillite exchange
+p\* = 3.6 %/an < gate 5 %** (post-FTX, 3.6 %/an n'est pas implausible → le tail mange l'EV).
+Liquidation = **pas** le tueur (cross-margin offsete ; pire move 8h +36 % ne liquide pas à 2x). Le
++10.5 % historique = **chance de régime** (2020-21) ; compression nette 2024 +10.9 % → 2025 +4.0 %
+→ 2026 −0.5 %. **(C) FAIL, (D) FAIL.** Leçon : « structurel ≠ prédictif » tient (le carry survit,
+réel, là où 6 edges info/prix-public sont morts) **mais structurel ≠ gratuit** — la prime est
+arbitrée jusqu'au coût (ici le tail exchange). Détail :
+[`carry/docs/FINDINGS-phase2.md`](carry/docs/FINDINGS-phase2.md).
+
 ---
 
 ## Piste 7 (transverse) — Relative-value / market-neutral : le correctif au drift
@@ -168,17 +180,21 @@ Piste 4 d'abord : dimension entièrement neuve + prime la mieux documentée qui 
 le verdict probable (DOWNGRADE « prime réelle mais non-portable ») est un **6e kill propre,
 pré-enregistré** — le vrai capital du programme reste le pipeline, pas le P&L.
 
-> **Bilan V2 (2026-06-23) — 4 pistes rendues, 1 survivante.**
+> **Bilan V2 (2026-06-23) — 4 pistes rendues, 0 edge déployable.**
 > - Piste 4 VRP : **DOWNGRADE** (prime réelle, tail SVXY −95 % ; faux GO du runner attrapé).
 > - Piste 5a overnight : **DOWNGRADE** (prime réelle, mangée par le turnover quotidien).
 > - Piste 5b pré-FOMC : **KILL priced-in** (drift réel 1994-2014, mort à la publication).
-> - Piste 6 carry : **GO avec caveats — premier non-kill**.
+> - Piste 6 carry : **GO Phase-1 → KILL-FORWARD Phase-2** (réel + market-neutral, mais forward
+>   compressé à +3.8 % < hurdle 8 % et tail exchange break-even 3.6 % < 5 %).
 >
-> **Le motif tranche net.** Les 5 pistes mortes (V1 + VRP + calendrier) chassaient toutes un edge
-> à **information ou prix public** → toutes mangées. La seule survivante est un **carry structurel
-> market-neutral** (transfert de risque, pas un pari d'info). C'est la **confirmation positive**
-> de la thèse : l'edge *structurel* ≠ *prédictif* est le seul récoltable par un solo — et même
-> lui compresse. Reste piste 7 (relative-value, transverse) + la Phase-2 du carry.
+> **Le motif tranche net.** Les 6 pistes info/prix-public (V1 + VRP + calendrier) → toutes mangées.
+> Le carry structurel a survécu Phase-1 (réel, market-neutral) **mais a échoué le déploiement
+> Phase-2** : la prime est **arbitrée jusqu'au coût** (le tail exchange). Conclusion aiguisée en
+> deux temps : (1) « edge *structurel* ≠ *prédictif* » **tient** — le carry est réel là où tout
+> le reste est mort ; (2) **« structurel ≠ gratuit »** — même la prime structurelle est compressée
+> sous le seuil où elle paie son risque pour un solo. **Bilan programme V1+V2 : 7 pistes, 0 edge
+> déployable. Le vrai capital = le pipeline de 7 kills pré-enregistrés.** Reste piste 7
+> (relative-value, transverse) si une piste directionnelle ressuscite — sinon programme clos.
 
 ## Protocole partagé
 
