@@ -224,9 +224,25 @@ forward (OOS 24 mois) tombe à **+3.8 %** < hurdle 8 %, et le **break-even faill
 < gate 5 %** (post-FTX → le tail mange l'EV). Liquidation **pas** le tueur (cross-margin offsete). Le
 +10.5 % = chance de régime 2020-21. **(C) FAIL, (D) FAIL.** [`carry/docs/FINDINGS-phase2.md`](carry/docs/FINDINGS-phase2.md).
 
-**Le bilan, V1+V2 (7 pistes, 0 edge déployable).** Tout edge à **information/prix public** est mort
+**Piste 7 — RV BTC/ETH cointegration daily : KILL Phase-1 (2026-06-23).** Spread `log(BTC/ETH)`
+non-stationnaire IS (ADF p=0.38) **et** OOS (p=0.77) → marche aléatoire, pas de niveau d'équilibre.
+Pas un artefact du ratio 1:1 : Engle-Granger à hedge ratio libre non-cointégré partout, ratio
+instable 0.70→1.36 IS→OOS (rupture post-Merge). Half-life 305-572 j = intradable même dans le doute.
+Tué à la **stationnarité en ~30 min**, sans backtest — le gate falsifiable cheap a fait son travail.
+[`relative-value/docs/FINDINGS-rv.md`](relative-value/docs/FINDINGS-rv.md).
+
+**Le bilan, V1+V2 (8 pistes, 0 edge déployable).** Tout edge à **information/prix public** est mort
 (trend, unlocks, niche, VRP, overnight, pré-FOMC). Le carry **structurel market-neutral** a survécu
 le screening (réel) mais **échoué le déploiement** : la prime est **arbitrée jusqu'au coût** (tail
-exchange). Conclusion en deux temps : *edge structurel ≠ prédictif* **tient** (le carry est réel là
-où tout le reste est mort) **mais structurel ≠ gratuit** (compressé sous le seuil où il paie son
-risque). Le vrai capital du programme = le **pipeline de 7 kills pré-enregistrés**, pas un P&L.
+exchange). La RV BTC/ETH (piste 7) ajoute un kill d'un autre type : **pas même de relation
+stationnaire** à exploiter (le ratio des deux actifs est lui-même une marche aléatoire). Conclusion
+en deux temps : *edge structurel ≠ prédictif* **tient** (le carry est réel là où tout le reste est
+mort) **mais structurel ≠ gratuit** (compressé sous le seuil où il paie son risque). Le vrai capital
+du programme = le **pipeline de 8 kills pré-enregistrés**, pas un P&L.
+
+**Pistes neuves non-testées (proposées 2026-06-23, `factor-harvest/EDGE-IDEAS-LOG.md`).** Le reframe
+« changer l'étang, pas la canne » identifie 2 étangs jamais attaqués (contrepartie ≠ fonds
+optimisateur) : **piste 8 CEF discount** (inarbitrable par structure — pas d'AP, l'inverse de la
+piste B), **piste 10 contrepartie récréative** (favorite-longshot bias). Plus 9 (LST convergence,
+tail à la carry) et 11 (funding cross-sectionnel, bolt-on). Gates pré-enregistrés écrits ; 8 et 10
+sont les seules à viser un étang *structurellement* différent.
