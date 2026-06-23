@@ -1,0 +1,4 @@
+# DIX.csv SqueezeMetrics cache — gratuit, déterministe, régénérable
+data/
+*.csv
+__pycache__/
