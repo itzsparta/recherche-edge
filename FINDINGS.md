@@ -4,13 +4,17 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 21 études, 0 edge déployable.** Motif unifié — *à information/prix public,
-un solo sans latence/infra/capital n'a pas d'edge récoltable* ; et même l'edge
-**opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur + survivorship ;
-et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve pas (0/3).
-Raffinement piste 15 (V3 LP) : le premier **edge agrégé réel** (frais > LVR, payoff
-non-directionnel) existe — mais **capté par le participant sophistiqué** (LP actif/JIT),
-pas déployable solo. La mort se déplace de *« pas d'edge »* vers *« edge capté par le sharp »*.
+**Bilan : 22 études (21 chasses + 1 construction), 0 edge déployable.** Motif unifié —
+*à information/prix public, un solo sans latence/infra/capital n'a pas d'edge récoltable* ;
+et même l'edge **opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur +
+survivorship ; et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve
+pas (0/3). Raffinement piste 15 (V3 LP) : le premier **edge agrégé réel** (frais > LVR,
+payoff non-directionnel) existe — mais **capté par le participant sophistiqué** (LP
+actif/JIT), pas déployable solo. La mort se déplace de *« pas d'edge »* vers *« edge capté
+par le sharp »*. **Aboutissement = la construction META** : empaqueter le seul survivant
+(trend) en portefeuille = **KEEP-2-SLEEVE-FAIBLE** — trend sur 60/40 est une **assurance-
+crise conditionnelle** (coupe ~½ du drawdown 2008/2022, dilue en bull calme), pas un alpha ;
+empiler le carry **dilue** (orthogonal au trend mais corrélé +0.41 au cœur).
 
 ## Pré-reframe (edge prédictif)
 
@@ -68,6 +72,17 @@ pas déployable solo. La mort se déplace de *« pas d'edge »* vers *« edge ca
 | 11 — funding cross-sectionnel | KILL | brut +52 %/an réel → net −20.6 % (turnover 8h ≈72 %/an) | [`funding-xs/docs/FINDINGS-xs.md`](funding-xs/docs/FINDINGS-xs.md) |
 | 13 — momentum cross-sectionnel crypto | KILL | brut ns (t=0.84) ; artefact 2021, mûr 2023+ net −19 %/an ; DSR 0.660 | [`xs-momentum/docs/FINDINGS.md`](xs-momentum/docs/FINDINGS.md) |
 
+## META — construction (le deliverable, pas un edge)
+
+| Étude | Verdict | Contenu | Fichier |
+|---|---|---|---|
+| 22 — portefeuille risk-premia | **KEEP-2-SLEEVE-FAIBLE** | combine les sleeves réels sous poids pré-committés (inverse-vol + fixes, zéro opt in-sample). 3-sleeve FAIL (carry dilue : orthogonal au trend mais corr +0.41 au cœur = risk-on). Deliverable = 60/40 + trend = **assurance-crise** (2008 −9.9% vs −16.7%, 2022 −10.1% vs −16.4%) mais incrément régime-dépendant (+0.06 full ; dilue post-2009 sans 2008). DSR absolu ≠ incrément sur le cœur | [`risk-premia-portfolio/docs/FINDINGS.md`](risk-premia-portfolio/docs/FINDINGS.md) |
+
+**Leçon meta** : la diversification n'est un free-lunch que si le sleeve ajouté est
+orthogonal au **CŒUR**, pas seulement aux autres sleeves. Le carry (orthogonal au trend,
+corrélé au 60/40) n'ajoute rien. Et un Sharpe absolu significatif (DSR 1.000 sur un combo
+70 % obligs/actions) **ne teste pas** si le sleeve bat le cœur — seul l'incrément compte.
+
 ## Les quatre sous-types de mort
 
 1. **No-edge brut** — orderflow, meme-coin, RV BTC/ETH, XS-momentum (brut ns t=0.84). Pas même de signal.
@@ -83,10 +98,14 @@ pas déployable solo. La mort se déplace de *« pas d'edge »* vers *« edge ca
 
 ## Le seul deliverable & le vrai capital
 
-- **Trading** : sleeve trend **+0.12 Sharpe** (piste 1, robuste sur 2 univers). Modeste,
-  pas un edge autonome. Tentative d'un **2e sleeve** (FX carry #17) = échec : orthogonal
-  au trend (corr +0.01) mais prime propre insignifiante (t=0.99) → le deliverable reste mono-sleeve.
-- **Méthode** : le **pipeline de 21 verdicts pré-enregistrés** — dont deux faux GO
-  (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement,
-  et un edge agrégé réel mais non-déployable honnêtement classé DOWNGRADE (V3 LP #15,
-  gate A non retourné dans le sens dur). La rigueur du kill ≫ le P&L.
+- **Trading** : sleeve trend **mono-sleeve sur 60/40**, désormais cadré (META #22) comme
+  **assurance-crise conditionnelle** — coupe ~½ du drawdown 2008/2022, +0.06 à +0.12 Sharpe
+  quand une crise est en échantillon, mais **dilue en bull calme** (régime-dépendant). Pas
+  un alpha. Le **carry #17 confirmé inutile en portefeuille** (dilue : corrélé +0.41 au cœur)
+  → le deliverable reste **mono-sleeve**, et cette construction est l'aboutissement, pas un
+  22ᵉ edge.
+- **Méthode** : le **pipeline de 22 verdicts pré-enregistrés** — dont deux faux GO
+  (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement, un
+  edge agrégé réel mais non-déployable honnêtement classé DOWNGRADE (V3 LP #15), et la
+  construction META où un **faux « FORT » (DSR 1.000) a été rétrogradé en FAIBLE** parce que
+  le DSR absolu ne teste pas l'incrément sur le cœur. La rigueur du kill — et du *keep* — ≫ le P&L.
