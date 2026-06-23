@@ -231,18 +231,32 @@ instable 0.70→1.36 IS→OOS (rupture post-Merge). Half-life 305-572 j = intrad
 Tué à la **stationnarité en ~30 min**, sans backtest — le gate falsifiable cheap a fait son travail.
 [`relative-value/docs/FINDINGS-rv.md`](relative-value/docs/FINDINGS-rv.md).
 
-**Le bilan, V1+V2 (8 pistes, 0 edge déployable).** Tout edge à **information/prix public** est mort
+**Piste 8 — CEF discount mean-reversion : KILL faux GO microstructure (2026-06-23).** Premier étang
+*structurellement différent* attaqué (contrepartie retail, discount inarbitrable car pas d'AP — l'inverse
+de la piste B ETF). Gate A stationnarité PASS net (62 % fonds, pooled ADF p≈0) et Phase-2 brut **tout-vert
+= premier GO provisoire du programme** (net +8.41 %/an, t=7.13, DSR 1.000). **Tué en robustesse** : lag
+d'entrée +1 mois → alpha **s'inverse** (survie −48 %) = la « convergence » était du **bid-ask bounce**
+non-capturable (CEF illiquides : on achète le print au bid, rebond au mid). Forme déployable (intra-cat +
+lag + long-only, borrow réaliste) = **zéro** (−0.64 %, t=−0.64). Survivorship non corrigé (univers = fonds
+vivants) = pire encore. Même structure que le faux GO VRP (Sharpe aveugle au tail) : ici t=7.13 aveugle au
+bounce. [`cef-discount/docs/FINDINGS-cef.md`](cef-discount/docs/FINDINGS-cef.md).
+
+**Le bilan, V1+V2 (9 pistes, 0 edge déployable).** Tout edge à **information/prix public** est mort
 (trend, unlocks, niche, VRP, overnight, pré-FOMC). Le carry **structurel market-neutral** a survécu
 le screening (réel) mais **échoué le déploiement** : la prime est **arbitrée jusqu'au coût** (tail
 exchange). La RV BTC/ETH (piste 7) ajoute un kill d'un autre type : **pas même de relation
-stationnaire** à exploiter (le ratio des deux actifs est lui-même une marche aléatoire). Conclusion
-en deux temps : *edge structurel ≠ prédictif* **tient** (le carry est réel là où tout le reste est
-mort) **mais structurel ≠ gratuit** (compressé sous le seuil où il paie son risque). Le vrai capital
-du programme = le **pipeline de 8 kills pré-enregistrés**, pas un P&L.
+stationnaire** à exploiter (le ratio des deux actifs est lui-même une marche aléatoire). La piste 8
+(CEF) ajoute un troisième type de mort : prime structurelle **réelle** mais récolte mangée par la
+**friction de microstructure** (bid-ask bounce) — cousine du tail qui a mangé le carry. Conclusion en
+deux temps : *edge structurel ≠ prédictif* **tient** (le carry est réel là où tout le reste est mort)
+**mais structurel ≠ gratuit** (compressé sous le seuil où il paie son risque : tail, friction, ou
+bounce). Le vrai capital du programme = le **pipeline de 9 kills pré-enregistrés** — dont un faux GO
+(t=7.13) démasqué avant déploiement — pas un P&L.
 
-**Pistes neuves non-testées (proposées 2026-06-23, `factor-harvest/EDGE-IDEAS-LOG.md`).** Le reframe
-« changer l'étang, pas la canne » identifie 2 étangs jamais attaqués (contrepartie ≠ fonds
-optimisateur) : **piste 8 CEF discount** (inarbitrable par structure — pas d'AP, l'inverse de la
-piste B), **piste 10 contrepartie récréative** (favorite-longshot bias). Plus 9 (LST convergence,
-tail à la carry) et 11 (funding cross-sectionnel, bolt-on). Gates pré-enregistrés écrits ; 8 et 10
-sont les seules à viser un étang *structurellement* différent.
+**Pistes neuves restantes (`factor-harvest/EDGE-IDEAS-LOG.md`).** Le reframe « changer l'étang, pas la
+canne » identifiait 2 étangs (contrepartie ≠ fonds optimisateur) : **piste 8 CEF discount = KILL**
+(faux GO bounce, ci-dessus — l'inarbitrabilité par structure était réelle mais la récolte mangée par
+la microstructure) ; reste **piste 10 contrepartie récréative** (favorite-longshot bias Polymarket/
+Betfair = seul autre étang vraiment différent ; tueur probable = vig > biais). Plus 9 (LST
+convergence, tail à la carry) et 11 (funding cross-sectionnel, bolt-on). Gates pré-enregistrés écrits.
+La piste 8 prévient sur la 10 : un brut prometteur ne vaut rien sans le test net-de-friction réelle.

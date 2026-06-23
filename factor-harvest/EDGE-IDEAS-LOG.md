@@ -166,6 +166,16 @@ patience).
 
 **Coût.** ~200 lignes, panel/event study. 1-2 j.
 
+**Verdict (run 2026-06-23) — KILL, faux GO microstructure.** `code python/cef-discount/`. Gate A
+PASS net (62 % fonds stationnaires, pooled ADF p≈0). Phase-2 brut **tout-vert = premier GO provisoire
+du programme** (net +8.41 %/an t=7.13, DSR 1.000, 3/3 régimes). **Tué en robustesse** : lag d'entrée
++1 mois → alpha **s'inverse** (+8.41 % → −4.01 %, survie −48 %) = toute la « convergence » était du
+**bid-ask bounce** non-capturable (CEF illiquides, on achète le print au bid, rebond au mid). Short =
+CEF à premium = hard-to-borrow (borrow 15 % → net −2.59 %). Forme déployable (intra-cat + lag1 +
+long-only) = **−0.64 % t=−0.64 = zéro**. Survivorship (univers = fonds vivants) non corrigé = pire
+encore. Faux positif le plus convaincant du programme (un retail aurait tradé le t=7.13). Détail :
+[`cef-discount/docs/FINDINGS-cef.md`](../../cef-discount/docs/FINDINGS-cef.md).
+
 ---
 
 ### Piste 9 — LST convergence (stETH/ETH) — EV moyen, tail à surveiller
@@ -266,7 +276,7 @@ d'être arbitré-jusqu'au-coût à l'identique. Justification du test : coût ma
 ### Ordre d'attaque recommandé
 
 1. ~~**Piste 7** (RV BTC/ETH)~~ — **KILL 2026-06-23** : spread I(1) IS+OOS, non-cointégré à ratio libre, half-life 305-572 j. Mort à la stationnarité (~30 min). Cf. `relative-value/docs/FINDINGS-rv.md`.
-2. **Piste 8** (CEF) — meilleure EV neuve : seule qui coche *inarbitrable-par-structure* proprement (l'anomalie vit *parce que* le mécanisme qui a tué la piste B n'existe pas).
+2. ~~**Piste 8** (CEF)~~ — **KILL 2026-06-23** : faux GO microstructure. Gate A + Phase-2 brut tout-vert (1er GO du programme), tué en robustesse par le bid-ask bounce (lag 1 mois → alpha s'inverse) ; forme déployable = zéro. Cf. `cef-discount/docs/FINDINGS-cef.md`.
 3. **Piste 10** (récréatif) — le pari conceptuel : change l'étang pour de vrai. Honnêteté d'avance : la vig tue probablement le net sur books classiques.
 4. **Pistes 9, 11** — opportunistes (9 = tail à la carry ; 11 = bolt-on cheap).
 
