@@ -4,7 +4,7 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 19 études, 0 edge déployable.** Motif unifié — *à information/prix public,
+**Bilan : 20 études, 0 edge déployable.** Motif unifié — *à information/prix public,
 un solo sans latence/infra/capital n'a pas d'edge récoltable* ; et même l'edge
 **opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur + survivorship ;
 et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve pas (0/3).
@@ -37,6 +37,7 @@ pas déployable solo. La mort se déplace de *« pas d'edge »* vers *« edge ca
 | 6 — carry crypto-funding | GO Phase-1 → KILL-FORWARD Phase-2 | OOS 24m +3.8 % < hurdle 8 % ; break-even default exchange 3.6 % < gate 5 % | [`carry/docs/FINDINGS-phase2.md`](carry/docs/FINDINGS-phase2.md) |
 | 7 — RV BTC/ETH | KILL | non-stationnaire IS+OOS (marche aléatoire, pas de niveau) | [`relative-value/docs/FINDINGS-rv.md`](relative-value/docs/FINDINGS-rv.md) |
 | 12 — VRP crypto (defined-risk) | KILL | prime fat = artefact early-market ; compressée au niveau actions en marché mûr (2023+ BTC +5.2 pts t=1.88 ns) | [`vol-risk-premium/docs/FINDINGS-crypto.md`](vol-risk-premium/docs/FINDINGS-crypto.md) |
+| 17 — FX carry G10 (sleeve) | KILL | prime insignifiante (t=0.99, DSR 0.754) noyée par la décennie ZLB 2009-21 ; orthogonale au trend (corr +0.01) mais sans prime propre = pas un sleeve | [`fx-carry/docs/FINDINGS.md`](fx-carry/docs/FINDINGS.md) |
 
 ## V2 — « changer l'étang » (contrepartie non-optimisatrice) : 0/3
 
@@ -82,8 +83,9 @@ pas déployable solo. La mort se déplace de *« pas d'edge »* vers *« edge ca
 ## Le seul deliverable & le vrai capital
 
 - **Trading** : sleeve trend **+0.12 Sharpe** (piste 1, robuste sur 2 univers). Modeste,
-  pas un edge autonome.
-- **Méthode** : le **pipeline de 19 verdicts pré-enregistrés** — dont deux faux GO
+  pas un edge autonome. Tentative d'un **2e sleeve** (FX carry #17) = échec : orthogonal
+  au trend (corr +0.01) mais prime propre insignifiante (t=0.99) → le deliverable reste mono-sleeve.
+- **Méthode** : le **pipeline de 20 verdicts pré-enregistrés** — dont deux faux GO
   (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement,
   et un edge agrégé réel mais non-déployable honnêtement classé DOWNGRADE (V3 LP #15,
   gate A non retourné dans le sens dur). La rigueur du kill ≫ le P&L.
