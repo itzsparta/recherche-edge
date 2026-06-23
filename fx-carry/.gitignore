@@ -1,0 +1,4 @@
+# Taux FRED + caches — gratuits, déterministes, régénérables
+data/
+*.csv
+__pycache__/
