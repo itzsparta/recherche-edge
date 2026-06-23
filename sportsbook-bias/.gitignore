@@ -1,0 +1,4 @@
+# Données football-data.co.uk mises en cache — gratuites, déterministes, régénérables
+data/
+*.csv
+__pycache__/
