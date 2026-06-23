@@ -1,0 +1,5 @@
+# Data mises en cache — gratuites/déterministes (DefiLlama, Binance) ou exports Dune régénérables
+data/
+*.json
+*.csv
+__pycache__/
