@@ -4,7 +4,7 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 15 études, 0 edge déployable.** Motif unifié — *à information/prix public,
+**Bilan : 16 études, 0 edge déployable.** Motif unifié — *à information/prix public,
 un solo sans latence/infra/capital n'a pas d'edge récoltable*.
 
 ## Pré-reframe (edge prédictif)
@@ -46,10 +46,11 @@ un solo sans latence/infra/capital n'a pas d'edge récoltable*.
 |---|---|---|---|
 | 9 — LST convergence (stETH/ETH) | KILL | edge one-off pré-Shapella, n=1 régime ; pinné post-redemption | [`lst-convergence/docs/FINDINGS-lst.md`](lst-convergence/docs/FINDINGS-lst.md) |
 | 11 — funding cross-sectionnel | KILL | brut +52 %/an réel → net −20.6 % (turnover 8h ≈72 %/an) | [`funding-xs/docs/FINDINGS-xs.md`](funding-xs/docs/FINDINGS-xs.md) |
+| 13 — momentum cross-sectionnel crypto | KILL | brut ns (t=0.84) ; artefact 2021, mûr 2023+ net −19 %/an ; DSR 0.660 | [`xs-momentum/docs/FINDINGS.md`](xs-momentum/docs/FINDINGS.md) |
 
 ## Les trois sous-types de mort
 
-1. **No-edge brut** — orderflow, meme-coin, RV BTC/ETH. Pas même de signal.
+1. **No-edge brut** — orderflow, meme-coin, RV BTC/ETH, XS-momentum (brut ns t=0.84). Pas même de signal.
 2. **Brut réel mangé par la friction** — funding-XS (turnover 8h), niche capacity,
    CEF (bounce). L'edge ≈ son coût d'extraction.
 3. **Brut réel mangé par le tail / non-répétabilité** — carry (default exchange),
@@ -60,6 +61,6 @@ un solo sans latence/infra/capital n'a pas d'edge récoltable*.
 
 - **Trading** : sleeve trend **+0.12 Sharpe** (piste 1, robuste sur 2 univers). Modeste,
   pas un edge autonome.
-- **Méthode** : le **pipeline de 15 verdicts pré-enregistrés** — dont deux faux GO
+- **Méthode** : le **pipeline de 16 verdicts pré-enregistrés** — dont deux faux GO
   (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement.
   La rigueur du kill ≫ le P&L.

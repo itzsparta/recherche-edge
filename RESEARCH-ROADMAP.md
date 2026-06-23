@@ -318,3 +318,23 @@ en temps réel. [`vol-risk-premium/docs/FINDINGS-crypto.md`](vol-risk-premium/do
 
 **Bilan inchangé : 13 pistes, 0 edge déployable.** Le motif tient — un edge structurel (la prime de vol)
 arbitré jusqu'au niveau actions à mesure que le marché mûrit.
+
+## Piste 13 (2026-06-23) : momentum cross-sectionnel crypto = KILL
+
+Seul des deux candidats proposés en fin de programme qui rentre dans la machine gate-kill (l'autre,
+alpha opérationnel/airdrop, est un AUTRE jeu = ledger EV, pas un backtest falsifiable). L/S transversal
+**market-neutral** (long tercile fort / short tercile faible, rebal hebdo) sur univers fixe de 75 perps
+Binance. Distinct des morts : ≠ trend TS (p1), ≠ funding-XS (p11), ≠ RV paire (p7) ; la market-neutralité
+**annule le drift** qui avait contaminé les pistes directionnelles. Pré-enregistré dans
+[`xs-momentum/docs/SPEC.md`](xs-momentum/docs/SPEC.md), gap 1 j anti-bounce (leçon CEF), Gate G mûr (leçon p12).
+
+**KILL — type le plus sec : pas même de brut.** Gross hebdo +14 %/an mais **t=0.84 (ns)** ; net t=0.24 ;
+DSR(L∈{1,2,4,8 sem}) **0.660**. Et **même motif que la Piste 12 dos à dos** : tout le P&L vit en **2021**
+(marché immature : +2.25 %/sem bull-H1, +1.88 % H2) puis **négatif/nul dès 2022** ; en marché **mûr 2023+
+le net est −19.4 %/an** (Gate G FAIL). La construction est saine (corr BTC −0.01, deux jambes même signe,
+drop-top-3 préserve) → vraie absence d'edge, pas un bug. Survivorship pré-enregistré = univers optimiste
+→ KILL conservateur. [`xs-momentum/docs/FINDINGS.md`](xs-momentum/docs/FINDINGS.md).
+
+**Leçon transverse p12+p13 (même jour).** Le **test du sous-échantillon mûr (2023+) est désormais
+obligatoire** sur tout signal crypto : les edges documentés sur 2017-2021 peuvent être de purs artefacts
+d'immaturité. La densification du marché EST l'arbitrage. **Bilan : 14 pistes, 0 edge déployable.**
