@@ -338,3 +338,25 @@ drop-top-3 préserve) → vraie absence d'edge, pas un bug. Survivorship pré-en
 **Leçon transverse p12+p13 (même jour).** Le **test du sous-échantillon mûr (2023+) est désormais
 obligatoire** sur tout signal crypto : les edges documentés sur 2017-2021 peuvent être de purs artefacts
 d'immaturité. La densification du marché EST l'arbitrage. **Bilan : 14 pistes, 0 edge déployable.**
+
+## Piste 14 (2026-06-23) : airdrop farming (EV-ledger opérationnel) = KILL
+
+Le **second** candidat de fin de programme, attaqué comme l'AUTRE jeu qu'il est : pas un backtest de
+prix mais un **ledger d'EV opérationnel** (le $ net par **heure** bat-il un seuil de labeur ?). Seule
+arme structurelle inédite = subvention d'acquisition, **institutions absentes par structure** (sybil =
+moat). Pré-enregistré dans [`airdrop-ev/docs/SPEC.md`](airdrop-ev/docs/SPEC.md), seuil 15 €/h.
+
+**KILL.** Même en garantissant la qualif au basket entier (15 majors 2020-2025, jackpots inclus, alloc
+valorisée au TGE = best-case généreux), net **8.4 €/h** < plancher (Gate A FAIL). **53 % du $ vient de 2
+jackpots non-répétables** (dYdX, Hyperliquid) = MIRAGE survivorship (leçon meme-coin). Base-case honnête
+(sans jackpots, qualif 50 %, gas payé sur 40 farms dont les zéros) = **EV négative −1 050 $** (Gate B
+FAIL). Décroissance réelle (CoinGecko) médiane **−93 %** hold-to-now — la valo TGE était déjà le
+best-case. **Le moat coupe dans les deux sens** (null central confirmé) : l'absence de l'institution est
+compensée par la défense anti-sybil du protocole → le solo hérite d'un **plafond**, pas d'un edge ;
+l'upside matériel est une **loterie** (HYPE +1689 %, le seul non-dumpé). [`airdrop-ev/docs/FINDINGS.md`](airdrop-ev/docs/FINDINGS.md).
+
+**Leçon.** Même l'étang où le gros acteur est **structurellement absent** ne produit pas d'edge solo
+matériel — l'absence est neutralisée par le clawback sybil, et l'upside est un survivorship de jackpots.
+*Changer l'étang* reste **0/N**. **Bilan final : 15 pistes, 0 edge déployable.** Les deux candidats
+proposés en clôture (XS-momentum, airdrop) sont tombés — l'un en backtest (no-edge brut), l'autre en
+ledger (seuil labeur + mirage). Le vrai capital reste **le pipeline de 17 verdicts pré-enregistrés**.

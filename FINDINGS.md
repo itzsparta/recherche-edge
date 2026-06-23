@@ -4,8 +4,9 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 16 études, 0 edge déployable.** Motif unifié — *à information/prix public,
-un solo sans latence/infra/capital n'a pas d'edge récoltable*.
+**Bilan : 17 études, 0 edge déployable.** Motif unifié — *à information/prix public,
+un solo sans latence/infra/capital n'a pas d'edge récoltable* ; et même l'edge
+**opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur + survivorship.
 
 ## Pré-reframe (edge prédictif)
 
@@ -40,6 +41,12 @@ un solo sans latence/infra/capital n'a pas d'edge récoltable*.
 | 8 — CEF discount | KILL (faux GO t=7.13) | bid-ask bounce non-capturable ; lag +1m inverse l'alpha | [`cef-discount/docs/FINDINGS-cef.md`](cef-discount/docs/FINDINGS-cef.md) |
 | 10 — favorite-longshot Polymarket | KILL | biais INVERSÉ (longshots sous-cotés) ; foule arbitrée/efficiente | [`prediction-markets/docs/FINDINGS-pm.md`](prediction-markets/docs/FINDINGS-pm.md) |
 
+## V3 — alpha opérationnel (hors prix/info, moat sybil)
+
+| Piste | Verdict | Tueur | Fichier |
+|---|---|---|---|
+| 14 — airdrop farming (EV-ledger) | KILL | plafond best-case 8.4 €/h < labeur ; 53 % du $ sur 2 jackpots ; base-rate EV négative | [`airdrop-ev/docs/FINDINGS.md`](airdrop-ev/docs/FINDINGS.md) |
+
 ## Opportunistes (bolt-on)
 
 | Piste | Verdict | Tueur | Fichier |
@@ -61,6 +68,6 @@ un solo sans latence/infra/capital n'a pas d'edge récoltable*.
 
 - **Trading** : sleeve trend **+0.12 Sharpe** (piste 1, robuste sur 2 univers). Modeste,
   pas un edge autonome.
-- **Méthode** : le **pipeline de 16 verdicts pré-enregistrés** — dont deux faux GO
+- **Méthode** : le **pipeline de 17 verdicts pré-enregistrés** — dont deux faux GO
   (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement.
   La rigueur du kill ≫ le P&L.
