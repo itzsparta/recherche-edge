@@ -250,13 +250,24 @@ stationnaire** à exploiter (le ratio des deux actifs est lui-même une marche a
 **friction de microstructure** (bid-ask bounce) — cousine du tail qui a mangé le carry. Conclusion en
 deux temps : *edge structurel ≠ prédictif* **tient** (le carry est réel là où tout le reste est mort)
 **mais structurel ≠ gratuit** (compressé sous le seuil où il paie son risque : tail, friction, ou
-bounce). Le vrai capital du programme = le **pipeline de 9 kills pré-enregistrés** — dont un faux GO
-(t=7.13) démasqué avant déploiement — pas un P&L.
+bounce). Le vrai capital du programme = le **pipeline de 10 verdicts pré-enregistrés** — dont un faux
+GO (t=7.13) démasqué avant déploiement — pas un P&L.
 
-**Pistes neuves restantes (`factor-harvest/EDGE-IDEAS-LOG.md`).** Le reframe « changer l'étang, pas la
-canne » identifiait 2 étangs (contrepartie ≠ fonds optimisateur) : **piste 8 CEF discount = KILL**
-(faux GO bounce, ci-dessus — l'inarbitrabilité par structure était réelle mais la récolte mangée par
-la microstructure) ; reste **piste 10 contrepartie récréative** (favorite-longshot bias Polymarket/
-Betfair = seul autre étang vraiment différent ; tueur probable = vig > biais). Plus 9 (LST
-convergence, tail à la carry) et 11 (funding cross-sectionnel, bolt-on). Gates pré-enregistrés écrits.
-La piste 8 prévient sur la 10 : un brut prometteur ne vaut rien sans le test net-de-friction réelle.
+**Piste 10 — favorite-longshot bias (Polymarket) : KILL Gate A, hypothèse INVERSÉE (2026-06-23).**
+Deuxième et dernier étang « structurellement différent » du reframe (contrepartie récréative, CLOB sans
+vig). 3082 marchés binaires résolus, prix ex-ante au midpoint temporel, 5586 legs. Résultat : **pas de
+biais favorite-longshot, mais le pattern INVERSE** — longshots (<0.10) **sous-cotés** (gap réalisé−
+implicite +0.011, t=+2.26), favoris **surcotés** (gap −0.08). Fader les longshots (l'hypothèse) aurait
+**perdu**. Aucune catégorie ne sauve (Gate E). Polymarket = foule crypto-native + arbitragistes, pas
+parieurs récréatifs naïfs → efficient. Le pattern inverse n'est PAS exploité : post-hoc + même tueur de
+friction que le bounce CEF (gap 5-8 % mangé par le spread du côté cheap). [`prediction-markets/docs/FINDINGS-pm.md`](prediction-markets/docs/FINDINGS-pm.md).
+
+**Bilan du reframe « changer l'étang » : 0/2.** Les deux étangs à contrepartie non-optimisatrice sont
+morts — CEF (inarbitrable par structure, mais récolte mangée par la microstructure) et Polymarket
+(supposé récréatif, en fait arbitré/efficient). **Changer l'étang n'a pas plus produit d'edge que
+changer la canne.** Le motif unifié se renforce : *là où le prix est public, un solo n'a pas d'edge
+récoltable* — que la contrepartie soit un fonds (étangs V1/V2) OU supposément naïve (CEF/Polymarket).
+
+**Restantes (`factor-harvest/EDGE-IDEAS-LOG.md`)** : pistes 9 (LST convergence, tail à la carry) et 11
+(funding cross-sectionnel, bolt-on `carry/`) — opportunistes, EV faible *a priori*, mêmes tueurs
+attendus (tail, friction). Aucune ne vise un étang neuf.

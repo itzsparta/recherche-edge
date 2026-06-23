@@ -241,6 +241,15 @@ régul/réputation/capacité). Capacité minuscule = terrain solo par définitio
 
 **Coût.** ~150 lignes + ingestion résolutions. 1-2 j.
 
+**Verdict (run 2026-06-23) — KILL Gate A, hypothèse inversée.** `code python/prediction-markets/`.
+3082 marchés binaires résolus (Gamma + CLOB, pagination fenêtres de date, prix ex-ante au midpoint
+temporel), 5586 legs. Longshots (<0.10) : gap réalisé−implicite **+0.0109, t=+2.26** = **sous-cotés**,
+PAS surcotés → favorite-longshot **inversé** (favoris surcotés gap −0.08). Fader les longshots
+perdrait. Aucune catégorie ne montre le biais (Gate E). Polymarket = foule crypto-native + arbs, pas
+récréative naïve = efficient. Pattern inverse NON exploité (post-hoc + même tueur friction que le
+bounce CEF : gap 5-8% mangé par le spread du côté cheap). Détail :
+[`prediction-markets/docs/FINDINGS-pm.md`](../../prediction-markets/docs/FINDINGS-pm.md).
+
 ---
 
 ### Piste 11 — Funding cross-sectionnel (≠ niveau) — bolt-on cheap, novelty faible
@@ -277,7 +286,7 @@ d'être arbitré-jusqu'au-coût à l'identique. Justification du test : coût ma
 
 1. ~~**Piste 7** (RV BTC/ETH)~~ — **KILL 2026-06-23** : spread I(1) IS+OOS, non-cointégré à ratio libre, half-life 305-572 j. Mort à la stationnarité (~30 min). Cf. `relative-value/docs/FINDINGS-rv.md`.
 2. ~~**Piste 8** (CEF)~~ — **KILL 2026-06-23** : faux GO microstructure. Gate A + Phase-2 brut tout-vert (1er GO du programme), tué en robustesse par le bid-ask bounce (lag 1 mois → alpha s'inverse) ; forme déployable = zéro. Cf. `cef-discount/docs/FINDINGS-cef.md`.
-3. **Piste 10** (récréatif) — le pari conceptuel : change l'étang pour de vrai. Honnêteté d'avance : la vig tue probablement le net sur books classiques.
+3. ~~**Piste 10** (récréatif)~~ — **KILL 2026-06-23** : pas de vig sur Polymarket, mais le biais est **inversé** (favoris surcotés, longshots sous-cotés) → fader les longshots perd. Étang « différent » en fait efficient. Cf. `prediction-markets/docs/FINDINGS-pm.md`.
 4. **Pistes 9, 11** — opportunistes (9 = tail à la carry ; 11 = bolt-on cheap).
 
 **Prior honnête.** Après 7 kills à motif serré, proba qu'une piste neuve donne un edge déployable =
