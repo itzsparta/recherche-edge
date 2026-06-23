@@ -4,7 +4,7 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 20 études, 0 edge déployable.** Motif unifié — *à information/prix public,
+**Bilan : 21 études, 0 edge déployable.** Motif unifié — *à information/prix public,
 un solo sans latence/infra/capital n'a pas d'edge récoltable* ; et même l'edge
 **opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur + survivorship ;
 et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve pas (0/3).
@@ -26,6 +26,7 @@ pas déployable solo. La mort se déplace de *« pas d'edge »* vers *« edge ca
 | 1 — primes de risque | premium réel | KILL standalone | trop faible (t=1.87) ; sleeve +0.12 seul deliverable | [`factor-harvest/docs/FINDINGS.md`](factor-harvest/docs/FINDINGS.md) |
 | 2 — flux forcés (unlocks) | non-contraint vs forcé | KILL | priced-in (dérive avant date publique, ≈0 après) | [`forced-flows/docs/FINDINGS-unlocks.md`](forced-flows/docs/FINDINGS-unlocks.md) |
 | 3 — niche capacité | taille fonds | KILL | spread fantôme (persistant mais ~1 k$ profondeur) | [`capacity-niche/docs/FINDINGS-niche.md`](capacity-niche/docs/FINDINGS-niche.md) |
+| 18 — dealer gamma (GEX) | hedging forcé | KILL-tradable | prédit la VARIANCE (corr −0.26 robuste) pas la MOYENNE ; vol-forecast réel, zéro alpha de rendement | [`gex-gamma/docs/FINDINGS.md`](gex-gamma/docs/FINDINGS.md) |
 
 ## V2 — prime d'assurance / calendrier / carry
 
@@ -85,7 +86,7 @@ pas déployable solo. La mort se déplace de *« pas d'edge »* vers *« edge ca
 - **Trading** : sleeve trend **+0.12 Sharpe** (piste 1, robuste sur 2 univers). Modeste,
   pas un edge autonome. Tentative d'un **2e sleeve** (FX carry #17) = échec : orthogonal
   au trend (corr +0.01) mais prime propre insignifiante (t=0.99) → le deliverable reste mono-sleeve.
-- **Méthode** : le **pipeline de 20 verdicts pré-enregistrés** — dont deux faux GO
+- **Méthode** : le **pipeline de 21 verdicts pré-enregistrés** — dont deux faux GO
   (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement,
   et un edge agrégé réel mais non-déployable honnêtement classé DOWNGRADE (V3 LP #15,
   gate A non retourné dans le sens dur). La rigueur du kill ≫ le P&L.
