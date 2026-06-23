@@ -4,7 +4,7 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 14 études, 0 edge déployable.** Motif unifié — *à information/prix public,
+**Bilan : 15 études, 0 edge déployable.** Motif unifié — *à information/prix public,
 un solo sans latence/infra/capital n'a pas d'edge récoltable*.
 
 ## Pré-reframe (edge prédictif)
@@ -31,6 +31,7 @@ un solo sans latence/infra/capital n'a pas d'edge récoltable*.
 | 5b — pré-FOMC | KILL | priced-in post-2015 (+2.3 bps, t=0.20, −93 %) | [`calendar-premium/docs/FINDINGS-fomc.md`](calendar-premium/docs/FINDINGS-fomc.md) |
 | 6 — carry crypto-funding | GO Phase-1 → KILL-FORWARD Phase-2 | OOS 24m +3.8 % < hurdle 8 % ; break-even default exchange 3.6 % < gate 5 % | [`carry/docs/FINDINGS-phase2.md`](carry/docs/FINDINGS-phase2.md) |
 | 7 — RV BTC/ETH | KILL | non-stationnaire IS+OOS (marche aléatoire, pas de niveau) | [`relative-value/docs/FINDINGS-rv.md`](relative-value/docs/FINDINGS-rv.md) |
+| 12 — VRP crypto (defined-risk) | KILL | prime fat = artefact early-market ; compressée au niveau actions en marché mûr (2023+ BTC +5.2 pts t=1.88 ns) | [`vol-risk-premium/docs/FINDINGS-crypto.md`](vol-risk-premium/docs/FINDINGS-crypto.md) |
 
 ## V2 — « changer l'étang » (contrepartie non-optimisatrice) : 0/2
 
@@ -52,12 +53,13 @@ un solo sans latence/infra/capital n'a pas d'edge récoltable*.
 2. **Brut réel mangé par la friction** — funding-XS (turnover 8h), niche capacity,
    CEF (bounce). L'edge ≈ son coût d'extraction.
 3. **Brut réel mangé par le tail / non-répétabilité** — carry (default exchange),
-   LST (pré-redemption n=1), VRP. La prime ≈ le risque, ou un seul régime.
+   LST (pré-redemption n=1), VRP actions (tail SVXY), VRP crypto (prime fat = early-market
+   2021-22, compressée au niveau actions en marché mûr). La prime ≈ le risque, ou un seul régime.
 
 ## Le seul deliverable & le vrai capital
 
 - **Trading** : sleeve trend **+0.12 Sharpe** (piste 1, robuste sur 2 univers). Modeste,
   pas un edge autonome.
-- **Méthode** : le **pipeline de 14 verdicts pré-enregistrés** — dont deux faux GO
+- **Méthode** : le **pipeline de 15 verdicts pré-enregistrés** — dont deux faux GO
   (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement.
   La rigueur du kill ≫ le P&L.

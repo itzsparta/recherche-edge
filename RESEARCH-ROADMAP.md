@@ -297,3 +297,24 @@ risque, ou n=1 régime). Les deux étangs « structurellement différents » (CE
 *changer l'étang ≠ produit pas d'edge*. **Le seul deliverable trading = le sleeve trend +0.12 Sharpe.**
 Le vrai capital = **le pipeline de 12 verdicts pré-enregistrés**, dont deux faux GO (VRP, CEF t=7.13) et
 un troisième mirage in-sample (LST t=3.14) démasqués *avant* déploiement. La rigueur du kill ≫ le P&L.
+
+## Réouverture ponctuelle — Piste 12 (2026-06-23) : VRP crypto defined-risk = KILL
+
+Le programme « clos » a été rouvert une fois pour tester la **seule porte que la Piste 4 (VRP actions)
+avait laissée ouverte** : un short-vol à **risque défini** est-il viable là où le premium est le plus
+gros, la **crypto** ? Hypothèse : gap DVOL−réalisée 3-5× l'actions → assez pour payer l'aile et garder
+une EV nette. Pré-enregistré dans [`vol-risk-premium/docs/SPEC-crypto.md`](vol-risk-premium/docs/SPEC-crypto.md),
+barre de magnitude `mean(VRP_vol) > 8 pts` fixée avant les données.
+
+**KILL.** Le premium **existe** (DSR BTC 0.998) mais full-sample BTC = +7.88 pts (**sous la barre**), et
+surtout c'est un **artefact d'immaturité** : décroissance monotone 2021-crash +25 → 2024+ +4.5 pts. En
+marché **mûr (2023+)** la prime est compressée à **+5.23 pts BTC (t=1.88 ns)** / +1.35 ETH (t=−0.29) =
+niveau actions, non-significative. Le pré-B Phase-1 PASS de BTC (Sharpe 1.08, t=2.45) était **100 %
+porté par l'early-market** (net mûr +2.23 pts, t=1.07 ns ; ETH négatif) — même piège que LST. La porte
+defined-risk ne s'ouvre jamais : le premium censé payer l'aile est **déjà revenu au niveau actions**
+avant qu'on mesure la moindre aile → DOWNGRADE actions, un cran plus sec. Tué en **un run free-data**
+(DVOL Deribit), zéro Phase 2. La densification du marché d'options crypto **EST** l'arbitrage, observé
+en temps réel. [`vol-risk-premium/docs/FINDINGS-crypto.md`](vol-risk-premium/docs/FINDINGS-crypto.md).
+
+**Bilan inchangé : 13 pistes, 0 edge déployable.** Le motif tient — un edge structurel (la prime de vol)
+arbitré jusqu'au niveau actions à mesure que le marché mûrit.
