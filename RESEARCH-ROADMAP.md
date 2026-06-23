@@ -268,6 +268,32 @@ morts — CEF (inarbitrable par structure, mais récolte mangée par la microstr
 changer la canne.** Le motif unifié se renforce : *là où le prix est public, un solo n'a pas d'edge
 récoltable* — que la contrepartie soit un fonds (étangs V1/V2) OU supposément naïve (CEF/Polymarket).
 
-**Restantes (`factor-harvest/EDGE-IDEAS-LOG.md`)** : pistes 9 (LST convergence, tail à la carry) et 11
-(funding cross-sectionnel, bolt-on `carry/`) — opportunistes, EV faible *a priori*, mêmes tueurs
-attendus (tail, friction). Aucune ne vise un étang neuf.
+**Piste 11 — funding cross-sectionnel : KILL (brut réel, mangé par le turnover 8h).** Bolt-on direct du
+carry (piste 6). Gate A **PASS** : la dispersion de funding paie *brut* (+51.9 %/an, t=3.43, sharpe
+1.35) — décomposé en +3.45 % spread de funding (mécanique) + 7.19 % spread de prix (cross-sectionnel
+réel). Mais B/C/D/E tous **KILL** : le turnover 8h (1.32 du book/période, ≈72 %/an de frais) transforme
++52 % brut en **−20.6 % net** ; 51 % du P&L sur 2 alts (ETC, BNB) ; jambe short −4.4 % en standalone ;
+seul le bull 2020-21 ≥0 (t=0.15 ns). Forme la plus nette du motif unifié : *un brut réel et significatif,
+exactement neutralisé par la friction structurelle requise pour le capter*. [`funding-xs/docs/FINDINGS-xs.md`](funding-xs/docs/FINDINGS-xs.md).
+
+**Piste 9 — LST convergence (stETH/ETH) : KILL (edge one-off pré-redemption, n=1 régime).** Étang ≠ :
+convergence *garantie protocolairement* (redemption 1:1). Gates B/C **PASS en apparence** (brut +82 %,
+net +76.8 %, t=3.14) — mais c'est un **artefact in-sample** : les 26 épisodes de stress sont **tous
+pré-Shapella** (2021-2022, LST jeune sans marché de retrait). Post-Shapella (169 j présents) le discount
+est **pinné** (min −0.40 %, jamais < seuil −1.5 %) → l'arbitrage de redemption a écrasé l'edge → KILL
+Gate E. Plus : ADF p=0.058 (pas de niveau stable hors stress, KILL A) et breakeven au creux −7.5 %
+n'exige que P(perte 50 %)=13 % (prime ≈ risque de queue réel, priced-in plausible, KILL D). **La piste a
+prédit sa propre obsolescence** : le mécanisme qui garantit la convergence la détruit en s'activant.
+Piège pédagogique : t=3.14 sur un **régime unique non-reproductible** ≠ edge — même leçon que les faux GO
+VRP/CEF (t aveugle au tail/bounce). [`lst-convergence/docs/FINDINGS-lst.md`](lst-convergence/docs/FINDINGS-lst.md).
+
+**BILAN FINAL — programme edge V1+V2 clos : 12 pistes, 0 edge déployable.** Toutes les pistes
+opportunistes restantes sont tombées. Le motif unifié tient sans exception : *à information/prix public,
+un solo n'a pas d'edge récoltable*. Trois sous-types de mort, tous convergents : **(1) no-edge brut**
+(orderflow, meme-coin, RV BTC/ETH — pas même de signal) ; **(2) brut réel mangé par la friction**
+(funding XS turnover 8h, niche capacity, CEF bounce — l'edge ≈ son coût d'extraction) ; **(3) brut réel
+mangé par le tail/non-répétabilité** (carry exchange-default, LST pré-redemption, VRP — la prime ≈ le
+risque, ou n=1 régime). Les deux étangs « structurellement différents » (CEF, Polymarket) sont morts =
+*changer l'étang ≠ produit pas d'edge*. **Le seul deliverable trading = le sleeve trend +0.12 Sharpe.**
+Le vrai capital = **le pipeline de 12 verdicts pré-enregistrés**, dont deux faux GO (VRP, CEF t=7.13) et
+un troisième mirage in-sample (LST t=3.14) démasqués *avant* déploiement. La rigueur du kill ≫ le P&L.
