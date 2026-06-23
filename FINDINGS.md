@@ -4,10 +4,13 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 18 études, 0 edge déployable.** Motif unifié — *à information/prix public,
+**Bilan : 19 études, 0 edge déployable.** Motif unifié — *à information/prix public,
 un solo sans latence/infra/capital n'a pas d'edge récoltable* ; et même l'edge
 **opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur + survivorship ;
 et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve pas (0/3).
+Raffinement piste 15 (V3 LP) : le premier **edge agrégé réel** (frais > LVR, payoff
+non-directionnel) existe — mais **capté par le participant sophistiqué** (LP actif/JIT),
+pas déployable solo. La mort se déplace de *« pas d'edge »* vers *« edge capté par le sharp »*.
 
 ## Pré-reframe (edge prédictif)
 
@@ -49,6 +52,12 @@ et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve pas (0
 |---|---|---|---|
 | 14 — airdrop farming (EV-ledger) | KILL | plafond best-case 8.4 €/h < labeur ; 53 % du $ sur 2 jackpots ; base-rate EV négative | [`airdrop-ev/docs/FINDINGS.md`](airdrop-ev/docs/FINDINGS.md) |
 
+## V3 — payoff non-directionnel (cashflow vs adverse-selection)
+
+| Piste | Verdict | Tueur | Fichier |
+|---|---|---|---|
+| 15 — Uniswap V3 LP (net de LVR) | **DOWNGRADE** | gate A PASS (frais > LVR markout, MMR naïf falsifié, robuste) mais agrégé capté par LP actifs/JIT ; solo passif : gas mainnet > edge | [`univ3-lvr/docs/FINDINGS.md`](univ3-lvr/docs/FINDINGS.md) |
+
 ## Opportunistes (bolt-on)
 
 | Piste | Verdict | Tueur | Fichier |
@@ -57,7 +66,7 @@ et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve pas (0
 | 11 — funding cross-sectionnel | KILL | brut +52 %/an réel → net −20.6 % (turnover 8h ≈72 %/an) | [`funding-xs/docs/FINDINGS-xs.md`](funding-xs/docs/FINDINGS-xs.md) |
 | 13 — momentum cross-sectionnel crypto | KILL | brut ns (t=0.84) ; artefact 2021, mûr 2023+ net −19 %/an ; DSR 0.660 | [`xs-momentum/docs/FINDINGS.md`](xs-momentum/docs/FINDINGS.md) |
 
-## Les trois sous-types de mort
+## Les quatre sous-types de mort
 
 1. **No-edge brut** — orderflow, meme-coin, RV BTC/ETH, XS-momentum (brut ns t=0.84). Pas même de signal.
 2. **Brut réel mangé par la friction** — funding-XS (turnover 8h), niche capacity,
@@ -65,11 +74,16 @@ et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve pas (0
 3. **Brut réel mangé par le tail / non-répétabilité** — carry (default exchange),
    LST (pré-redemption n=1), VRP actions (tail SVXY), VRP crypto (prime fat = early-market
    2021-22, compressée au niveau actions en marché mûr). La prime ≈ le risque, ou un seul régime.
+4. **Edge agrégé réel, capté par le participant sophistiqué** — V3 LP #15 (frais > LVR au
+   niveau pool, mais récolté par les LP actifs/JIT ; solo passif tué par le gas). Même forme
+   que CEF #8 (bounce capté par le plus rapide) et books sportifs #16 (+EV au book qui bannit).
+   L'edge existe ; l'efficience est dans **qui** le capte, pas dans son absence.
 
 ## Le seul deliverable & le vrai capital
 
 - **Trading** : sleeve trend **+0.12 Sharpe** (piste 1, robuste sur 2 univers). Modeste,
   pas un edge autonome.
-- **Méthode** : le **pipeline de 18 verdicts pré-enregistrés** — dont deux faux GO
-  (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement.
-  La rigueur du kill ≫ le P&L.
+- **Méthode** : le **pipeline de 19 verdicts pré-enregistrés** — dont deux faux GO
+  (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement,
+  et un edge agrégé réel mais non-déployable honnêtement classé DOWNGRADE (V3 LP #15,
+  gate A non retourné dans le sens dur). La rigueur du kill ≫ le P&L.
