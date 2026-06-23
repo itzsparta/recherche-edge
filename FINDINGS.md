@@ -4,9 +4,10 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 17 études, 0 edge déployable.** Motif unifié — *à information/prix public,
+**Bilan : 18 études, 0 edge déployable.** Motif unifié — *à information/prix public,
 un solo sans latence/infra/capital n'a pas d'edge récoltable* ; et même l'edge
-**opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur + survivorship.
+**opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur + survivorship ;
+et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve pas (0/3).
 
 ## Pré-reframe (edge prédictif)
 
@@ -34,12 +35,13 @@ un solo sans latence/infra/capital n'a pas d'edge récoltable* ; et même l'edge
 | 7 — RV BTC/ETH | KILL | non-stationnaire IS+OOS (marche aléatoire, pas de niveau) | [`relative-value/docs/FINDINGS-rv.md`](relative-value/docs/FINDINGS-rv.md) |
 | 12 — VRP crypto (defined-risk) | KILL | prime fat = artefact early-market ; compressée au niveau actions en marché mûr (2023+ BTC +5.2 pts t=1.88 ns) | [`vol-risk-premium/docs/FINDINGS-crypto.md`](vol-risk-premium/docs/FINDINGS-crypto.md) |
 
-## V2 — « changer l'étang » (contrepartie non-optimisatrice) : 0/2
+## V2 — « changer l'étang » (contrepartie non-optimisatrice) : 0/3
 
 | Piste | Verdict | Tueur | Fichier |
 |---|---|---|---|
 | 8 — CEF discount | KILL (faux GO t=7.13) | bid-ask bounce non-capturable ; lag +1m inverse l'alpha | [`cef-discount/docs/FINDINGS-cef.md`](cef-discount/docs/FINDINGS-cef.md) |
 | 10 — favorite-longshot Polymarket | KILL | biais INVERSÉ (longshots sous-cotés) ; foule arbitrée/efficiente | [`prediction-markets/docs/FINDINGS-pm.md`](prediction-markets/docs/FINDINGS-pm.md) |
+| 16 — biais books sportifs | KILL | biais FL réel mais < vig sharp ; seul +EV (CLV soft +2.37 %) inencaissable (books bannissent) | [`sportsbook-bias/docs/FINDINGS.md`](sportsbook-bias/docs/FINDINGS.md) |
 
 ## V3 — alpha opérationnel (hors prix/info, moat sybil)
 
@@ -68,6 +70,6 @@ un solo sans latence/infra/capital n'a pas d'edge récoltable* ; et même l'edge
 
 - **Trading** : sleeve trend **+0.12 Sharpe** (piste 1, robuste sur 2 univers). Modeste,
   pas un edge autonome.
-- **Méthode** : le **pipeline de 17 verdicts pré-enregistrés** — dont deux faux GO
+- **Méthode** : le **pipeline de 18 verdicts pré-enregistrés** — dont deux faux GO
   (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement.
   La rigueur du kill ≫ le P&L.
