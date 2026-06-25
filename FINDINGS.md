@@ -4,7 +4,7 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 22 études (21 chasses + 1 construction), 0 edge déployable.** Motif unifié —
+**Bilan : 23 études (22 chasses + 1 construction), 0 edge déployable.** Motif unifié —
 *à information/prix public, un solo sans latence/infra/capital n'a pas d'edge récoltable* ;
 et même l'edge **opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur +
 survivorship ; et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve
@@ -64,6 +64,12 @@ empiler le carry **dilue** (orthogonal au trend mais corrélé +0.41 au cœur).
 |---|---|---|---|
 | 15 — Uniswap V3 LP (net de LVR) | **DOWNGRADE** | gate A PASS (frais > LVR markout, MMR naïf falsifié, robuste) mais agrégé capté par LP actifs/JIT ; solo passif : gas mainnet > edge | [`univ3-lvr/docs/FINDINGS.md`](univ3-lvr/docs/FINDINGS.md) |
 
+## V3 — DeFi complex yield (prime de smart-contract)
+
+| Piste | Verdict | Tueur | Fichier |
+|---|---|---|---|
+| 19/#23 — Pendle PT spread | KILL | Gate A PASS (prime brute +3.7 % médiane, marché mûr) mais Gate B : prime **priced-in** là où assurable (PT Ethena edge −1.3/−2.3 % vs cover Nexus live 3.4 %) et **inassurable** là où grasse (msUSD/USDai +4-6 %, 0 cover depeg) — efficience actuarielle bipolaire, 0 survivant à 200 bps | [`pendle/docs/FINDINGS.md`](pendle/docs/FINDINGS.md) |
+
 ## Opportunistes (bolt-on)
 
 | Piste | Verdict | Tueur | Fichier |
@@ -90,7 +96,10 @@ corrélé au 60/40) n'ajoute rien. Et un Sharpe absolu significatif (DSR 1.000 s
    CEF (bounce). L'edge ≈ son coût d'extraction.
 3. **Brut réel mangé par le tail / non-répétabilité** — carry (default exchange),
    LST (pré-redemption n=1), VRP actions (tail SVXY), VRP crypto (prime fat = early-market
-   2021-22, compressée au niveau actions en marché mûr). La prime ≈ le risque, ou un seul régime.
+   2021-22, compressée au niveau actions en marché mûr), **Pendle complex yield #23** (prime
+   réelle ≤ coût d'assurance live Nexus là où assurable ; inassurable là où grasse). La prime ≈
+   le risque, ou un seul régime. Cas Pendle = le plus net : le prix du risque est **lu sur un
+   marché d'assurance actuariel**, pas estimé.
 4. **Edge agrégé réel, capté par le participant sophistiqué** — V3 LP #15 (frais > LVR au
    niveau pool, mais récolté par les LP actifs/JIT ; solo passif tué par le gas). Même forme
    que CEF #8 (bounce capté par le plus rapide) et books sportifs #16 (+EV au book qui bannit).
@@ -104,7 +113,7 @@ corrélé au 60/40) n'ajoute rien. Et un Sharpe absolu significatif (DSR 1.000 s
   un alpha. Le **carry #17 confirmé inutile en portefeuille** (dilue : corrélé +0.41 au cœur)
   → le deliverable reste **mono-sleeve**, et cette construction est l'aboutissement, pas un
   22ᵉ edge.
-- **Méthode** : le **pipeline de 22 verdicts pré-enregistrés** — dont deux faux GO
+- **Méthode** : le **pipeline de 23 verdicts pré-enregistrés** — dont deux faux GO
   (VRP, CEF t=7.13) et un mirage in-sample (LST t=3.14) démasqués *avant* déploiement, un
   edge agrégé réel mais non-déployable honnêtement classé DOWNGRADE (V3 LP #15), et la
   construction META où un **faux « FORT » (DSR 1.000) a été rétrogradé en FAIBLE** parce que

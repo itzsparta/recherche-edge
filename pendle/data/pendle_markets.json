@@ -1,0 +1,803 @@
+[
+ {
+  "chain": "ethereum",
+  "name": "wstETH",
+  "ytm": 1.512,
+  "impliedApy": 0.025090674880065222,
+  "liquidity": 2643482.955369291,
+  "cats": [
+   "eth",
+   "blue-chips",
+   "lido"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "ynRWAx",
+  "ytm": 0.305,
+  "impliedApy": 0.10760988471696042,
+  "liquidity": 720413.1735015163,
+  "cats": [
+   "stables",
+   "rwa"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "stcUSD",
+  "ytm": 0.075,
+  "impliedApy": 0.06737737562909007,
+  "liquidity": 3300830.724477858,
+  "cats": [
+   "stables",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "cUSD",
+  "ytm": 0.075,
+  "impliedApy": 0.06819751470094726,
+  "liquidity": 1321881.762992186,
+  "cats": [
+   "points",
+   "stables"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "sAID",
+  "ytm": 0.094,
+  "impliedApy": 0.09357968181811005,
+  "liquidity": 167298.9288386133,
+  "cats": [
+   "stables",
+   "points",
+   "rwa"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "AID",
+  "ytm": 0.094,
+  "impliedApy": 0.1011272323165302,
+  "liquidity": 52674.04782241836,
+  "cats": [
+   "stables",
+   "rwa",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "sUSN",
+  "ytm": 0.094,
+  "impliedApy": 0.0954287201934303,
+  "liquidity": 1754539.965131262,
+  "cats": [
+   "stables",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "mTBILL",
+  "ytm": 0.094,
+  "impliedApy": 0.0362902616635945,
+  "liquidity": 53042.04764772309,
+  "cats": [
+   "stables",
+   "rwa",
+   "midas"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "sYUSD",
+  "ytm": 0.247,
+  "impliedApy": 0.04631626407036671,
+  "liquidity": 2116878.6820997414,
+  "cats": [
+   "points",
+   "stables"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "SIERRA",
+  "ytm": 0.018,
+  "impliedApy": 0.0928707397551587,
+  "liquidity": 16773380.26426934,
+  "cats": [
+   "stables",
+   "points",
+   "rwa"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "msUSD",
+  "ytm": 0.094,
+  "impliedApy": 0.09669894221076314,
+  "liquidity": 438740.7926356401,
+  "cats": [
+   "points"
+  ],
+  "stable": true
+ },
+ {
+  "chain": "ethereum",
+  "name": "msY",
+  "ytm": 0.094,
+  "impliedApy": 0.13397234125217383,
+  "liquidity": 2089204.988669109,
+  "cats": [
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "eEARN",
+  "ytm": 0.018,
+  "impliedApy": 0.09367618355636464,
+  "liquidity": 1059560.1789677406,
+  "cats": [
+   "stables"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "eTHIRD",
+  "ytm": 0.018,
+  "impliedApy": 0.07183768870659302,
+  "liquidity": 217085.7848100873,
+  "cats": [
+   "stables"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "eACRED",
+  "ytm": 0.018,
+  "impliedApy": 0.06892097018592258,
+  "liquidity": 50355.03596515894,
+  "cats": [
+   "rwa",
+   "stables"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "srmHYPER",
+  "ytm": 0.018,
+  "impliedApy": 0.126155685425553,
+  "liquidity": 154806.08591672435,
+  "cats": [
+   "stables",
+   "points",
+   "strata"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "jrmHYPER",
+  "ytm": 0.018,
+  "impliedApy": 0.13526225301926798,
+  "liquidity": 116709.03118401232,
+  "cats": [
+   "stables",
+   "points",
+   "strata"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "USDat",
+  "ytm": 0.171,
+  "impliedApy": 0.07456721625551332,
+  "liquidity": 9832838.215404196,
+  "cats": [
+   "stables",
+   "points",
+   "rwa",
+   "strc",
+   "saturn"
+  ],
+  "stable": true
+ },
+ {
+  "chain": "ethereum",
+  "name": "sUSDat",
+  "ytm": 0.171,
+  "impliedApy": 0.11099966232552871,
+  "liquidity": 3268645.606098407,
+  "cats": [
+   "points",
+   "rwa",
+   "strc",
+   "saturn"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "sENA",
+  "ytm": 0.247,
+  "impliedApy": 0.13641500212768531,
+  "liquidity": 2574195.006435774,
+  "cats": [
+   "points",
+   "ethena"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "USD (Midas mHYPER)",
+  "ytm": 0.247,
+  "impliedApy": 0.08969860233270932,
+  "liquidity": 833837.2851948346,
+  "cats": [
+   "stables",
+   "points",
+   "midas"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "mHyperBTC",
+  "ytm": 0.247,
+  "impliedApy": 0.03647945201150926,
+  "liquidity": 2008619.483294694,
+  "cats": [
+   "btc",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "USD (Midas mAPOLLO)",
+  "ytm": 0.247,
+  "impliedApy": 0.07582913987934714,
+  "liquidity": 2856219.578907309,
+  "cats": [
+   "points",
+   "stables",
+   "midas"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "USDe",
+  "ytm": 0.133,
+  "impliedApy": 0.05305373463294383,
+  "liquidity": 456486.10092048725,
+  "cats": [
+   "stables",
+   "points",
+   "ethena",
+   "rwa",
+   "blue-chips"
+  ],
+  "stable": true
+ },
+ {
+  "chain": "ethereum",
+  "name": "sUSDe",
+  "ytm": 0.133,
+  "impliedApy": 0.043249725337986655,
+  "liquidity": 9394172.351432651,
+  "cats": [
+   "stables",
+   "ethena",
+   "points",
+   "rwa",
+   "blue-chips"
+  ],
+  "stable": true
+ },
+ {
+  "chain": "ethereum",
+  "name": "loAZND",
+  "ytm": 0.018,
+  "impliedApy": 0.08542233484082562,
+  "liquidity": 53354.86022002177,
+  "cats": [
+   "stables",
+   "rwa",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "superUSDC",
+  "ytm": 0.42,
+  "impliedApy": 0.06976722303134864,
+  "liquidity": 2219318.490339366,
+  "cats": [
+   "stables",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "superWETH",
+  "ytm": 0.42,
+  "impliedApy": 0.05041264970614967,
+  "liquidity": 362168.34721355373,
+  "cats": [
+   "points",
+   "eth"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "srRoyAPYUSD",
+  "ytm": 0.362,
+  "impliedApy": 0.12232124359717078,
+  "liquidity": 200921.9623287623,
+  "cats": [
+   "points",
+   "rwa",
+   "strc",
+   "apyx"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "jrRoyAPYUSD",
+  "ytm": 0.362,
+  "impliedApy": 0.18963881413762906,
+  "liquidity": 610632.6721658388,
+  "cats": [
+   "points",
+   "rwa",
+   "strc",
+   "apyx"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "jrUSDat",
+  "ytm": 0.171,
+  "impliedApy": 0.17811013239351414,
+  "liquidity": 337772.72619470814,
+  "cats": [
+   "rwa",
+   "points",
+   "strc",
+   "strata",
+   "saturn"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "srUSDat",
+  "ytm": 0.171,
+  "impliedApy": 0.12159726977545038,
+  "liquidity": 1972348.0162930896,
+  "cats": [
+   "strc",
+   "points",
+   "rwa",
+   "strata",
+   "saturn"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "STRCx",
+  "ytm": 0.171,
+  "impliedApy": 0.22231156980949485,
+  "liquidity": 540373.3635418398,
+  "cats": [
+   "strc",
+   "rwa",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "savUSD",
+  "ytm": 0.113,
+  "impliedApy": 0.07935292161117768,
+  "liquidity": 842827.058043618,
+  "cats": [
+   "stables",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "USD (Midas mROX)",
+  "ytm": 0.094,
+  "impliedApy": 0.061523418234191274,
+  "liquidity": 140627.07642315832,
+  "cats": [
+   "stables",
+   "midas"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "sUSDD",
+  "ytm": 0.171,
+  "impliedApy": 0.07058180750228948,
+  "liquidity": 5051339.216133521,
+  "cats": [
+   "stables",
+   "_featured"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "PRIME",
+  "ytm": 0.171,
+  "impliedApy": 0.06092469982649784,
+  "liquidity": 109891.10163367941,
+  "cats": [
+   "rwa",
+   "stables"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "fxSAVE",
+  "ytm": 0.343,
+  "impliedApy": 0.07227853154686326,
+  "liquidity": 1183213.7080790251,
+  "cats": [
+   "stables"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "WOUSD",
+  "ytm": 0.477,
+  "impliedApy": 0.039809033472880895,
+  "liquidity": 1583389.556824696,
+  "cats": [
+   "stables"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "sUSDS",
+  "ytm": 0.42,
+  "impliedApy": 0.04982891354428309,
+  "liquidity": 5844189.447491991,
+  "cats": [
+   "stables",
+   "rwa",
+   "_featured",
+   "skymoney"
+  ],
+  "stable": true
+ },
+ {
+  "chain": "ethereum",
+  "name": "tmvUSDC",
+  "ytm": 0.343,
+  "impliedApy": 0.07957918316105017,
+  "liquidity": 1483311.0789393554,
+  "cats": [
+   "stables"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "apyUSD",
+  "ytm": 0.362,
+  "impliedApy": 0.14505194315664593,
+  "liquidity": 3268943.669292972,
+  "cats": [
+   "points",
+   "rwa",
+   "strc",
+   "apyx"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "apxUSD",
+  "ytm": 0.362,
+  "impliedApy": 0.09630002949091088,
+  "liquidity": 2949440.5077863038,
+  "cats": [
+   "points",
+   "rwa",
+   "strc",
+   "apyx"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "USD3",
+  "ytm": 0.477,
+  "impliedApy": 0.11609589980307189,
+  "liquidity": 4960859.155545818,
+  "cats": [
+   "stables",
+   "rwa"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "USDG",
+  "ytm": 0.247,
+  "impliedApy": 0.05476414995963519,
+  "liquidity": 4096414.582093362,
+  "cats": [
+   "stables",
+   "rwa"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "nOPAL",
+  "ytm": 0.228,
+  "impliedApy": 0.113338458544878,
+  "liquidity": 2599178.878627611,
+  "cats": [
+   "rwa",
+   "stables"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "jrNUSD",
+  "ytm": 0.228,
+  "impliedApy": 0.08011631209701853,
+  "liquidity": 567672.1529868656,
+  "cats": [
+   "stables",
+   "points",
+   "strata"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "srNUSD",
+  "ytm": 0.228,
+  "impliedApy": 0.07527209991257378,
+  "liquidity": 1319914.4749188183,
+  "cats": [
+   "stables",
+   "points",
+   "strata"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "sNUSD",
+  "ytm": 0.247,
+  "impliedApy": 0.06231883699052054,
+  "liquidity": 6080540.838966446,
+  "cats": [
+   "stables",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "NUSD",
+  "ytm": 0.247,
+  "impliedApy": 0.07335825944199503,
+  "liquidity": 177891.89787030697,
+  "cats": [
+   "stables",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "apyUSD",
+  "ytm": 0.171,
+  "impliedApy": 0.15025716073409656,
+  "liquidity": 6610749.1406042,
+  "cats": [
+   "points",
+   "rwa",
+   "strc",
+   "apyx"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "apxUSD",
+  "ytm": 0.171,
+  "impliedApy": 0.0740195180989105,
+  "liquidity": 4992317.11685429,
+  "cats": [
+   "points",
+   "rwa",
+   "strc",
+   "apyx"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "jrUSDe",
+  "ytm": 0.324,
+  "impliedApy": 0.06329816482390238,
+  "liquidity": 236418.88500922875,
+  "cats": [
+   "stables",
+   "points",
+   "ethena"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "srUSDe",
+  "ytm": 0.324,
+  "impliedApy": 0.03802313013403147,
+  "liquidity": 5052445.371893781,
+  "cats": [
+   "stables",
+   "points",
+   "ethena"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "sUSDf",
+  "ytm": 0.477,
+  "impliedApy": 0.05144587293431613,
+  "liquidity": 219439.3573529625,
+  "cats": [
+   "stables",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "reUSD",
+  "ytm": 0.458,
+  "impliedApy": 0.09603497338403266,
+  "liquidity": 4187812.904355022,
+  "cats": [
+   "stables",
+   "rwa",
+   "rexyz"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "reUSDe",
+  "ytm": 0.458,
+  "impliedApy": 0.15511121562795083,
+  "liquidity": 3008724.219128732,
+  "cats": [
+   "stables",
+   "rwa",
+   "rexyz"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "siUSD",
+  "ytm": 0.152,
+  "impliedApy": 0.07558401221765654,
+  "liquidity": 422446.04634034337,
+  "cats": [
+   "stables",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "ethereum",
+  "name": "sUSD3",
+  "ytm": 0.477,
+  "impliedApy": 0.18684468163206325,
+  "liquidity": 90409.59481760449,
+  "cats": [
+   "stables",
+   "rwa"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "arbitrum",
+  "name": "USDai",
+  "ytm": 0.305,
+  "impliedApy": 0.06214887809918124,
+  "liquidity": 50490818.32633059,
+  "cats": [
+   "stables",
+   "points",
+   "rwa"
+  ],
+  "stable": true
+ },
+ {
+  "chain": "arbitrum",
+  "name": "sUSDai",
+  "ytm": 0.305,
+  "impliedApy": 0.08576306207144868,
+  "liquidity": 14008445.12046457,
+  "cats": [
+   "stables",
+   "rwa",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "arbitrum",
+  "name": "sUSDai",
+  "ytm": 0.669,
+  "impliedApy": 0.08581160920559938,
+  "liquidity": 896673.7602000949,
+  "cats": [
+   "stables",
+   "rwa",
+   "points"
+  ],
+  "stable": false
+ },
+ {
+  "chain": "arbitrum",
+  "name": "USDai",
+  "ytm": 0.669,
+  "impliedApy": 0.06906639258689262,
+  "liquidity": 56447.41990194955,
+  "cats": [
+   "stables",
+   "points",
+   "rwa"
+  ],
+  "stable": true
+ }
+]

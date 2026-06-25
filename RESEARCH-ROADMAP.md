@@ -360,3 +360,60 @@ matériel — l'absence est neutralisée par le clawback sybil, et l'upside est 
 *Changer l'étang* reste **0/N**. **Bilan final : 15 pistes, 0 edge déployable.** Les deux candidats
 proposés en clôture (XS-momentum, airdrop) sont tombés — l'un en backtest (no-edge brut), l'autre en
 ledger (seuil labeur + mirage). Le vrai capital reste **le pipeline de 17 verdicts pré-enregistrés**.
+
+---
+
+## Suite — V3 (2026-06-23) : La "Prime de Saleté" (Messiness Premium)
+
+Le constat post-Piste 15 est sans appel : **là où l'information ou le prix est public et normalisé, un solo sans latence n'a pas d'edge récoltable.** Changer d'étang vers des contreparties moins sophistiquées (CEF, Polymarket) n'a pas suffi (l'efficience cachée ou la friction a tout mangé).
+
+Le seul monopole restant pour un solo ($ modeste, fort en code/data, zéro infra HFT) réside dans ce que les institutions **ne peuvent pas** ou **ne veulent pas** faire à cause de contraintes de compliance, de mandat, ou de coût de nettoyage des données. C'est l'étang de la saleté et de l'asynchronisme.
+
+Voici les 4 pistes de la V3 pour exploiter la prime de complexité opérationnelle :
+
+**Piste 16 — Alt-Data "Sale" et asynchrone (La prime de nettoyage)**
+- **Thèse :** Exploiter des données dures à normaliser (commits GitHub, embauches LinkedIn locales, documents judiciaires obscurs). Les fonds rejettent ces pipelines car trop fragiles à maintenir à grande échelle.
+- **Pourquoi ça résisterait :** C'est un monopole d'ingénierie "bricolée". L'information est publique mais illisible par les algos institutionnels.
+- **Gate de Kill :** L'alpha généré survit-il au slippage et au coût de maintenance du pipeline sur une période d'essai ?
+
+**Piste 17 — Value Betting sur Soft Bookmakers (L'arbitrage de lenteur)**
+- **Thèse :** Les bookmakers "Soft" (Winamax, Unibet) sont structurellement lents vs les "Sharps" (Pinnacle) car ils extraient de la marge sur le public récréatif, pas sur la justesse absolue.
+- **Pourquoi ça résisterait :** L'edge est garanti mais limité par le ban des comptes gagnants. L'institution ne peut pas "tourner" des comptes retail.
+- **Gate de Kill :** L'EV opérationnelle (net de marge) justifie-t-elle le temps manuel passé avant le ban inévitable du compte ?
+
+**Piste 18 — DeFi "Complex Yield" & Derivatives (Prime de Smart Contract)**
+- **Thèse :** Arbitrage de rendements sur des protocoles complexes type Pendle Finance (Principal Tokens vs Yield Tokens) ou boucles de Money Markets sur des L2 de niche.
+- **Pourquoi ça résisterait :** Prime de risque pur (Smart Contract hack risk) + KYC/Compliance institutionnelle qui bloque les gros fonds.
+- **Gate de Kill :** Le rendement net (après gas, slippage, bridge) bat-il le risque de hack mesuré par les primes d'assurances on-chain (ex: Nexus Mutual) ?
+- **Statut : KILL Gate B (2026-06-25, étude #23).** Dernier candidat pré-enregistré jamais run
+  (gates datés 2026-06-24). Sur le marché Pendle **mûr** : Gate A **PASS** (prime brute réelle,
+  spread PT stablecoin vs USDC AAVE médiane +3.7 %, 7/7 > 100 bps). Gate B **KILL** — le coût de
+  couverture **live** lu sur Nexus Mutual tranche : là où le risque est **assurable** (PT Ethena),
+  la prime (1.1-2.1 %) est < le cover (Pendle SC 1.15 % + depeg 2.25 % = 3.4 % floor) → **edge
+  négatif** (−1.3 / −2.3 %) ; là où la prime est **grasse** (msUSD +6.5 %, USDai/USDat +3.7-4.4 %),
+  le sous-jacent obscur n'a **aucun cover Nexus = inassurable** (+ 2/4 à TVL fantôme). **Zéro
+  survivant** à la barre 200 bps pré-enreg. *Efficience actuarielle bipolaire : pas de quadrant
+  grosse-prime-et-assurance-cheap.* La barrière compliance invoquée est réelle (fonds réglementés
+  absents) mais le marché DeFi natif + l'assureur Nexus pricent le risque sans eux. Sous-type de
+  mort #3 (prime ≈ risque), mécanisme neuf = prix du risque **lu** sur un marché d'assurance, pas
+  estimé. [`pendle/docs/FINDINGS.md`](pendle/docs/FINDINGS.md).
+
+**Piste 19 — Liquidity Provision active (DEX Toll-Booth)** *(traitée comme étude #15, V3 LP/LVR — DOWNGRADE)*
+- **Thèse :** Fournir de la liquidité concentrée (Uniswap V3) gérée dynamiquement sur des paires trop volatiles pour les MM traditionnels mais à fort volume retail (memes/alts).
+- **Pourquoi ça résisterait :** C'est l'inverse de l'arbitrage : on encaisse les frais. Trop complexe pour le retail (Impermanent Loss), trop petit pour un desk HFT.
+- **Gate de Kill :** Les frais de transaction ("yield") dépassent-ils la somme de l'Impermanent Loss et des frais de gas nécessaires aux rééquilibrages fréquents ?
+- **Statut : DOWNGRADE** (#15, frais > LVR au niveau pool mais capté par LP actifs/JIT ; solo passif tué par gas mainnet). [`univ3-lvr/docs/FINDINGS.md`](univ3-lvr/docs/FINDINGS.md).
+
+## Bilan V3 + programme (2026-06-25) — 23 études, 0 edge déployable
+
+Les 4 pistes V3 "Prime de Saleté" sont **toutes rendues** : alt-data sale (rejet filtre,
+commoditisée), books sportifs (#16 KILL), Uniswap V3 LP (#15 DOWNGRADE), Pendle complex yield
+(#23 KILL). Avec la construction META (#22, KEEP-2-SLEEVE-FAIBLE) le programme atteint **23 études**.
+Le **dernier candidat pré-enregistré non-run** (Pendle) étant désormais clos, il **ne reste aucune
+piste spécifiée en attente**. Le motif unifié tient sans exception sur les 23 : *à information/prix
+public, un solo n'a pas d'edge récoltable* ; et quand l'edge structurel est réel (carry, LST, VRP,
+LP V3, Pendle), il est **arbitré jusqu'à son coût** (tail, friction, bounce, gas, ou — cas Pendle —
+le prix d'assurance actuariel lui-même). Seul deliverable trading = sleeve trend sur 60/40 (assurance-
+crise, #22). Vrai capital = le pipeline de 23 verdicts pré-enregistrés. Toute reprise future exige
+une **arme structurelle neuve**, pas une nouvelle canne dans l'eau morte.
+

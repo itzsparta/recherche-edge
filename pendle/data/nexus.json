@@ -1,0 +1,723 @@
+{
+ "pendle": [
+  {
+   "id": 128,
+   "name": "Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    },
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    },
+    {
+     "assetId": 7,
+     "assetSymbol": "cbBTC"
+    }
+   ],
+   "initialPriceRatio": "1000",
+   "capacityReductionRatio": "0",
+   "isDeprecated": false,
+   "useFixedPrice": false,
+   "metadata": "",
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 0,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 143,
+   "name": "EigenLayer + Ether.fi + Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmcmePeAwHQgKLpdAYvwxAUMcNydSYPgMfBrc74ikCrcL5"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "liquid-restaking",
+   "isPrivate": false
+  },
+  {
+   "id": 153,
+   "name": "EigenLayer + KelpDAO + Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmPeGsJEP9nDV7DBHpXPZGd9FXFy5XR7Wd8Z7L5bCMhosv"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "liquid-restaking",
+   "isPrivate": false
+  },
+  {
+   "id": 154,
+   "name": "EigenLayer + Renzo + Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmPXPEAZ4hsLBdbpcMhEiKBwUANqohE7BSscvtZ7b4amx3"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "liquid-restaking",
+   "isPrivate": false
+  },
+  {
+   "id": 155,
+   "name": "EigenLayer + Swell + Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmTLMiq9wB39Z5Z7VK5sAKfkdEuGM4KXUWpqWu5Nn9ZoHT"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "liquid-restaking",
+   "isPrivate": false
+  },
+  {
+   "id": 160,
+   "name": "Etherfi (Zircuit) Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmdUDjxeoAHmjydTnUmU2VPerzoRXpo8c7NjGjmbmC9AEV"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "liquid-restaking",
+   "isPrivate": false
+  },
+  {
+   "id": 161,
+   "name": "KelpDAO (Zircuit) Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmUD3G8kqMdJ32CspFPjJgRXunh6KfBb1NRWtyVBvSLhe7"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "liquid-restaking",
+   "isPrivate": false
+  },
+  {
+   "id": 162,
+   "name": "Renzo (Zircuit) Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmYKyLc7eMjbXEXMTvPcEidZoTKC7e6G2pJANkZ84QHJpr"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "liquid-restaking",
+   "isPrivate": false
+  },
+  {
+   "id": 170,
+   "name": "sUSDe Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmRHJyKquZa4X2NUyM2BXJYncoUTtb622Uj2kdZRwv32AV"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 171,
+   "name": "sUSDe (Karak) Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmcHcE2iqsjFEotqQqutzkPBSSem8hq5FsFeYQJoo3Mg6s"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 176,
+   "name": "Ether.fi (Karak) Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmPgxu3Q3TF3Rbt8R3hVNuVodfyUSXUEStQdwgd9gKhWvs"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 177,
+   "name": "EigenLayer + Puffer + Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmUzQ87q5BQgpmpjWeEuHHA6pnmCcwg5H5NB1nrPqfTFmC"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 178,
+   "name": "EigenLayer + Bedrock + Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmQp25a2nBWLG8DCzFkXyxtVppdB8RkqRaDo7Qkdtuxvre"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 179,
+   "name": "crvUSD (Silo) Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmeZZcPqe13kCrUM7JaPgcs7Ce1A8Z5c7fqBhzqC32en7z"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 203,
+   "name": "rstETH Symbiotic + Mellow + Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmQHrgBDFMcsctniwXQQdE7JoU7Zm92Eyizh6HtpnAkkLa"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 204,
+   "name": "amphrETH Symbiotic + Mellow + Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmdmjZo6cmoB4amzYdNYWrNmLJ3wAQEPFCHF31LE236821"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 205,
+   "name": "steakLRT Symbiotic + Mellow + Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmYCcHXmJa4CQ6jUNSDW1DqHkpTgM8hH1AZ2ZFLKSLfrGz"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 206,
+   "name": "Re7LRT Symbiotic + Mellow + Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmckCaqQRHb78goFuu7ujFnaU9VzafiGufDGvPEvLjXmHd"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 248,
+   "name": "Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 0,
+     "assetSymbol": "ETH"
+    },
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    },
+    {
+     "assetId": 7,
+     "assetSymbol": "cbBTC"
+    }
+   ],
+   "initialPriceRatio": "500",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "Qmd3T9SAyZaNVuCTG4DmtzpNvb1TcD5UpuHg6Aar5Fyfhp"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 346,
+   "name": "Cap Pendle Market",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "500",
+   "capacityReductionRatio": "0",
+   "isDeprecated": false,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmTJWF7aaQM4Dqekkzjt8Q8BkCEz9eJDF6g2psFPftLBT5"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  }
+ ],
+ "ethena": [
+  {
+   "id": 170,
+   "name": "sUSDe Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmRHJyKquZa4X2NUyM2BXJYncoUTtb622Uj2kdZRwv32AV"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 171,
+   "name": "sUSDe (Karak) Pendle",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "750",
+   "capacityReductionRatio": "0",
+   "isDeprecated": true,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmcHcE2iqsjFEotqQqutzkPBSSem8hq5FsFeYQJoo3Mg6s"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 11,
+   "category": "yield-optimizer",
+   "isPrivate": false
+  },
+  {
+   "id": 253,
+   "name": "Ethena USDe Depeg",
+   "minPrice": "150",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "500",
+   "capacityReductionRatio": "0",
+   "isDeprecated": false,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmVPqHBpDVh2hk64LS7hXPm6BVK5a7UeHdRGpH5SqmU6SM"
+   },
+   "allowedPools": [],
+   "timestamp": 1761821039,
+   "productType": 21,
+   "category": "depeg",
+   "isPrivate": false
+  },
+  {
+   "id": 379,
+   "name": "PT Ethena sUSDE 5FEB2026 (Aave)",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "160",
+   "capacityReductionRatio": "0",
+   "isDeprecated": false,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "Qmeyyip8BYSsYKgV8pbSC9RfLG6dz7QyMRqNmsUA1x2RGd"
+   },
+   "allowedPools": [
+    1,
+    23,
+    22,
+    2,
+    5
+   ],
+   "timestamp": 1766059655,
+   "productType": 24,
+   "category": "uncategorized",
+   "isPrivate": true
+  },
+  {
+   "id": 380,
+   "name": "PT Ethena USDe 5FEB2026 (Aave)",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "160",
+   "capacityReductionRatio": "0",
+   "isDeprecated": false,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "Qmf23aA6Bx5K48fck7MyD1abegwJ6JtiCBAkPhvVT13o39"
+   },
+   "allowedPools": [
+    1,
+    23,
+    22,
+    2,
+    5
+   ],
+   "timestamp": 1766059655,
+   "productType": 24,
+   "category": "uncategorized",
+   "isPrivate": true
+  },
+  {
+   "id": 381,
+   "name": "PT Ethena sUSDE 15JAN2026 (Aave)",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "160",
+   "capacityReductionRatio": "0",
+   "isDeprecated": false,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmRVSarMd7WF7SRnis8gKAECXrD4vBdNdURHufWppwFyZj"
+   },
+   "allowedPools": [
+    1,
+    23,
+    22,
+    2,
+    5
+   ],
+   "timestamp": 1766059655,
+   "productType": 24,
+   "category": "uncategorized",
+   "isPrivate": true
+  },
+  {
+   "id": 382,
+   "name": "PT Ethena USDe 15JAN2026 (Aave)",
+   "minPrice": "0",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "160",
+   "capacityReductionRatio": "0",
+   "isDeprecated": false,
+   "useFixedPrice": false,
+   "metadata": {
+    "annex": "QmdBsoyWvEUoUBLHS6t233VeWtmJMVPtzT89qbssTNNRmQ"
+   },
+   "allowedPools": [
+    1,
+    23,
+    22,
+    2,
+    5
+   ],
+   "timestamp": 1766059655,
+   "productType": 24,
+   "category": "uncategorized",
+   "isPrivate": true
+  },
+  {
+   "id": 428,
+   "name": "USDe / USDG (Kamino)",
+   "minPrice": "450",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "500",
+   "capacityReductionRatio": "0",
+   "isDeprecated": false,
+   "useFixedPrice": true,
+   "metadata": {
+    "version": "1.0",
+    "annex": "QmRKdXufj7Fj3Kh1GE85y2uNLB6BeZd9X2hVk1V1kkPczZ"
+   },
+   "allowedPools": [
+    23,
+    22,
+    1,
+    2,
+    5
+   ],
+   "timestamp": 1778767355,
+   "productType": 24,
+   "isPrivate": true
+  },
+  {
+   "id": 435,
+   "name": "sUSDe / USDtb (Morpho)",
+   "minPrice": "214",
+   "coverAssets": [
+    {
+     "assetId": 6,
+     "assetSymbol": "USDC"
+    }
+   ],
+   "initialPriceRatio": "300",
+   "capacityReductionRatio": "0",
+   "isDeprecated": false,
+   "useFixedPrice": true,
+   "metadata": {
+    "version": "1.0",
+    "annex": "QmZFsADmVkDobPimByVo4kia7z4vRpjnt6UcfhKug5p1g9"
+   },
+   "allowedPools": [
+    22,
+    23,
+    1,
+    2,
+    5
+   ],
+   "timestamp": 1780357187,
+   "productType": 24,
+   "isPrivate": true
+  }
+ ]
+}

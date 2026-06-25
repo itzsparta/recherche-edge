@@ -292,3 +292,179 @@ d'être arbitré-jusqu'au-coût à l'identique. Justification du test : coût ma
 **Prior honnête.** Après 7 kills à motif serré, proba qu'une piste neuve donne un edge déployable =
 basse. Mais 8 et 10 attaquent un étang *structurellement différent*, pas une nouvelle canne dans
 l'eau morte. C'est la seule façon de ne pas refaire les 7 mêmes kills.
+
+---
+
+## 2026-06-24 — Session automatisée de scouting
+
+### Contexte lu avant de proposer
+
+- RESEARCH-ROADMAP.md relu intégralement.
+- **22 pistes testées, 0 edge déployable.** MEMORY mis à jour avec bilan complet.
+- V1+V2 closes (pistes 1-14) : trend, unlocks, niche-cap, VRP, calendrier, carry, RV BTC/ETH,
+  CEF, LST, Polymarket, funding-XS, XS-momentum, VRP-crypto, airdrop.
+- V3 "Prime de Saleté" partiellement traitée : p16 sports books = KILL ; p15 Uniswap V3 LP =
+  KILL déployabilité ; p17 FX carry G10 = KILL ; p18 GEX dealer-gamma = KILL-tradable.
+- **Non testés dans le ROADMAP V3** : (A) Alt-Data "Sale" (commits GitHub/LinkedIn/judiciaire),
+  (B) DeFi Complex Yield / Pendle Finance (piste 18 ROADMAP).
+
+---
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Alt-Data "sale" : commits GitHub vs résultats logiciels
+
+- **Mécanisme candidat :** Accélération des commits GitHub d'une software company avant ses
+  earnings = indicateur leading de product readiness → bat le consensus EPS.
+- **Filtre 1 (info publique mangée ?) :** **OUI, entièrement.** Les fournisseurs d'alt-data
+  professionnels (Quandl, YipitData, Sentieo, Thinknum) vendent exactement ce signal depuis
+  2017+. Two Sigma, Citadel et Acadian l'intègrent dans leurs features. Il n'y a aucun avantage
+  informationnel qu'un solo sans licence peut extraire que ces acteurs n'ont pas déjà arbitré.
+  La commodity-isation de l'alt-data GitHub/LinkedIn constitue le motif ici : le monopole
+  d'ingénierie "bricolée" a une durée de vie de 12-24 mois avant que les vendors le packagisent.
+  Pour les signaux datant de 2015+, la fenêtre est fermée.
+- **REJET.** L'effort d'ingestion n'achetterait pas d'edge ; juste de la réplication d'un signal
+  déjà institutionnalisé.
+
+---
+
+#### Piste B — NAV arb crypto ETF overnight (IBIT / FBTC)
+
+- **Mécanisme candidat :** Les ETFs Bitcoin cotés sur NYSE Arca (IBIT, FBTC) closent à 16h EST.
+  BTC trade 24/7. Un mouvement overnight de BTC >2% crée un "gap at open" prévisible le
+  lendemain à 9h30. Acheter/shorter l'ETF en pré-marché dans la direction du mouvement nocturne.
+- **Filtre 1 :** **OUI, instamment arbitré.** Les Authorized Participants (AP : Jane Street, Virtu,
+  Citadel Securities) ont pour mandat explicite de fermer tout écart ETF/NAV en créant ou
+  rachetant des parts. En pré-marché, le bid/ask de l'ETF reflète déjà le BTC spot à travers la
+  prime/décote NAV que les APs surveillent en temps réel. L'arb se ferme en millisecondes à
+  l'ouverture des marchés. Un solo en pré-marché face aux APs = même structure de mort que la
+  piste 3 (niche capacité) mais 10x plus rapide.
+- **REJET.** Structure d'échec identique aux pistes d'arb pur : APs institutionnels ferment
+  l'écart par construction de leur mandat.
+
+---
+
+#### Piste C — Pendle Finance Principal Tokens : spread vs taux sans risque ★ CANDIDATE
+
+- **Filtre 1 (info publique mangée ?) :** AMBIGU — voir mini-spec ci-dessous.
+- **Filtre 2 (data accessible gratuitement ?)** : OUI — API Pendle v2 publique, DefiLlama
+  yields API, Nexus Mutual cover cost public.
+- **PASSE les deux filtres prudemment.** Le niveau de yield est public, mais la question
+  n'est pas le niveau brut — c'est si le spread net (PT yield − USDC lending − SC insurance)
+  est positif de façon persistante. Ce n'est pas directement lisible sans calcul.
+
+---
+
+### Mini-spec piste C — Pendle Finance Principal Token spread
+
+#### Hypothèse d'edge
+
+Un Principal Token (PT) Pendle sur un actif stablecoin (sUSDe, USDE, USDe+) offre un taux
+fixe jusqu'à maturité = `(1 − PT_price) / T_years`. Ce taux implicite incorpore une prime pour
+le smart contract risk (SC risk) du protocole Pendle + du protocole sous-jacent. Si cette prime
+est systématiquement **supérieure à l'actuariel** (coût de couverture SC via Nexus Mutual), alors
+acheter le PT + couvrir le SC risk = rendement net positif vs USDC lending sur AAVE, sans
+exposition directionnelle crypto.
+
+Formellement : `PT_yield_implied − USDC_AAVE_rate − SC_insurance_annual_cost > 0` de façon
+persistante sur ≥12 mois (dont le sous-échantillon mûr 2025-2026, leçon p12+p13 Gate G).
+
+#### Source de l'inefficience structurelle — pourquoi NON entièrement arbitrée
+
+1. **Barrière compliance institutionnelle** : aucun fonds réglementé (UCITS, 40-Act, pension)
+   ne peut positionner en DeFi non-KYC sur Ethereum mainnet. Les desks de taux fixes
+   institutionnels qui pourraient comparer un PT de 6 mois à un T-bill sont
+   structurellement absents. C'est la même barrière qui préservait le carry (p6) avant que
+   le tail exchange ne le tue — ici pas de tail exchange, juste du SC risk.
+2. **Complexité opérationnelle réelle** : le mécanisme PT/YT de Pendle + le risque oracle
+   (Pendle utilise des price feeds pour les yield tokens) + la subtilité du pool AMM
+   (Pendle SY = Standardized Yield wrapper) est une barrière d'entrée documentée. La
+   documentation n'est pas un prospectus UCITS accessible à un analyste credit.
+3. **Capacité** : TVL des pools Pendle stablecoin = $50M−$500M. Pour $5k−$50k : impact
+   d'exécution négligeable. Un fonds qui voudrait y mettre $50M déplacerait le marché.
+4. **SC insurance** : Nexus Mutual couvre Pendle Finance avec des cover costs typiquement de
+   1−3%/an. Cette couverture est rarement achetée en pratique (la plupart des LP Pendle
+   sont non-couverts) → la prime brute inclut SC risk payé, mais pas par des acteurs
+   diversifiés qui pourraient compresser ce spread.
+
+#### Falsifiabilité — pourquoi ça peut mourir
+
+- **Gate A** : si PT yield ≤ USDC lending rate + 100 bps sur le panel récent → aucun spread
+  à explorer ; KILL immédiat (< 30 min de code).
+- **Gate B actuariel** : si prime brute = coût de couverture Nexus Mutual → entièrement
+  priced-in, pas d'inefficience exploitable. C'est le kill le plus probable : le marché
+  Pendle peut être "efficient" au sens où le spread brut = exactement la prime de SC risk.
+- **Gate C OOS mûr** : si le spread existe en 2023−2024 mais pas en 2025−2026 (maturité du
+  marché Pendle = densification des LP yield-hunters) → artefact early-market (même leçon
+  p12+p13 crypto, Gate G obligatoire).
+- **Hack matérialisé** : Penpie (protocole adjacent Pendle) hacké pour $27M en sept. 2024.
+  Le tail SC risk a déjà été réalisé une fois. La prime peut être correctement calibrée.
+- **Yield aggregators** : Pendle strategies sur Equilibria et Convex Pendle apportent du
+  capital institutionnalisé dans les pools → compriment le spread.
+
+#### Data sources (toutes gratuites)
+
+| Source | Données | Accès |
+|--------|---------|-------|
+| `api-v2.pendle.finance/core/v1/` | Prix PT, yield implicite, pools actifs | REST public, no auth |
+| `yields.llama.fi` (DefiLlama) | USDC lending rate AAVE/Compound, historical | REST public |
+| `nexusmutual.io/api` / on-chain | Cover cost annuel par protocole | Web scrape ou GraphQL |
+| The Graph (Pendle subgraph) | Historical PT prices, pool swaps | GraphQL public |
+
+Pipeline data = ~100 lignes Python. Pas de backtest lourd : Gate A est un data-pull, Gate B
+est un calcul simple (spread brut vs cover cost), Gate C est une comparaison is/oos.
+
+#### Gates de décision — pré-enregistrés ici avant tout run
+
+| Gate | Critère PASS | Critère KILL |
+|------|-------------|--------------|
+| **(A) Spread brut positif** | `PT_yield − USDC_AAVE_rate > 100 bps` sur ≥80% des obs récentes (pools stablecoins matures) | Médiane ≤100 bps → insuffisant pour couvrir gas + slippage |
+| **(B) Actuariel** | `Spread_brut − SC_insurance_cost (Nexus) > 0` de façon persistante | Spread ≤ cover cost → entièrement priced-in, pas d'inefficience |
+| **(C) Persistance OOS mûr** | Spread net positif sur 2025-06 → 2026-06 (12 mois récents) ; Gate G obligatoire leçon p12+p13 | Disparaît sur sous-échantillon mûr → artefact early-market |
+| **(D) Dose-réponse** | Spread croît avec la durée à maturité (risque temporel SC = logique) | Plate ou inversée → structure incohérente |
+| **(E) Liquidité réelle** | Exécution $10k sans impact > 25 bps sur pool cible | Impact > spread → capacité fantôme (leçon piste 3) |
+
+Signal pré-enregistré : PT stablecoin uniquement (sUSDe, USDe, PT-USDC-*) — exclut les PT sur
+actifs volatils (stETH, BTC) qui ajoutent exposition directionnelle non souhaitée. Durée cible :
+1−6 mois à maturité (assez court pour que la comparaison AAVE soit valide, assez long pour absorber
+gas).
+
+#### Coût d'implémentation et levier
+
+Aucun levier. Achat direct de PT sur mainnet Ethereum ou Arbitrum. Frais : Pendle swap fee
+0.1% + gas ($3−$10 sur Arbitrum L2, << sur mainnet mainnet). Pour 3−6 mois à maturité, les frais
+sont absorbables si le spread dépasse 200 bps.
+
+**Honnêteté brutale.** Le tueur le plus probable est le Gate B : le spread brut visible sur
+Pendle.finance **existe** (les pools stablecoin affichaient 6−12% APY fixe en 2023−2024 quand
+AAVE USDC était à 3−8%), mais cette différence peut être exactement le SC risk correctement
+pricé par le marché (Penpie hack = réalisation du tail). Le test dit si c'est un artefact ou
+un edge. Sans run de données, on ne sait pas — c'est la définition d'une candidate non encore
+tuée.
+
+#### Verdict (run 2026-06-25, étude #23) — KILL Gate B, le tueur annoncé
+
+**Gate A PASS, Gate B KILL — exactement le tueur le plus probable pré-dit.** Sur le marché
+Pendle **mûr** (snapshot 2026-06-25, 63 PT actifs / 7 stablecoin) : la prime brute **existe**
+(spread PT vs USDC AAVE médiane +3.7 %, 7/7 > 100 bps → A PASS). Mais le coût de couverture
+**live** lu sur Nexus Mutual (`v2/capacity`) tranche en deux familles, sans quadrant exploitable :
+**(1) assurable → priced-in** (PT Ethena : prime 1.1-2.1 % < cover Pendle SC 1.15 % + depeg 2.25 %
+= 3.4 % floor → edge **−1.3 / −2.3 %**) ; **(2) prime grasse → inassurable** (msUSD +6.5 %,
+USDai/USDat +3.7-4.4 %, sous-jacent obscur, **0 cover depeg Nexus** ; 2/4 à TVL fantôme $0.1-0.4M).
+**Zéro survivant** à la barre 200 bps pré-enreg. Tué en <1h comme prévu, Gate C/D/E inutiles.
+Mécanisme neuf : le prix du risque est **lu sur un marché d'assurance actuariel**, pas estimé →
+forme la plus nette du motif *structurel ≠ gratuit*. Détail :
+[`pendle/docs/FINDINGS.md`](../pendle/docs/FINDINGS.md).
+
+---
+
+### Résumé 3 lignes
+
+2 pistes rejetées en filtrage : Alt-Data GitHub (signal déjà commoditisé par vendors institutionnels
+depuis 2017) et NAV arb ETF crypto (APs ferment l'écart en millisecondes par construction). **Piste C
+Pendle Finance PT spread** = seule candidate : barrière compliance institutionnelle réelle + capacité
+solo avantageuse + data gratuite API. Gate A (spread brut >100 bps) et Gate B (spread > coût SC
+assurance Nexus Mutual) doivent être vérifiés avant tout run — si Gate B KILL, thèse morte en <1h de
+code. **→ Run 2026-06-25 : KILL Gate B confirmé** (Gate A PASS, prime priced-in là où
+assurable / inassurable là où grasse, 0 survivant). Voir verdict ci-dessus + `pendle/docs/FINDINGS.md`.
+

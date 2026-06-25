@@ -1,0 +1,111 @@
+{
+ "asof": "2026-06-25T14:29:25.003106+00:00",
+ "bench": {
+  "ethereum": 3.20816,
+  "arbitrum": 2.48308
+ },
+ "pendle_sc": {
+  "floor": 1.15,
+  "mx": 1.5,
+  "avail": 13222078.778415
+ },
+ "ethena_depeg": {
+  "floor": 2.25,
+  "mx": 3.5000000000000004,
+  "avail": 2537053.697888
+ },
+ "gateA_pass": true,
+ "rows": [
+  {
+   "chain": "ethereum",
+   "name": "msUSD",
+   "ytm": 0.094,
+   "impApy": 9.67,
+   "spread": 6.46,
+   "cover_floor": 1.15,
+   "cover_max": 1.5,
+   "edge_floor": 5.31,
+   "tvl_m": 0.4,
+   "insurable": false,
+   "note": "Pendle SC ; sous-jacent obscur: AUCUN cover depeg Nexus = NON-assurable"
+  },
+  {
+   "chain": "arbitrum",
+   "name": "USDai",
+   "ytm": 0.669,
+   "impApy": 6.91,
+   "spread": 4.42,
+   "cover_floor": 1.15,
+   "cover_max": 1.5,
+   "edge_floor": 3.27,
+   "tvl_m": 0.1,
+   "insurable": false,
+   "note": "Pendle SC ; sous-jacent obscur: AUCUN cover depeg Nexus = NON-assurable"
+  },
+  {
+   "chain": "ethereum",
+   "name": "USDat",
+   "ytm": 0.171,
+   "impApy": 7.46,
+   "spread": 4.25,
+   "cover_floor": 1.15,
+   "cover_max": 1.5,
+   "edge_floor": 3.1,
+   "tvl_m": 9.8,
+   "insurable": false,
+   "note": "Pendle SC ; sous-jacent obscur: AUCUN cover depeg Nexus = NON-assurable"
+  },
+  {
+   "chain": "arbitrum",
+   "name": "USDai",
+   "ytm": 0.305,
+   "impApy": 6.21,
+   "spread": 3.73,
+   "cover_floor": 1.15,
+   "cover_max": 1.5,
+   "edge_floor": 2.58,
+   "tvl_m": 50.5,
+   "insurable": false,
+   "note": "Pendle SC ; sous-jacent obscur: AUCUN cover depeg Nexus = NON-assurable"
+  },
+  {
+   "chain": "ethereum",
+   "name": "USDe",
+   "ytm": 0.133,
+   "impApy": 5.31,
+   "spread": 2.1,
+   "cover_floor": 3.4,
+   "cover_max": 5.0,
+   "edge_floor": -1.3,
+   "tvl_m": 0.5,
+   "insurable": true,
+   "note": "Pendle SC+Ethena depeg"
+  },
+  {
+   "chain": "ethereum",
+   "name": "sUSDS",
+   "ytm": 0.42,
+   "impApy": 4.98,
+   "spread": 1.77,
+   "cover_floor": 1.15,
+   "cover_max": 1.5,
+   "edge_floor": 0.62,
+   "tvl_m": 5.8,
+   "insurable": true,
+   "note": "Pendle SC"
+  },
+  {
+   "chain": "ethereum",
+   "name": "sUSDe",
+   "ytm": 0.133,
+   "impApy": 4.32,
+   "spread": 1.12,
+   "cover_floor": 3.4,
+   "cover_max": 5.0,
+   "edge_floor": -2.28,
+   "tvl_m": 9.4,
+   "insurable": true,
+   "note": "Pendle SC+Ethena depeg"
+  }
+ ]
+}
