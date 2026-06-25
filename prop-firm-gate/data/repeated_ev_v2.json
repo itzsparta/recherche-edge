@@ -1,0 +1,184 @@
+{
+  "params": {
+    "C_FIXED": 0.0005,
+    "SWAP_BP": 1.5,
+    "WIDEN_BP": 0.5,
+    "REENTRY_BP": 1.0,
+    "SIGMA_ASSET_GRID": [
+      0.005,
+      0.007,
+      0.01
+    ],
+    "SUB": 24
+  },
+  "static": {
+    "sa_0.005": {
+      "best": {
+        "P1": 0.323625,
+        "P2": 0.5433,
+        "Pboth": 0.1758254625,
+        "E_skim_frac_given_funded": 0.05127538054076469,
+        "P_payout": 0.487,
+        "skim_usd_per_funded": 4102.030443261176,
+        "funded_term": 721.2413998754762,
+        "refund_term": 46.23858012825,
+        "fee_paid": 378.0,
+        "EV": 389.47998000372615,
+        "cost_day": 0.0011,
+        "sigma_day": 0.02,
+        "kind": "static",
+        "mode": "flat",
+        "sigma_asset": 0.005,
+        "c_fixed": 0.0005,
+        "cost_day_eff": 0.0011,
+        "L": 4.0
+      },
+      "breakeven_cfixed": null
+    },
+    "sa_0.007": {
+      "best": {
+        "P1": 0.331575,
+        "P2": 0.54665,
+        "Pboth": 0.18125547375,
+        "E_skim_frac_given_funded": 0.053929042355360106,
+        "P_payout": 0.496275,
+        "skim_usd_per_funded": 4314.323388428808,
+        "funded_term": 781.994729680369,
+        "refund_term": 48.574382527051874,
+        "fee_paid": 378.0,
+        "EV": 452.56911220742086,
+        "cost_day": 0.0009857142857142857,
+        "sigma_day": 0.02,
+        "kind": "static",
+        "mode": "flat",
+        "sigma_asset": 0.007,
+        "c_fixed": 0.0005,
+        "cost_day_eff": 0.0009857142857142857,
+        "L": 2.857142857142857
+      },
+      "breakeven_cfixed": 0.0014946172473158368,
+      "cost_curve": [
+        {
+          "c": 0.0003,
+          "EV": 628.2668734720672
+        },
+        {
+          "c": 0.0005,
+          "EV": 468.27079439872614
+        },
+        {
+          "c": 0.001,
+          "EV": 164.68564541386218
+        },
+        {
+          "c": 0.002,
+          "EV": -168.27008208567347
+        },
+        {
+          "c": 0.003,
+          "EV": -303.5248845103078
+        }
+      ],
+      "bankroll": [
+        {
+          "K": 1,
+          "P_profit": 0.09258,
+          "median": -378.0,
+          "mean": 484.1531982421875,
+          "budget": 378.0
+        },
+        {
+          "K": 5,
+          "P_profit": 0.34962,
+          "median": -1890.0,
+          "mean": 2391.277099609375,
+          "budget": 1890.0
+        },
+        {
+          "K": 10,
+          "P_profit": 0.518215,
+          "median": 526.67919921875,
+          "mean": 4835.7412109375,
+          "budget": 3780.0
+        },
+        {
+          "K": 20,
+          "P_profit": 0.664025,
+          "median": 5822.30859375,
+          "mean": 9623.935546875,
+          "budget": 7560.0
+        },
+        {
+          "K": 50,
+          "P_profit": 0.82968,
+          "median": 20412.234375,
+          "mean": 24116.556640625,
+          "budget": 18900.0
+        }
+      ],
+      "net_mean": 483.1145324707031,
+      "net_median": -378.0,
+      "net_p_pos": 0.09245833333333334
+    },
+    "sa_0.01": {
+      "best": {
+        "P1": 0.34335,
+        "P2": 0.558075,
+        "Pboth": 0.19161505125,
+        "E_skim_frac_given_funded": 0.05640367160422016,
+        "P_payout": 0.504125,
+        "skim_usd_per_funded": 4512.293728337613,
+        "funded_term": 864.6233940104653,
+        "refund_term": 52.162886364159384,
+        "fee_paid": 378.0,
+        "EV": 538.7862803746247,
+        "cost_day": 0.0009,
+        "sigma_day": 0.02,
+        "kind": "static",
+        "mode": "flat",
+        "sigma_asset": 0.01,
+        "c_fixed": 0.0005,
+        "cost_day_eff": 0.0009,
+        "L": 2.0
+      },
+      "breakeven_cfixed": null
+    }
+  },
+  "trailing": {
+    "sa_0.007": {
+      "best": {
+        "P1": 0.14045,
+        "P2": 1.0,
+        "Pboth": 0.14045,
+        "E_skim_frac_given_funded": 0.014213657199002756,
+        "P_payout": 0.330975,
+        "skim_usd_per_funded": 639.6145739551241,
+        "funded_term": 89.83386691199718,
+        "refund_term": 0.0,
+        "fee_paid": 330.0,
+        "EV": -240.16613308800282,
+        "cost_day": 0.000742857142857143,
+        "sigma_day": 0.01,
+        "kind": "trailing",
+        "mode": "flat",
+        "sigma_asset": 0.007,
+        "c_fixed": 0.0005,
+        "cost_day_eff": 0.000742857142857143,
+        "L": 1.4285714285714286
+      }
+    }
+  },
+  "v1_ref": {
+    "EV": 693.4445391151928,
+    "sigma": 0.02,
+    "Pboth": 0.2116012925
+  },
+  "verdict": {
+    "G1": true,
+    "G2": true,
+    "G3": true,
+    "verdict": "GO",
+    "EV_v1": 693.4445391151928,
+    "EV_v2": 452.56911220742086
+  }
+}

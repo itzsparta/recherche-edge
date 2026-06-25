@@ -109,3 +109,44 @@ et qu'une sim ne peut pas. Cohérent avec l'objectif révisé (*valider un compt
 et non le single-shot (loterie #24) ni le trailing (Topstep, buffer cassé). Le deliverable trading
 du programme passe de « mono-sleeve trend » à « **mono-sleeve trend + GO-pending-live prop
 buffer-harvest** ».
+
+## Revue technique du Brief #26 — sim v2 coût scalé-levier (`repeated_ev_v2.py`)
+
+Une revue externe a soulevé 5 vulnérabilités. Tri honnête après vérification :
+
+1. **« Daily-DD = 2ᵉ barrière absorbante mobile non modélisée »** → **FAUX**. Déjà dans le moteur :
+   `floor = np.maximum(static, s − daily_dd)` (`challenge.py:77`, `repeated_ev.py:62`), barrière
+   mobile sur `s` = équité day-start, exactement le `0.95·S_t` de la revue. Double barrière
+   {10 % statique, 5 % daily} testée jusqu'à SUB=48. Pas un gap.
+2. **+5. « σ haute coûteuse + swap/spread-minuit/slippage »** → **LE vrai gap simulable.** Ces
+   frictions scalent en **levier** `L = σ_day / σ_actif`. Le coût v1 (`c_fixe + slip·σ`) est linéaire
+   en σ mais ne divise pas par σ_actif → sous-estime le coût de sizer haut. v2 ajoute un terme
+   `(swap+widen)·L` (mode *hold*) ou `reentry·L` (mode *flat*, le harvester prend le moins cher),
+   params bornés conservateur (swap 1.5 bp/L, widen 0.5, reentry 1.0). Slippage-au-stop **écarté avec
+   raison** : au-delà de la barrière la firme absorbe la perte, ce n'est pas un coût trader.
+3. **« Voiding/résiliation ciblée sur signature buffer-skim »** → seul **résidu vivant**, non-simulable,
+   déjà porté en risque n°1 (break-even p_void < 64 %).
+4. **« K achats séquentiels indépendants »** → légal sous règles actuelles ; la LLN ne sauve que si
+   l'EV/achat reste > 0 — ce que v2 teste.
+
+**Résultat (15 workers, SUB=24, friction levier-aware, seuils figés) :**
+
+| Gate | v2 | Statut |
+|------|----|--------|
+| G1 EV @5bp+levier (σ_actif 0.007) | **$453**, break-even **14.9 bp** (≥5) | PASS |
+| G2 trailing | **−$240** (≤0) | PASS |
+| G3 bankroll K=20 | P(net>0) = **0.664** | PASS |
+
+- **EV v1 $693 → v2 $453 = −35 %.** Le coût-levier mord franchement mais **ne tue pas** ; break-even
+  reste ≈ **3×** le coût réaliste 5 bp.
+- Sensibilité σ_actif : 0.005 → $389 / 0.007 → $453 / 0.010 → $539 (tous > 0 ; moins de levier
+  requis = EV plus haute).
+- Mécanique : l'optimum bascule en mode **flat** (flatter avant minuit < payer le swap overnight) —
+  confirme que le swap EST le coût dominant, mais esquivable au prix d'une ré-entrée.
+- **Caveat de bord fermé** : grille σ étendue à 0.040, l'optimum **reste à σ* = 0.020** (intérieur,
+  pas un artefact de bord) — le coût-levier linéaire contre-balance exactement le gain de skim-speed
+  au-delà de 0.02.
+
+**La revue ne flippe pas le GO.** « Survit aux tueurs simulables » passe de *provisoire* à
+**re-validé sous coût-levier** (haircut 35 %). Verdict inchangé : **GO-pending-live**, résidu unique =
+point 3 (comportement de contrepartie), que seul un test live à capital minime résout.
