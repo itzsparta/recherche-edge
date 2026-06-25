@@ -143,38 +143,59 @@ double NormalizeLots(double lots)
    return lots;
 }
 
-double CurrentSignedLots()
+// somme SIGNEE de toutes les positions symbole+magic (compte HEDGING : plusieurs positions)
+double CurrentNetLots()
 {
-   if(!PositionSelect(_Symbol)) return 0.0;
-   if(PositionGetInteger(POSITION_MAGIC) != InpMagic) return 0.0;
-   double v = PositionGetDouble(POSITION_VOLUME);
-   long   t = PositionGetInteger(POSITION_TYPE);
-   return (t == POSITION_TYPE_BUY) ? v : -v;
+   double net = 0.0;
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+   {
+      ulong tk = PositionGetTicket(i);
+      if(tk == 0) continue;
+      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
+      if(PositionGetInteger(POSITION_MAGIC) != InpMagic) continue;
+      double v = PositionGetDouble(POSITION_VOLUME);
+      long   t = PositionGetInteger(POSITION_TYPE);
+      net += (t == POSITION_TYPE_BUY) ? v : -v;
+   }
+   return net;
 }
 
-void Flatten()
+// ferme TOUTES les positions symbole+magic (hedging-safe, par ticket)
+void CloseAllMagic()
 {
-   if(PositionSelect(_Symbol) && PositionGetInteger(POSITION_MAGIC) == InpMagic)
-      trade.PositionClose(_Symbol);
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+   {
+      ulong tk = PositionGetTicket(i);
+      if(tk == 0) continue;
+      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
+      if(PositionGetInteger(POSITION_MAGIC) != InpMagic) continue;
+      trade.PositionClose(tk);
+   }
 }
+
+void Flatten() { CloseAllMagic(); }
 
 //+------------------------------------------------------------------+
 //| Re-dimensionne la position vers la cible (taille constante /jour) |
 //+------------------------------------------------------------------+
 void Rebalance(double equity)
 {
-   if(g_breached) return;
-   double tgt  = NormalizeLots(TargetLots(equity));
-   double want = InpDirection * tgt;
-   double cur  = CurrentSignedLots();
-   double step = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
-   if(step <= 0.0) step = 0.01;
-   double delta = want - cur;
-   if(MathAbs(delta) < step) return;
-   double vol = NormalizeDouble(MathAbs(delta), 2);
-   if(vol < SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN)) return;
-   if(delta > 0) trade.Buy(vol, _Symbol);
-   else          trade.Sell(vol, _Symbol);
+   if(g_disabled || g_breached) return;
+   double tgt  = NormalizeLots(TargetLots(equity));   // |lots| cible
+   double want = InpDirection * tgt;                  // cible signee
+   double net  = CurrentNetLots();
+   double step = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP); if(step <= 0.0) step = 0.01;
+   double mn   = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+   // bande anti-churn : HEDGING => on flatten+reopen, donc on n'agit QUE si l'ecart est materiel
+   double band = MathMax(2.0 * step, 0.10 * MathAbs(want));
+   if(net != 0.0 && MathAbs(want - net) < band) return;   // deja ~a la cible, on tient
+   CloseAllMagic();                                        // repartir d'UNE seule position propre
+   if(tgt >= mn)
+   {
+      double vol = NormalizeDouble(tgt, 2);
+      if(want > 0) trade.Buy(vol, _Symbol);
+      else         trade.Sell(vol, _Symbol);
+   }
 }
 
 //+------------------------------------------------------------------+
@@ -333,7 +354,7 @@ void OnTick()
    if(CheckBreach(eq)) return; // securite a chaque tick
    if(WeekendFlat())           // fenetre week-end : flat, pas d'exposition
    {
-      if(CurrentSignedLots() != 0.0) { Flatten(); SaveState(); }
+      if(CurrentNetLots() != 0.0) { Flatten(); SaveState(); }
       return;
    }
    CheckTargets(eq);           // transitions phase/funded
