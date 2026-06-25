@@ -4,7 +4,7 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 24 études (23 chasses + 1 construction), 0 edge déployable.** Motif unifié —
+**Bilan : 25 études (24 chasses + 1 construction), 0 edge déployable.** Motif unifié —
 *à information/prix public, un solo sans latence/infra/capital n'a pas d'edge récoltable* ;
 et même l'edge **opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur +
 survivorship ; et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve
@@ -15,6 +15,10 @@ par le sharp »*. **Aboutissement = la construction META** : empaqueter le seul 
 (trend) en portefeuille = **KEEP-2-SLEEVE-FAIBLE** — trend sur 60/40 est une **assurance-
 crise conditionnelle** (coupe ~½ du drawdown 2008/2022, dilue en bull calme), pas un alpha ;
 empiler le carry **dilue** (orthogonal au trend mais corrélé +0.41 au cœur).
+**Réouverture « arme structurelle neuve » (#25, flux forcé LETF) = KILL** : le flux de
+rebalancement des ETF à levier est réel mais **absorbé** sur les gros sous-jacents (QQQ/SOXX/
+SPY) — dose-réponse *inversée*, fade overnight net négatif (#2). La famille « flux forcé »
+reste mangée par la liquidité là où elle est grosse.
 
 ## Pré-reframe (edge prédictif)
 
@@ -31,6 +35,7 @@ empiler le carry **dilue** (orthogonal au trend mais corrélé +0.41 au cœur).
 | 2 — flux forcés (unlocks) | non-contraint vs forcé | KILL | priced-in (dérive avant date publique, ≈0 après) | [`forced-flows/docs/FINDINGS-unlocks.md`](forced-flows/docs/FINDINGS-unlocks.md) |
 | 3 — niche capacité | taille fonds | KILL | spread fantôme (persistant mais ~1 k$ profondeur) | [`capacity-niche/docs/FINDINGS-niche.md`](capacity-niche/docs/FINDINGS-niche.md) |
 | 18 — dealer gamma (GEX) | hedging forcé | KILL-tradable | prédit la VARIANCE (corr −0.26 robuste) pas la MOYENNE ; vol-forecast réel, zéro alpha de rendement | [`gex-gamma/docs/FINDINGS.md`](gex-gamma/docs/FINDINGS.md) |
+| 25 — flux forcé EOD (LETF) | rebalancement levier | KILL | absorbé sur gros sous-jacents : interaction G/vol$ t=−0.6 (mûr), **dose-réponse inversée**, fade overnight net −3.2σ (#2) | [`eod-flow/docs/FINDINGS.md`](eod-flow/docs/FINDINGS.md) |
 
 ## V2 — prime d'assurance / calendrier / carry
 

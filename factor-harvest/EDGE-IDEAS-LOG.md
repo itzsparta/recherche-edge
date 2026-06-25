@@ -468,3 +468,20 @@ assurance Nexus Mutual) doivent être vérifiés avant tout run — si Gate B KI
 code. **→ Run 2026-06-25 : KILL Gate B confirmé** (Gate A PASS, prime priced-in là où
 assurable / inassurable là où grasse, 0 survivant). Voir verdict ci-dessus + `pendle/docs/FINDINGS.md`.
 
+---
+
+### #25 — Flux forcé de fin de séance (rebalancement LETF) — Run 2026-06-25 : KILL
+
+Première piste sous le critère **« arme structurelle neuve »** (contrepartie nommée, insensible au
+prix, dont le flux mécanique pourrait dépasser le capital d'arbitrage). Thèse : un ETF à levier `L`
+doit, au close, trader `Δ = AUM·r·L(L−1)` ; `L(L−1) > 0` pour tous les leviers → long et inverse
+achètent du **même côté** → flux agrégé `≈ r·G` (`G = Σ AUM·L(L−1)`) qui frappe au close dans le sens
+du jour → push late-day + reversal overnight, *plus fort là où `G/volume$` est grand*. Identification
+= l'**interaction `G/volume$`**, pas `r` seul (momentum générique). Data gratuite (yfinance), 11
+sous-jacents, 45 562 name-jours 2010-2026. **KILL net** : interaction insignifiante (t=−0.6 mûr
+2023+), **dose-réponse INVERSÉE** (reversal max là où il y a le *moins* de LETF — opposé exact de la
+thèse, comme le spread fantôme p3), fade overnight **net négatif** (t=−3.2) ; seul reste = rebond
+post-baisse générique, sous-coût. Sous-type **#2 (arbitré/absorbé)** : sur QQQ/SOXX/SPY (G de
+$100-300B = les plus liquides) le flux est entièrement absorbé. Conforme au prior textbook (Cheng-
+Madhavan 2009). Détail : [`eod-flow/docs/FINDINGS.md`](../eod-flow/docs/FINDINGS.md).
+

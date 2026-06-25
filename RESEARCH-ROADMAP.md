@@ -453,7 +453,7 @@ Voici les 4 pistes de la V3 pour exploiter la prime de complexité opérationnel
 - **Gate de Kill :** Les frais de transaction ("yield") dépassent-ils la somme de l'Impermanent Loss et des frais de gas nécessaires aux rééquilibrages fréquents ?
 - **Statut : DOWNGRADE** (#15, frais > LVR au niveau pool mais capté par LP actifs/JIT ; solo passif tué par gas mainnet). [`univ3-lvr/docs/FINDINGS.md`](univ3-lvr/docs/FINDINGS.md).
 
-## Bilan V3 + programme (2026-06-25) — 24 études, 0 edge déployable
+## Bilan V3 + programme (2026-06-25) — 25 études, 0 edge déployable
 
 **Objectif prop (révisé) — piste A méta-gate rendue = KILL (#24).** Le pivot vers « valider un
 compte prop firm » a produit sa 1re étude : le challenge est un **wrapper de payoff lottery-shaped**
@@ -461,6 +461,16 @@ compte prop firm » a produit sa 1re étude : le challenge est un **wrapper de p
 **re-emballe le constat no-edge en loterie à marge maison** (#16), sans le lever. Pistes B/C/D du
 plan prop tombent dans la foulée (flipper la médiane exigerait P(net>0) > 50 %, hors de portée du
 seul edge réel). Détail dans la section *Objectif opérant* ci-dessus + `prop-firm-gate/`.
+
+**Arme structurelle neuve — piste #25 flux forcé EOD (LETF) = KILL.** Premier test sous le critère
+« contrepartie nommée insensible au prix dont le flux > capital d'arbitrage ». Le rebalancement
+mécanique des ETF à levier (`Δ = AUM·r·L(L−1)`, long+inverse du même côté au close) **existe**, mais
+sur les gros sous-jacents (QQQ $296B, SOXX $178B, SPY $103B de sensibilité `G`) il est **absorbé** par
+la liquidité : l'interaction identifiante `G/volume$` est insignifiante (t=−0.6 mûr 2023+), la
+**dose-réponse est inversée** (reversal maximal là où il y a le *moins* de LETF), et le fade overnight
+est **net négatif** (t=−3.2). Sous-type **#2 (arbitré/absorbé)**, conforme au prior textbook (Cheng-
+Madhavan 2009). La famille « flux forcé » reste mangée par la liquidité là où elle est grosse — un
+flux **public et daté** n'est pas une arme. Détail : `eod-flow/`.
 
 ### (Clôture edge-hunting, pré-pivot)
 
