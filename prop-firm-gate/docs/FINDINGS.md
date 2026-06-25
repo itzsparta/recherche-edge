@@ -85,6 +85,44 @@ verdict ne dépend pas du coût.
   plancher statique) — fidèle à FTMO ; le trailing post-payout est approximé. Daily-DD testée au
   chemin intraday. Sanity gambler's ruin passé.
 
+## Suivi — pistes E/F/G : « pas besoin d'edge, juste UN payout » (objection de Rémi, 2026-06-25)
+
+Objection légitime au verdict : on n'a pas besoin de **garder** le compte, juste d'atteindre **un
+seul payout** — avec refund, `net>0 ⟺ 1er payout atteint`, et l'objectif devient **P(net>0) > 0.50**
+(médiane positive), pas un Sharpe de break-even. Le run #24 testait FTMO (2 phases) ; on teste ici
+les 3 structures qu'il n'a pas couvertes, **sizing optimisée pour maximiser P(net>0)** (objectif
+smash-and-grab, pas P(pass)) et **variance balayée**. Code : [`../run_payout_pistes.py`](../run_payout_pistes.py),
+données `../data/payout_pistes.json`. Gate décisif fixé d'avance : *max P(net>0) sans edge ≥ 0.50 ?*
+
+| structure (best-case donné à la thèse) | P(funded) | P(payout\|fund) | **P(net>0)** | médiane | EV |
+|---|--:|--:|--:|--:|--:|
+| **F** 1-phase favorable (cible +6 % / maxloss 10 % stat) | 0.457 | 0.565 | 0.258 | −$500 | +$938 |
+| 1-phase réaliste (cible +10 % / maxloss 6 %) | 0.233 | 0.490 | 0.114 | −$300 | +$318 |
+| **G** instant funding SANS buffer (1 barrière) | 0.845 | 0.529 | **0.295** | −$600 | −$103 |
+| **G** instant funding AVEC buffer +4 % (réaliste) | 0.516 | 0.526 | 0.182 | −$600 | −$295 |
+
+**MAX P(net>0) = 0.295 sans edge, 0.349 avec le trend 0.42. Médiane = −fee partout. KILL confirmé.**
+
+1. **Le payout est lui-même un pile-ou-face driftless.** Même en *instant funding* (financé 84.5 %
+   du temps, zéro éval), atteindre un payout sans drift ≈ 0.53 (equity > 0 au mark J+14 sans avoir
+   cassé le floor) → 0.845 × 0.529 = **0.295 < 0.5**. On enchaîne ≥ 1 barrière à espérance nulle ;
+   le produit de probabilités ~½ (ou pire) est < ½. C'est la raison structurelle : **collapser
+   l'éval ne suffit pas, le payout reste une barrière**.
+
+2. **Smash-and-grab (max variance) NUIT.** La courbe P(net>0) vs σ pique à σ≈0.015 puis **chute**
+   (instant no-buffer : 0.295 → 0.258 → 0.122 quand σ monte 0.015→0.02→0.03). Grossir tue contre le
+   floor plus vite que ça n'aide à atteindre le payout. La médiane reste −fee à **toute** taille →
+   l'intuition « grab vite avec du gros » est quantifiablement fausse.
+
+3. **Le trend 0.42 ne flippe rien** (max 0.349 < 0.5) : seul le drift relève chaque barrière au-dessus
+   du pile-ou-face, et 0.42 est loin de suffire. Note : *instant funding* a même un **EV moyen négatif**
+   (−$103 no-edge) — pas de refund + split 70 % + petit compte mangent la convexité.
+
+**Conclusion** : gagner *parfois*, oui (loterie ~30 % au mieux). Sortir positif **plus d'une fois
+sur deux** (médiane > 0), **non** sans edge. « Tant pis si je perds le compte après un payout » est
+juste sur le stade financé, mais **le payout lui-même est le pile-ou-face qui coule la médiane**.
+L'objection ne renverse pas #24 — elle en chiffre le cœur : *un edge EST requis pour flipper la médiane*.
+
 ## Place dans le programme
 
 **Étude #24, 1re sous l'objectif prop, KILL.** Sous-type de mort = **loterie / jackpot** (airdrop
