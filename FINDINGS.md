@@ -4,7 +4,7 @@
 vit à côté de son code. Source de vérité = les fichiers liés ; ce document ne fait
 que les recenser. Synthèse narrative complète = [`RESEARCH-ROADMAP.md`](RESEARCH-ROADMAP.md).
 
-**Bilan : 23 études (22 chasses + 1 construction), 0 edge déployable.** Motif unifié —
+**Bilan : 24 études (23 chasses + 1 construction), 0 edge déployable.** Motif unifié —
 *à information/prix public, un solo sans latence/infra/capital n'a pas d'edge récoltable* ;
 et même l'edge **opérationnel** (airdrop, hors prix/info) échoue au seuil de labeur +
 survivorship ; et **changer la contrepartie** (CEF, Polymarket, books sportifs) ne sauve
@@ -88,6 +88,18 @@ empiler le carry **dilue** (orthogonal au trend mais corrélé +0.41 au cœur).
 orthogonal au **CŒUR**, pas seulement aux autres sleeves. Le carry (orthogonal au trend,
 corrélé au 60/40) n'ajoute rien. Et un Sharpe absolu significatif (DSR 1.000 sur un combo
 70 % obligs/actions) **ne teste pas** si le sleeve bat le cœur — seul l'incrément compte.
+
+## Objectif prop firm (révisé 2026-06-25) — méta-gate
+
+| Étude | Verdict | Tueur | Fichier |
+|---|---|---|---|
+| 24 — méta-gate prop (ledger d'EV + barrière) | **KILL** | **loterie** : sans edge médiane = −fee (moyenne portée par queue chanceuse 10 %, motif #14) ; même avec trend 0.42 la médiane reste −fee (P(net>0) 23 % < 50 %) ; Topstep trailing/consistance ≈ $0. Robuste au coût. Convexité réelle dans la moyenne mais lottery-shaped | [`prop-firm-gate/docs/FINDINGS.md`](prop-firm-gate/docs/FINDINGS.md) |
+
+Le pivot d'objectif (« valider un compte prop firm ») ne lève pas le constat no-edge : il le
+**re-emballe en loterie à marge maison**. Le challenge est un wrapper de payoff dont la médiane est
+−fee, et le seul edge réel (sleeve trend, diversifié 0.42 — donc *optimiste* en mono-compte) ne
+pousse pas la médiane positive. Gradient #16 chiffré : la convexité exploitable (refund + skim du
+compte financé) vit dans les règles que les firmes retirent (trailing-DD, consistance).
 
 ## Les quatre sous-types de mort
 

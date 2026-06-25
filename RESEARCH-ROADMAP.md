@@ -34,6 +34,19 @@ variance-farming).
 - Carry (#6), LP V3 (#15), CEF (#8), funding-XS (#11) : **hors-jeu** (multi-venue, on-chain, ou
   non-directionnel — incompatibles compte unique directionnel).
 
+**Piste A — méta-gate prop (#24) = KILL (2026-06-25).** Simulation Monte Carlo (pur-sim,
+parallélisée) du pipeline complet par trader (phase 1 → phase 2 → compte financé) sous barrières
+réelles (max DD statique/trailing, daily DD, consistance) et coûts réalistes ; sortie = la
+**distribution** du net $ par achat. **Sans edge = loterie** : médiane = −fee (on perd tout le fee
+~90 % du temps), la moyenne (FTMO +$416) est portée par une **queue chanceuse de 10 %** = motif
+airdrop #14. **Même avec le seul edge réel (sleeve trend 0.42)** la moyenne FTMO monte à +$3 000
+mais la **médiane reste −$540** (P(net>0) 23 % < 50 %) → pas déployable en solo one-shot. Topstep
+(trailing + consistance) écrasé à ≈ $0. **Verdict robuste au coût** (médiane = −fee à tous les
+coûts). Gradient #16 chiffré : la convexité exploitable vit dans les règles que les firmes
+retirent (trailing/consistance). Le 0.42 injecté est le Sharpe **diversifié** → mono-compte réel
+< 0.42 → KILL conservateur. Pistes B (overlay GEX-survie) et C (trend) tombent aussi : flipper la
+médiane exigerait P(net>0) > 50 %, hors de portée. [`prop-firm-gate/docs/FINDINGS.md`](prop-firm-gate/docs/FINDINGS.md).
+
 ---
 
 ## Diagnostic : l'étang, pas la canne
@@ -440,7 +453,16 @@ Voici les 4 pistes de la V3 pour exploiter la prime de complexité opérationnel
 - **Gate de Kill :** Les frais de transaction ("yield") dépassent-ils la somme de l'Impermanent Loss et des frais de gas nécessaires aux rééquilibrages fréquents ?
 - **Statut : DOWNGRADE** (#15, frais > LVR au niveau pool mais capté par LP actifs/JIT ; solo passif tué par gas mainnet). [`univ3-lvr/docs/FINDINGS.md`](univ3-lvr/docs/FINDINGS.md).
 
-## Bilan V3 + programme (2026-06-25) — 23 études, 0 edge déployable
+## Bilan V3 + programme (2026-06-25) — 24 études, 0 edge déployable
+
+**Objectif prop (révisé) — piste A méta-gate rendue = KILL (#24).** Le pivot vers « valider un
+compte prop firm » a produit sa 1re étude : le challenge est un **wrapper de payoff lottery-shaped**
+(médiane = −fee sans edge ; et la médiane reste négative même avec le sleeve trend 0.42). Il
+**re-emballe le constat no-edge en loterie à marge maison** (#16), sans le lever. Pistes B/C/D du
+plan prop tombent dans la foulée (flipper la médiane exigerait P(net>0) > 50 %, hors de portée du
+seul edge réel). Détail dans la section *Objectif opérant* ci-dessus + `prop-firm-gate/`.
+
+### (Clôture edge-hunting, pré-pivot)
 
 Les 4 pistes V3 "Prime de Saleté" sont **toutes rendues** : alt-data sale (rejet filtre,
 commoditisée), books sportifs (#16 KILL), Uniswap V3 LP (#15 DOWNGRADE), Pendle complex yield
