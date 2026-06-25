@@ -1,5 +1,41 @@
 # Research roadmap — chasse à l'edge (post-mortem orderflow / meme / rebate)
 
+## Objectif opérant (révisé 2026-06-25) — valider un compte prop firm
+
+**Nouveau but des bots : passer une évaluation de prop firm (FTMO / Topstep / Apex / …)
+et obtenir un compte financé.** Cet objectif **remplace la « chasse à l'edge déployable »**
+comme cible opérante. Les 23 études ci-dessous restent la base de connaissance, désormais
+relue à travers cette grille.
+
+**Pourquoi c'est un jeu différent — et pourquoi l'écart initial (cf. Diagnostic) ne le ferme
+pas.** Le prop firm avait été écarté tôt (« profil rendement ⊥ challenge ») mais l'écart était
+*asserté*, jamais chiffré, et confondait deux choses : (1) le carry delta-neutre est bien
+impossible sur un compte CFD unique — vrai et définitif ; (2) le *profil* de nos signaux ne
+collerait pas — jamais calculé. Le challenge n'est **pas** un problème de récolte d'edge : c'est
+un problème de **franchissement de barrière** (atteindre +cible avant −maxDD sur une fenêtre
+courte) **avec convexité** (frais souvent remboursés au 1ᵉʳ payout, scaling plan, split 80-90 %).
+La bonne analyse est un **ledger d'EV** (méthodo airdrop #14), **pas** un Sharpe.
+
+**Gate pré-enregistré.** `EV(challenge) = P(pass)·E[extraction | financé] − frais·(1 − remb·P(pass))`
+doit être **> 0** net de frais, spread/commission, et **fuite daily-DD**. Kill : si, sous l'a
+priori **no-edge** du programme (P(directionnel) ≈ 0.5/phase), l'EV reste ≤ 0 → le challenge est
+un produit à marge maison comme un autre (cf. books sportifs #16, *« ce qui te laisse entrer tue
+l'edge »*). Variable décisive = **règles de la firme** : maxDD **statique** (barrières ≈ symétriques,
+P(pass/phase) ≈ 0.5 hors coûts) vs **trailing** (la barrière basse monte avec le pic → P(pass) < 0.5
+*avant* coûts) ; **limite de temps** (tue le trend lent) ; **règle de consistance** (tue le
+variance-farming).
+
+**Ce qui survit de la base, relu prop :**
+- **GEX dealer-gamma (#18)** — seul prédicteur **robuste de variance** (corr −0.262, t≈−16). Nul en
+  alpha de rendement, mais **la variance EST la contrainte qui tue les challenges** (breach
+  daily/maxDD) → candidat **overlay de survie**, pas d'alpha.
+- **Trend / TS-momentum (#1)** — seul signal **directionnel réel** (DSR 0.988), tradable sur
+  instruments prop (futures/FX). Lent → exige firme **maxDD statique + sans limite de temps**.
+- Carry (#6), LP V3 (#15), CEF (#8), funding-XS (#11) : **hors-jeu** (multi-venue, on-chain, ou
+  non-directionnel — incompatibles compte unique directionnel).
+
+---
+
 ## Diagnostic : l'étang, pas la canne
 
 Trois thèses tuées proprement — **orderflow** (level-edge fade+continuation mort,
