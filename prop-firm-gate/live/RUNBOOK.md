@@ -57,7 +57,9 @@ tourner l'EA 24/7, ton PC éteint.
    - **`InpInitialBalance` = taille réelle du compte** (ex. `100000`). **CRITIQUE** : c'est l'ancre
      du plancher statique (max loss = 10 % de CE nombre, **fixe**). `0` = lit le solde au démarrage
      (OK compte neuf, **faux** après des trades / un restart sur compte entamé → mets le nombre).
-   - `InpDirection` = `+1` (long) ou `-1` (short) — arbitraire sous no-edge.
+   - `InpDirection` : défaut **`-1` (short)** — vérifié live sur le compte : EURUSD short = swap
+     ~+0.28 vs long −11.4/lot/nuit (long paie le différentiel de taux). Arbitraire pour le P&L sous
+     no-edge → on prend le côté swap-positif. À revérifier (`swap_long`/`swap_short`) par symbole.
    - `InpAlreadyFunded` = `false` pour un challenge, `true` pour un compte déjà financé.
    - reste = défauts du modèle (σ 2 %, garde 3σ, payout 14 j, flat week-end ON).
    - cocher **Allow Algo Trading** dans la fenêtre de l'EA.

@@ -44,7 +44,7 @@ class Config:
 
     # récolte
     target_sigma_day: float = 0.020   # vol P&L quotidienne cible (sizing) — σ* du modèle
-    direction: int = +1               # +1 long / -1 short (arbitraire sous no-edge)
+    direction: int = -1               # -1 short / +1 long. EURUSD live : short swap ~+0.28 vs long ~-11.4/lot/nuit. Arbitraire pour le P&L sous no-edge => cote swap-positif (le swap tranche).
     guard_sigma: float = 3.0          # la taille tient un move de N σ sans casser le plancher
     payout_days: int = 14             # cadence de bank (funded uniquement)
 

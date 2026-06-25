@@ -30,7 +30,7 @@ input double InpPhase2Target     = 0.05;     // cible phase 2 (+5%)
 input bool   InpAlreadyFunded    = false;    // true = compte deja finance (skip phases)
 //--- recolte -------------------------------------------------------
 input double InpTargetSigma      = 0.020;    // vol P&L quotidienne cible (sizing)
-input int    InpDirection        = 1;        // +1 long / -1 short (arbitraire sous no-edge)
+input int    InpDirection        = -1;       // -1 short / +1 long. EURUSD live : SHORT swap ~+0.28 vs LONG ~-11.4/lot/nuit (long paie le diff. de taux). Arbitraire pour le P&L sous no-edge => prendre le cote swap-positif. VERIFIER swap_long/short par symbole.
 input double InpGuardSigma       = 3.0;      // la taille tient un move de N sigma sans casser le plancher
 input int    InpPayoutDays       = 14;       // cadence de bank (funded uniquement)
 input bool   InpFlatBeforeWeekend= true;     // flat le vendredi (anti-gap week-end)
