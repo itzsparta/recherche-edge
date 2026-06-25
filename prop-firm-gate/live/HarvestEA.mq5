@@ -38,13 +38,14 @@ input bool   InpFlatBeforeWeekend= true;     // flat le vendredi (anti-gap week-
 input int    InpVolLookback      = 20;       // jours pour estimer la vol de l'instrument
 input int    InpMagic            = 260626;
 input int    InpDeviation        = 20;
+input bool   InpResetState       = false;    // true (1 fois) = efface l'etat sauvegarde + re-init propre ; remettre false ensuite
 
 CTrade trade;
 
 //--- etat (persiste en GlobalVariables -> survit restart / migration VPS)
 double g_A, g_static_floor, g_day_start_equity, g_bank_baseline, g_skim_total;
 int    g_phase, g_day_count, g_last_yday;
-bool   g_funded, g_breached;
+bool   g_funded, g_breached, g_disabled;
 
 //+------------------------------------------------------------------+
 //| Persistance d'etat (cles GlobalVariables prefixees magic+symbole) |
@@ -79,6 +80,11 @@ bool LoadState()
    g_day_start_equity = GlobalVariableGet(K("daystart"));
    g_last_yday        = (int)GlobalVariableGet(K("lastyday"));
    return true;
+}
+
+void ClearState()
+{
+   GlobalVariablesDeleteAll(StringFormat("HARV_%s_%d_", _Symbol, InpMagic));
 }
 
 //+------------------------------------------------------------------+
@@ -268,35 +274,50 @@ int OnInit()
    trade.SetExpertMagicNumber(InpMagic);
    trade.SetDeviationInPoints(InpDeviation);
    trade.SetTypeFillingBySymbol(_Symbol);
+   g_disabled = false;
 
    if(!SymbolSelect(_Symbol, true))
       Print("[WARN] SymbolSelect a echoue pour ", _Symbol);
 
-   if(LoadState())
+   if(InpResetState)
+   {
+      ClearState();
+      Print("[HarvestEA] RESET : etat sauvegarde efface. Remets InpResetState=false.");
+   }
+
+   bool restored = (!InpResetState) && LoadState();
+   if(restored && g_A > 0.0)            // n'accepte PAS un etat pourri (A<=0)
    {
       PrintFormat("[HarvestEA] etat RESTAURE : A=$%.0f phase=%d funded=%s breached=%s skim=$%.2f jour=%d",
                   g_A, g_phase, (g_funded?"oui":"non"), (g_breached?"oui":"non"), g_skim_total, g_day_count);
    }
    else
    {
-      g_A             = (InpInitialBalance > 0.0) ? InpInitialBalance : AccountInfoDouble(ACCOUNT_BALANCE);
-      g_static_floor  = g_A * (1.0 - InpMaxDD);
-      g_phase         = InpAlreadyFunded ? 2 : 0;
-      g_funded        = InpAlreadyFunded;
-      g_breached      = false;
-      g_skim_total    = 0.0;
-      g_day_count     = 0;
-      double eq0      = AccountInfoDouble(ACCOUNT_EQUITY);
-      g_day_start_equity = eq0;
+      double a = (InpInitialBalance > 0.0) ? InpInitialBalance : AccountInfoDouble(ACCOUNT_BALANCE);
+      if(a <= 0.0)                      // solde indispo (terminal pas authentifie) => PAUSE, pas de A=0
+      {
+         g_disabled = true;
+         Print("[HarvestEA] ERREUR : solde indisponible ET InpInitialBalance=0. EA EN PAUSE (ne trade pas). ",
+               "Re-attacher avec InpInitialBalance = taille reelle du compte (ex. 100000).");
+         return INIT_SUCCEEDED;
+      }
+      g_A                = a;
+      g_static_floor     = a * (1.0 - InpMaxDD);
+      g_phase            = InpAlreadyFunded ? 2 : 0;
+      g_funded           = InpAlreadyFunded;
+      g_breached         = false;
+      g_skim_total       = 0.0;
+      g_day_count        = 0;
+      g_day_start_equity = AccountInfoDouble(ACCOUNT_EQUITY);
       g_bank_baseline    = g_A;
       MqlDateTime dt; TimeToStruct(TimeCurrent(), dt);
-      g_last_yday     = dt.day_of_year;
-      PrintFormat("[HarvestEA] INIT : A=$%.0f plancher_statique=$%.0f sigma_cible=%.1f%% direction=%d funded=%s",
-                  g_A, g_static_floor, InpTargetSigma * 100.0, InpDirection, (g_funded?"oui":"non"));
+      g_last_yday        = dt.day_of_year;
+      PrintFormat("[HarvestEA] INIT : A=$%.0f plancher_statique=$%.0f daily_loss=$%.0f sigma=%.1f%% direction=%d funded=%s",
+                  g_A, g_static_floor, g_A * InpDailyDD, InpTargetSigma * 100.0, InpDirection, (g_funded?"oui":"non"));
       SaveState();
    }
 
-   if(!g_breached)
+   if(!g_disabled && !g_breached)
       Rebalance(AccountInfoDouble(ACCOUNT_EQUITY));
    return INIT_SUCCEEDED;
 }
@@ -306,7 +327,7 @@ int OnInit()
 //+------------------------------------------------------------------+
 void OnTick()
 {
-   if(g_breached) return;
+   if(g_disabled || g_breached) return;
    double eq = AccountInfoDouble(ACCOUNT_EQUITY);
    CheckNewDay(eq);            // maj day_start + bank + re-size 1x/jour
    if(CheckBreach(eq)) return; // securite a chaque tick
