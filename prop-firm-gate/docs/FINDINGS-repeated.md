@@ -1,6 +1,17 @@
 # FINDINGS — Étude #26 : prop firm en JEU RÉPÉTÉ (EV par achat + bankroll)
 
-**Verdict : GO — le PREMIER du programme.** Sous no-edge marché, acheter de façon **répétée**
+> **RÉVISION 2026-06-26 — VERDICT FINAL : KILL pré-live (déployabilité).** Le GO ci-dessous
+> reste **correct sur tous les axes simulables** (la martingale d'extraction est réelle, +EV
+> survit coût/monitoring/friction). Mais le **seul résidu non-simulable** — le voiding
+> discrétionnaire — est désormais **résolu par lecture de la source primaire** (T&C FTMO), pas
+> par un test live : les deux piliers du +EV (*one-sided bets*, *account rolling*) sont nommés
+> **verbatim** dans la clause d'exclusion, et le test-maître « pas du vrai trading / nous cause
+> un dommage » mord le harvest **par construction**. Argument décisif = **tenaille** : la seule
+> config +EV (rolling) est interdite ; la seule config clause-safe (single-shot) est −EV par le
+> sous-test #24. Aucune cellule n'est à la fois autorisée ET +EV → **KILL déductif, sans live.**
+> Détail complet : [§ Reversal 2026-06-26](#reversal-2026-06-26--kill-pré-live-le-résidu-de-voiding-résolu-par-les-tc-primaires). Le verdict GO original est conservé ci-dessous comme **trace historique** (il était juste sur le périmètre simulable).
+
+**Verdict initial (axes simulables) : GO — le PREMIER du programme.** Sous no-edge marché, acheter de façon **répétée**
 des évaluations FTMO-static **2-Step** et y jouer la **martingale d'extraction du buffer** est
 **+EV par achat** (+$668 à coût réaliste et monitoring fin), et un **bankroll modeste** (~20 achats)
 réalise ce +EV de façon fiable (**P(profit de campagne) = 76 %**). Le GO **survit à la chasse au
@@ -150,3 +161,112 @@ Une revue externe a soulevé 5 vulnérabilités. Tri honnête après vérificati
 **La revue ne flippe pas le GO.** « Survit aux tueurs simulables » passe de *provisoire* à
 **re-validé sous coût-levier** (haircut 35 %). Verdict inchangé : **GO-pending-live**, résidu unique =
 point 3 (comportement de contrepartie), que seul un test live à capital minime résout.
+
+## Reversal 2026-06-26 — KILL pré-live : le résidu de voiding résolu par les T&C primaires
+
+**Déclencheur.** Rémi achète le VPS, l'EA tourne live, et pose l'intuition juste : *« la prop firm
+va refuser le paiement si j'y arrive »*. Le GO `pending-live` ne tenait que sur **un** résidu : le
+voiding discrétionnaire, qu'on disait non-simulable et résoluble **seulement** par 1-3 challenges
+réels. Avant de brûler une fee, on a lu la **source primaire** — c'est le test le moins cher, et il
+tranche.
+
+### Source primaire — la clause d'exclusion FTMO (verbatim)
+
+[FTMO Forbidden Trading Practices](https://ftmo.com/en/forbidden-trading-practices/), juin 2026 :
+
+> *« otherwise perform simulated trades that **contradict how trading is actually performed in the
+> financial markets**, or in a way that we reasonably consider **might cause us financial,
+> reputational, or other harm** … (e.g., overleveraging, overexposure, one-sided bets, account
+> rolling). »*
+
+Lecture exacte (le point qu'un keyword-match raterait) : *one-sided bets* et *account rolling* sont
+des **exemples** (`e.g.`), pas la règle. La règle = un **test-maître à deux branches** :
+
+- **(a)** « contredit la façon dont on trade réellement les marchés » ;
+- **(b)** « pourrait nous causer un dommage financier / réputationnel ».
+
+C'est un **fourre-tout discrétionnaire**, et il mord le buffer-harvest **par construction** :
+
+- branche (a) : un short nu **sans thèse**, re-sizé mécaniquement à vol constante, banké par cycle =
+  définition du « pas du vrai trading ». Un risk-desk n'y voit aucune idée de marché.
+- branche (b) : récolter le buffer **systématiquement** EST le dommage financier — par définition
+  (B-book : ta réussite répétée = leur coût direct). La chose même qui rend le harvest +EV est ce que
+  (b) nomme comme dommage.
+
+Donc même en steelman (sizing 2 %/j n'est peut-être pas « overexposure » ; le swing directionnel est
+autorisé), le **test-maître attrape la stratégie en amont des exemples**. Le résidu n'est plus une
+**probabilité de void à estimer** (`p_void < 64 %`) : c'est un **droit de void contractuellement
+réservé, visant exactement notre config**.
+
+### L'argument décisif — la tenaille (KILL déductif, sans live)
+
+Le design #26 n'a que deux configurations, et elles sont **déjà toutes deux résolues** :
+
+| Config | Clause FTMO | EV | Source de la résolution |
+|---|---|---|---|
+| **A** — compte unique, pas de rolling, sizing modeste | **clause-safe** | **−EV** | sous-test #24 « juste UN payout » : médiane = −fee, max P(net>0) = **0.295** < 0.5 |
+| **B** — rolling répété + sizing vol-cible | **interdit** (*account rolling* verbatim + test-maître a/b) | **+EV** (+$453/achat v2) | source primaire FTMO ci-dessus |
+
+**Aucune cellule n'est simultanément (clause-safe) ET (+EV).** Le +EV ⟺ rolling ⟺ interdit ; la
+config autorisée (single-shot) est −EV par **notre propre mesure** de #24. Les deux branches sont
+résolues — l'une par les T&C, l'autre par la sim #24 — donc **le live ne lève aucune inconnue** sur
+ce point. KILL déductif.
+
+### Quatre sorties, toutes mortes
+
+1. **« *account rolling* = multi-comptes simultané, pas achats séquentiels »** → même si vrai, (b)
+   « cause us harm » attrape ; et le texte FTMO agrège explicitement *across any of your accounts* +
+   *cumulative exposure*. Les K achats sont vus comme **une** activité cumulée. ✗
+2. **Déguiser le harvest en « vrai trading »** (thèse, direction variable) → dès qu'on remet du risque
+   de marché réel, on n'extrait plus un buffer driftless : on retombe sur le **mur no-edge** que 25
+   études ont prouvé. ✗
+3. **Un seul challenge, viser la queue droite** → parier une fee sur la variance, pas un edge =
+   sous-test #24 « juste UN payout », déjà tué. ✗
+4. **Autre firme à plancher statique sans la clause** → la clause « serious trading / causes us harm »
+   est la **défense structurelle du B-book**, quasi-universelle ; #24 a déjà conclu prop = loterie
+   marge-maison en général. Théorème « ce qui te laisse entrer tue l'edge » (p16), encore. Lead de
+   recherche au mieux, pas un save FTMO-maintenant. ✗
+
+### Ce qui a changé épistémiquement
+
+Le GO `pending-live` supposait que la sim **ne pouvait pas** trancher le taux de void réel → seul le
+live le ferait. Faux : on n'a pas besoin d'un **taux**. La source primaire montre que le void n'est
+pas un aléa probabiliste frappant une stratégie générique — c'est un **droit écrit** dont les deux
+exemples-déclencheurs décrivent nos deux piliers, et dont le test-maître attrape le mécanisme par
+construction. Combiné à la tenaille #24, le résidu **se résout par lecture, pas par fee**. Leçon
+méta : **épuiser la source primaire (T&C, doc contrepartie) AVANT de classer un résidu
+« non-simulable, résoluble seulement en live »** — parfois le live n'est pas le seul instrument, juste
+le plus cher.
+
+### Place dans le programme
+
+**5e sous-type de mort, le plus net : edge structurel RÉEL, interdit noir-sur-blanc par celui qui
+contrôle les règles.** Distinct des 4 autres (no-edge brut ; mangé par friction ; mangé par
+tail/non-répétabilité ; capté par le sophistiqué). Ici l'edge existe en sim (la martingale est
+réelle, `E[skim]=m`) mais la **contrepartie se réserve contractuellement le droit de l'annuler** —
+et n'a à l'invoquer **que quand on gagne** (elle ne paie que les profitables). Motif unifié du
+programme **intact et à son expression la plus explicite** : *l'edge existe, il est capturé ou
+interdit par qui contrôle les règles*.
+
+### Pragmatique (fee/VPS sunk)
+
+- **VPS acheté** = sunk. Le compte branché est le **FTMO Free Trial (démo)** : mécanique seule, **pas
+  de payout** → ne teste de toute façon **pas** le voiding. Le laisser tourner par curiosité de
+  robustesse de l'EA est gratuit, mais sans valeur d'edge.
+- **NE PAS acheter le challenge payant** pour déployer la config rolling (B) : c'est exactement la
+  config interdite + branche (b). On paierait des fees pour confirmer du noir-sur-blanc.
+- Observer un éventuel clear de payout ne mesurerait que la **laxité d'application** — parier que la
+  contrepartie est négligente n'est ni robuste ni scalable (dès que ça scale, ils appliquent), à
+  skew négatif (un void efface plusieurs gains de 15 bp).
+
+### Verdict
+
+**KILL pré-live comme edge déployable.** Pas par le marché (la martingale est réelle), pas par la
+friction simulable — par la **clause de void discrétionnaire de la contrepartie**, lue sur source
+primaire. L'EA / l'infra / le pipeline restent un **deliverable de rigueur**. Le deliverable trading
+du programme **revient à : mono-sleeve trend**, point. Toute reprise prop exige une **arme
+structurelle neuve** qui sorte de la tenaille (config à la fois clause-safe ET +EV) — non identifiée
+à ce jour.
+
+Sources : [FTMO Forbidden Trading Practices](https://ftmo.com/en/forbidden-trading-practices/) ·
+[FTMO FAQ — stratégies autorisées](https://ftmo.com/en/faq/which-instruments-can-i-trade-and-what-strategies-am-i-allowed-to-use/).
