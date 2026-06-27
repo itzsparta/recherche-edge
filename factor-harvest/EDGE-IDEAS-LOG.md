@@ -470,6 +470,181 @@ assurable / inassurable là où grasse, 0 survivant). Voir verdict ci-dessus + `
 
 ---
 
+## 2026-06-27 — Session automatisée de scouting
+
+### Contexte lu avant de proposer
+
+- RESEARCH-ROADMAP.md + FINDINGS.md pistes #26-#31 relus intégralement.
+- **31 études, 0 edge déployable.** Le seul GO du programme (#29 LP-V3-L2) renversé en Phase-2.5
+  (LVR full-path > frais à toute concentration ; le net positif = funding-carry de #6, déjà KILL).
+- Pistes récentes : #27 SPAC-trust KILL sub-hurdle (+145 bps < 200) ; #28 PEAD KILL (arbitré/décru,
+  spread nul net de friction) ; #30 commodity-carry DOWNGRADE (long-backwardation asymétrique, DSR
+  0.895 < 0.95) ; #31 ILS cat-bond DOWNGRADE (prime réelle, décorrélée, déployable, mais sub-hurdle
+  EW t=1.51 et cyclique hard-market).
+- Motif unifié inchangé : tout edge à déclencheur/prix public est mangé ; quand l'edge structurel
+  est réel, il est compressé jusqu'à son coût (tail, friction, bounce, LVR, cycle, fees).
+- **Dernier axe non testé identifié** : prime de risque pour incertitude binaire NON prédictible
+  (≠ "info publique priceable") = une date est connue mais la RÉSOLUTION ne l'est pas.
+
+---
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Buy-write systématique / covered calls (CBOE BXM-style)
+
+- **Mécanisme candidat :** Vendre des calls couverts sur l'indice (roll mensuel ATM) → collecter la
+  prime de volatilité implicite = CBOE BXM index. Documenté surperformer buy-and-hold risk-adjusted.
+- **Filtre 1 (info/prix public mangé ?) :** **OUI, variant direct de la piste #4 (VRP).** Vendre un
+  call couvert = short vol implicite cap + long equity → profil de payoff identique à VRP avec la
+  queue gauche conservée (pas de naked short vol) mais upside capé. La prime capturée est la même
+  prime de volatilité que le VRP equity qui a tué la piste #4 (t=4.03, DSR 0.977, mais Sharpe 1.86
+  mirage aveugle au skew −4 et drawdown SVXY −95 %). La mécanique est moins explosive (position
+  couverte) mais le P&L brut est inférieur et le mécanisme de compression est identique (les desks
+  de vol institutionnels pricent l'implicite). Aucune arme structurelle nouvelle : l'edge est la
+  prime VRP, déjà tuée piste #4 sous sa forme la plus favorable.
+- **REJET.** Variant de la piste #4 tuée, mécanisme identique.
+
+---
+
+#### Piste B — Short-interest crowding : signal contrarian sur squeeze
+
+- **Mécanisme candidat :** Les stocks avec borrow rate élevé (IEX free data) ou short interest
+  >30 % du float (FINRA biweekly, gratuit) sont "crowdés short". Acheter ces noms anticipe le
+  squeeze forcé si un catalyseur survient.
+- **Filtre 1 (info/prix public mangé ?) :** **OUI.** Le short interest et le borrow rate sont
+  PUBLICS (FINRA publie bi-hebdomadairement, IEX en temps réel pour les membres). Le signal est
+  connu, documenté dans la littérature académique (D'Avolio 2002, Lamont-Thaler 2003), intégré
+  dans les screeners retail (FINVIZ, Ortex). Les algorithmes retail + hedge funds long/short
+  monitors précisément ces métriques. De plus, le SQUEEZE lui-même est imprévisible sans modèle
+  du catalyseur — sans catalyseur, un stock surshourté peut rester surshourté des années (cf.
+  "value traps"). Le timing non-modélisable = le signal sans timing = directional momentum
+  aléatoire. Motif exact de la piste #28 PEAD : signal documenté, mais absent dans l'univers
+  liquide net de friction, et la version exploitable (catalyseur = info non-publique) est
+  structurellement impossible pour un solo.
+- **REJET.** Info publique entièrement pricée dans les instruments liquides ; timing imprévisible
+  sans info non-publique.
+
+---
+
+#### Piste C — Merger arbitrage cash deals, small-cap US (<$500M EV) ★ CANDIDATE
+
+- **Filtre 1 (info/prix public mangé ?) :** **AMBIGU → PASS PARTIEL.** L'annonce est publique
+  (8-K SEC), mais la RÉSOLUTION (le deal ferme-t-il ?) n'est PAS une information publique
+  prédictible. Le spread = prime de risque pour une incertitude binaire réelle (clôture vs. échec).
+  Ce n'est PAS "priced-in" comme les unlocks (date = résultat) ou la FOMC (récurrence = momentum) ;
+  c'est une PRIME D'ASSURANCE que le détenteur touche en échange d'un risque de perte -30% sur
+  breakage. La prime persiste tant que les deals échouent parfois, pour des raisons non-prévisibles
+  ex-ante (régulateur imprévisible, financement qui tombe, MAC clause). Structural moat additionnel :
+  les fonds merger-arb institutionnels (Elliott, Pentwater) ont des mandats de taille minimum (>$500M
+  EV de deal), laissant le segment small-cap sous-couvert.
+- **Filtre 2 (data accessible gratuitement ?) :** **OUI.** SEC EDGAR EFTS (full-text search API,
+  gratuit) pour les annonces de fusion (8-K Item 8.01 "Completion of Acquisition"), prix cibles via
+  Yahoo Finance. Deal outcome (closing ou termination) = 8-K Item 8.01 "Termination" ou form 8-K de
+  closing — parseable du même feed EDGAR. Sans base de données institutionnelle (Bloomberg MA), mais
+  suffisant pour construire un panel IS/OOS.
+- **PASSE les deux filtres.** Voir mini-spec ci-dessous.
+- **Prior honnête :** Stratégie connue depuis les années 1970 (Ivan Boesky). Des fonds dédiés existent
+  (MERFX, ARBFX). L'ère FTC 2021-2024 a fortement augmenté les break rates. Le prior le plus
+  probable = DOWNGRADE/KILL similaire à SPAC #27 (prime réelle mais sub-hurdle après ajustement
+  tail). Mais STRUCTURELLEMENT DISTINCT de toutes les pistes mortes → vaut le gate-kill.
+
+---
+
+### Mini-spec piste C — Merger arbitrage small-cap cash deals
+
+#### Hypothèse d'edge
+
+Après l'annonce d'un deal M&A (tout-cash, cible cotée US, EV < $500M), le prix de la cible cote
+**sous** le prix de deal annoncé. Ce spread = prime de risque pour l'incertitude de clôture. En
+achetant la cible à l'annonce et en attendant la clôture (ou en sortant à perte si le deal brise),
+le rendement annualisé net (= prime × P(close) − perte × P(break)) est **> 8 %** de façon robuste
+dans le segment small-cap, là où la concurrence institutionnelle est réduite.
+
+Formellement : `r_net = Σ_deals [P(close)·spread_ann + P(break)·loss_break] > 8 % ` net des frais,
+où `loss_break ≈ −25 à −35 %` (retour au prix pré-annonce) et `P(break) ∈ [5–20 %]` selon l'univers.
+
+#### Source de l'inefficience structurelle — pourquoi NON entièrement arbitrée
+
+1. **Incertitude binaire non-prédictible.** La régulation antitrust, la clause MAC (Material Adverse
+   Change), le vote actionnaire, le financement PE — ces issues sont RÉELLEMENT incertaines, pas des
+   informations publiques ignorées. La prime compense un risque réel, pas un prix de marché erroné.
+   Contraste net avec unlocks (#2 : date = résultat) et PEAD (#28 : surprise = info publique).
+
+2. **Mandats de taille institutionnels.** Les fonds M&A arb de taille (Elliott $50Bn, Pentwater $5Bn)
+   ne peuvent pas prendre de positions significatives sur une cible à $200M de market cap. La
+   liquidité de la cible ne supporterait pas leur entrée/sortie. → Le segment <$500M EV est
+   structurellement sous-couvert par les acteurs qui compriment les spreads dans les méga-deals.
+
+3. **Durée de détention incertaine.** Capital bloqué 2–18 mois selon le scrutin réglementaire.
+   Les gérants institutionnels contraints par les benchmarks ou les redemptions quarterly ne peuvent
+   pas tenir. Un solo patient peut — exactement le même avantage que pour le SPAC (#27), sauf que
+   le plancher ici est un deal price contractuel, pas un trust T-bill.
+
+4. **Complexité opérationnelle du small-cap M&A.** Les small-cap deals ont moins de recherche
+   sell-side, moins de couverture médiatique, moins d'attention des arb funds → le marché met plus
+   de temps à "pricer" la probabilité de clôture = spread d'entrée plus large = rendement potentiel
+   plus élevé.
+
+#### Tueur le plus probable (honest kill prior)
+
+Le programme a tué le SPAC (#27 sub-hurdle +145bps < 200bps) et l'ILS (#31 sub-hurdle t=1.51).
+Le merger arb a le **même profil de mort probable** : prime réelle, comprimée par 50 ans de
+concurrence institutionnelle, probablement **sous le hurdle ajusté du tail** (−30 % sur break).
+Le hurdle doit couvrir : coût d'opportunité capital bloqué (T-bill 5 %) + prime de tail (-30 %
+× P(break) ≈ 1.5–6 %) + illiquidité small-cap. Soit une barre ≈ 8–10 % annualisé. Les fonds
+merger-arb institutionnels nettent historiquement 4–7 % annualisé (post-2010), **probablement
+sous la barre** pour un solo avec coûts plus élevés. L'ère FTC 2021-2024 (break rate élevé) aggrave
+le bilan récent.
+
+#### Falsifiabilité — gates pré-enregistrés ici avant tout run
+
+| Gate | Critère PASS | Critère KILL |
+|------|-------------|--------------|
+| **(A) Spread brut > hurdle** | Rendement annualisé médian IS (2010-2019) > 8 % sur univers cash+small-cap | ≤8 % → sub-hurdle, DOWNGRADE/KILL |
+| **(B) t inter-deal > 2** | t-stat sur la série des rendements par deal, inter-deal (leçon carry #6 : PAS pooled-jours) | t ≤ 2 → bruit |
+| **(C) OOS mûr — ère FTC (2020-2024)** | Rendement > 0 et t > 1.5 en OOS ; chute ≤30 % vs IS | Net négatif en OOS → arbitré, non-répétable |
+| **(D) Drop-top-5 deals** | Retire les 5 meilleurs deals, rendement demeure positif | Meurt → 5 outliers portent tout = bruit |
+| **(E) Miroir (short la cible)** | Short cible à l'annonce = rendement négatif (le côté positif est la prime de clôture, pas le momentum) | Miroir positif → le signal est du momentum, pas de l'arb |
+| **(F) Ajustement tail (EV gate)** | EV explicite > 0 : `P(close)·spread − P(break)·loss_break`, P mesurés IS | EV ≤ 0 → prime mangée par la tail |
+| **(G) DSR(best, N=3 filtres)** | DSR > 0.95 (N = 3 variantes : EV<200M / EV<500M / deal-type) | DSR < 0.95 → overfit |
+
+Signal pré-enregistré : univers = annonces 8-K "entering into merger agreement" + cible US cotée +
+deal all-cash (exclut stock + cash pour isoler l'arb pur) + EV < $500M (capco de la cible sur
+yfinance J-30 avant annonce). Entry = prix à la clôture du jour d'annonce. Exit = deal price (close)
+ou prix marché +5 jours post-annonce de termination (break).
+
+#### Data source
+
+| Source | Données | Accès |
+|--------|---------|-------|
+| SEC EDGAR EFTS | 8-K full-text search "merger agreement" / "definitive agreement" 2010-2025 | REST API gratuit (efts.sec.gov) |
+| SEC EDGAR submissions | Ticker + CIK de la cible ; suivi des 8-K de closing/termination | REST API gratuit |
+| Yahoo Finance / yfinance | Prix cible J-30 à J+deal, market cap pré-annonce | Python libre |
+
+Pipeline estimé : ~250-300 lignes Python. EDGAR ingestion + classification deal type + price download
++ calcul spread IS/OOS. Durée estimée : 2-3 jours.
+
+#### Coût d'implémentation (déploiement si GO)
+
+Position long cible uniquement (pas de short acquéreur dans un cash deal). Levier = 0x. Rotation
+lente (1-3 deals simultanés typiques, holding 2-12 mois). Frais de transaction : négligeables à
+horizon deal. Risque tail : -25 à -35 % sur chaque break → sizing Kelly implicite = faible fraction
+du capital (Kelly ≈ f*=(p·b-q)/b ; avec p=0.90, b=0.08, q=0.10, b_loss=0.30 → f* ≈ 0.27 brut).
+
+---
+
+### Résumé 3 lignes
+
+2 pistes rejetées immédiatement en filtrage : buy-write (variant VRP piste #4, même mécanisme) et
+short-interest squeeze (info publique, timing imprévisible, PEAD-adjacent). **Piste C merger arb
+small-cap cash** = seule candidate qui passe les filtres : la prime de risque pour incertitude
+binaire (clôture vs. breakage) n'est PAS "info publique priceable", et les mandats institutionnels
+excluent le segment <$500M EV. Prior honnête = DOWNGRADE/KILL probable (sub-hurdle 8 % après
+ajustement tail et ère FTC 2021-2024), mais mécanisme structurellement distinct des 31 pistes
+testées — pipeline gate-kill vaut 2-3 jours de code. Prochaine étape = EDGAR EFTS ingestion.
+
+---
+
 ### #25 — Flux forcé de fin de séance (rebalancement LETF) — Run 2026-06-25 : KILL
 
 Première piste sous le critère **« arme structurelle neuve »** (contrepartie nommée, insensible au
