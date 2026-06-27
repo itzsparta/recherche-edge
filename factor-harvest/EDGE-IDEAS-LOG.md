@@ -470,6 +470,21 @@ assurable / inassurable là où grasse, 0 survivant). Voir verdict ci-dessus + `
 
 ---
 
+## 2026-06-28 — #32 merger-arb : VERDICT = UNTESTABLE free-data
+
+Pipeline bâti+validé (EDGAR EFTS + extraction prix cash 4-phrasings + fallback ticker depuis texte
+8-K + yfinance). **UNTESTABLE**, pas par n trop petit mais par **biais de survie DIRECTIONNEL** : sur
+l'échantillon 2015, `kept_map 5 / kept_text 0` ∧ `noprice_text 10 / noprice_map 0` = **yfinance sert
+0/10 des cibles delistées**. Un deal qui CLÔTURE → cible rachetée → delistée → yfinance vide (exit ET
+entry) ⇒ la jambe gagnante disparaît à 100 %, irrécupérable free (EDGAR n'a pas de prix, Stooq même
+trou). Les 5 gardés = break-survivors (`closed 0/5`) + contaminés acquéreur (DHR=Danaher, ELV=Anthem)
++ misparses (PED/COR). Scaler ×15 = plus de break-survivors, pas un panel. Run complet NON lancé
+(dropout 100 % directionnel non corrigeable). Sous-type = mur-de-données pire que #30 car *retire les
+issues profitables*. Tester proprement exige une base M&A payante (termes + prix delistés + statut).
+Détail : [`merger-arb/docs/FINDINGS.md`](merger-arb/docs/FINDINGS.md). **Bilan : 32 études, 0 edge.**
+
+---
+
 ## 2026-06-27 — Session automatisée de scouting
 
 ### Contexte lu avant de proposer
