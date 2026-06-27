@@ -270,3 +270,46 @@ structurelle neuve** qui sorte de la tenaille (config à la fois clause-safe ET 
 
 Sources : [FTMO Forbidden Trading Practices](https://ftmo.com/en/forbidden-trading-practices/) ·
 [FTMO FAQ — stratégies autorisées](https://ftmo.com/en/faq/which-instruments-can-i-trade-and-what-strategies-am-i-allowed-to-use/).
+
+## Clôture 2026-06-28 — la racine partagée + règle permanente (revue croisée Rémi + ChatGPT)
+
+Une revue externe (ChatGPT) a validé #24 et le reversal #26, puis proposé 4 pistes de sauvetage.
+Le tri contre la tenaille en a tué 3 et en a affiné une. L'apport décisif est une raison
+**structurelle** plus profonde que le « clause quasi-universelle » du reversal :
+
+> **Le +EV et le droit-de-void partagent une racine unique : l'économie B-book marketing.**
+
+Le buffer statique généreux + refund 100 % est le *loss-leader* d'une firme B-book qui parie que la
+masse des acheteurs est −EV. La martingale `E[skim]=m` est +EV **parce que** la firme est B-book. La
+clause « causes us harm / one-sided / account rolling » est la **défense de ce même B-book**. Ce sont
+les deux faces d'une même pièce. Donc un **screener « clause-first » est structurellement vain** : il
+traite « clause absente » comme un attribut de firme indépendant à filtrer, alors qu'il est en aval de
+l'économie qui crée le buffer récoltable. Retirer la clause = retirer le B-book = retirer la subvention
+= retirer le +EV. **Aucun screener ne sépare (clause-safe) de (+EV)** — la tenaille n'est pas
+FTMO-spécifique, elle est intrinsèque au produit prop payant.
+
+### Score des 4 pistes de sauvetage
+
+| Piste | Verdict | Raison |
+|---|---|---|
+| 1. Screener clause-first | **MORT** | racine partagée ci-dessus : pas de cellule (clause-safe ∧ +EV) à trouver |
+| 2. Vrai système clause-safe | **MORT** | = config A : autorisée mais −EV par #24 + 25 kills (aucun edge ≫ 0.42 dispo) |
+| 3. Free-roll / coût ≈ 0 | **LEAD, pas edge** | fee≈0 retire la médiane −fee de #24 → option gratuite ; mais barrage payout pile-ou-face (P≈0.53), max-variance NUIT (#24), mêmes clauses + caps. À time-boxer, **jamais payant** |
+| 4. Ledger p_void | **HYGIÈNE** | diagnostique, pas génératif ; cartographie la tenaille across firms, ne la casse pas ; = leçon-méta du reversal formalisée |
+
+### Règle permanente (gate d'entrée de tout futur axe prop)
+
+> **Avant toute sim ou tout live prop : exiger une config simultanément (clause-safe) ET (+EV).
+> Si l'une des deux manque → KILL immédiat, sans sim, sans fee.**
+
+Corollaire général (transférable hors prop) : **quand l'existence d'un edge et le droit de la
+contrepartie de le confisquer partagent une racine causale, aucun filtrage ne les sépare — on clôt
+l'axe, on ne cherche pas la variante propre.** C'est l'expression la plus explicite du motif unifié
+du programme (*l'edge existe, il est capturé ou interdit par qui contrôle les règles*, p16).
+
+### Statut de l'axe
+
+**Prop payant = CLOS comme edge déployable** (pas seulement FTMO — structurellement, tout prop
+payant). Pas « à approfondir ». Seul résidu vivant = **option opportuniste à fee nulle** (piste 3),
+strictement time-boxée, zéro challenge payant. Deliverable trading du programme inchangé :
+**mono-sleeve trend**. L'EA / infra / pipeline restent un deliverable de rigueur.
