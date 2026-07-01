@@ -85,3 +85,59 @@ valeur réelle mais conditionnelle, modeste, et qui ne se cumule PAS avec d'autr
 faibles (carry) dès qu'elles partagent la bêta du cœur. Le deliverable trading du programme
 reste **mono-sleeve trend sur 60/40**, désormais cadré comme assurance, pas comme alpha. Le
 vrai capital demeure le **pipeline de verdicts pré-enregistrés** (22 études).
+
+---
+
+## META v2 (2026-06-30) — remplacer le FX-carry diluant par 2 sleeves vraiment orthogonaux
+
+**Verdict : KEEP-FAIBLE = ASSURANCE-CRISE — conclusion v1 INCHANGÉE.** L'objection de fond
+au v1 était que le FX-carry diluait *parce que* corrélé +0.41 au cœur. Test direct : le
+remplacer par les deux primes survivantes les plus orthogonales au cœur — **carry_energy**
+(#30, TS-carry énergie, corr cœur **−0.105**) et **ils** (#31, cat-bonds, corr cœur
+**+0.106**). Hypothèse : des briques *réellement* orthogonales au cœur ajouteraient
+l'incrément que le FX-carry ne pouvait pas. **Réfutée.**
+
+> Reproduire : `python run_meta_v2.py`. Sleeves via les moteurs déjà validés
+> (`commodity-carry/run_carry.py`, `ils-catbond/run_ils.py`, caches locaux).
+
+### Scope acté (pas caché)
+Intersection STRICTE 4-way = ils 2013-03 → carry_energy 2024-04 (cache EIA) = **134 mois**,
+post-warmup inv-vol **2016-03→2024-04 (98 mois)**. ⇒ **2008 INTESTABLE** (ils n'existe pas
+avant 2013) ; M4-crise = **2022 seul**. La thèse v2 se joue donc sur le régime calme+2022 —
+là où le trend-seul (v1) dilue déjà.
+
+### Résultats (fenêtre 2016-2024, sans 2008)
+| Sleeve / combo | Sharpe |
+|---|---|
+| 60/40 cœur | **+0.87** (domine) |
+| trend | +0.00 (managed-futures winter) |
+| carry_energy | **−0.20** (perd sur cette fenêtre) |
+| ils | +0.38 |
+| RP2 (cœur v1, 60/40+trend) | +0.84 |
+| fixe 55/15/15/15 | +0.74 |
+| RP4 (4 sleeves inv-vol) | +0.61 |
+
+- **(M1) FAIL** : RP4 +0.61 < cœur +0.87. Rien ne bat le 60/40 sur Sharpe.
+- **Les neufs DILUENT** : RP4 +0.61 < RP2 +0.84. Plus de sleeves = pire, *malgré*
+  l'orthogonalité au cœur.
+- **incrément-Sharpe sur cœur = −0.14** ; both-halves RP4 bat 60/40 = **False**
+  (1ʳᵉ moitié 2016-20 RP4 +0.18 vs 60/40 +1.11, écrasé en bull).
+- **(M4) crisis-alpha 2022 = OK et FORT** : fixe **−1.5 %** vs 60/40 **−16.4 %** ;
+  equal-weight **+9.4 %** ; RP4 +2.0 %. Les sleeves coupent (voire annulent) la perte 2022.
+
+### Pourquoi l'orthogonalité n'a PAS suffi
+Le FX-carry diluait par **corrélation** au cœur (+0.41 = bêta risk-on importée). Les neufs
+sont vraiment décorrélés du cœur (−0.105 / +0.106) — donc **autre cause** : leur Sharpe
+**propre** est trop faible sur la fenêtre (carry_energy −0.20, ils +0.38) pour soulever
+l'incrément. Orthogonalité = **nécessaire mais non suffisante** ; il faut aussi une **prime
+propre positive**. Empiler des décorrélés faibles sur un cœur fort (60/40 +0.87 en bull) =
+drag, pas free-lunch. C'est la même structure que v1 vue sous un 2ᵉ angle : la valeur des
+sleeves est l'**assurance-crise** (2022 chiffré ici), pas un incrément de Sharpe en régime
+calme — et une fenêtre sans 2008 fait gagner le cœur **par construction**.
+
+### Deliverable inchangé
+**60/40 + trend** reste le seul deliverable trading, cadré assurance-crise. Le v2 ferme la
+question « et si on remplaçait le carry par mieux ? » : non — aucune combinaison de primes
+publiques faibles ne crée d'alpha sur le cœur ; elles ne font que (bien) couper les crises.
+Limite honnête : 2008 hors-fenêtre pour ce combo, donc le crisis-alpha v2 n'est démontré que
+sur 2022 (cohérent avec le 2008 du v1 mono-sleeve).

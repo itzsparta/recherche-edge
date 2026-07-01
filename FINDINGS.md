@@ -88,6 +88,7 @@ reste mangée par la liquidité là où elle est grosse.
 | Étude | Verdict | Contenu | Fichier |
 |---|---|---|---|
 | 22 — portefeuille risk-premia | **KEEP-2-SLEEVE-FAIBLE** | combine les sleeves réels sous poids pré-committés (inverse-vol + fixes, zéro opt in-sample). 3-sleeve FAIL (carry dilue : orthogonal au trend mais corr +0.41 au cœur = risk-on). Deliverable = 60/40 + trend = **assurance-crise** (2008 −9.9% vs −16.7%, 2022 −10.1% vs −16.4%) mais incrément régime-dépendant (+0.06 full ; dilue post-2009 sans 2008). DSR absolu ≠ incrément sur le cœur | [`risk-premia-portfolio/docs/FINDINGS.md`](risk-premia-portfolio/docs/FINDINGS.md) |
+| 22b — META v2 (remplacer FX-carry) | **KEEP-FAIBLE = inchangé** | remplace le FX-carry diluant par les 2 primes les plus orthogonales au cœur (carry_energy #30 corr −0.105, ils #31 +0.106). Hypothèse « vrai-ortho ajoute l'incrément » **réfutée** : (M1) FAIL, les neufs DILUENT encore (RP4 +0.61 < RP2 +0.84 < cœur +0.87), incrément −0.14. Cause ≠ v1 : pas la corr (décorrélés) mais Sharpe propre trop faible (carry_energy −0.20, ils +0.38) → **orthogonalité nécessaire mais non suffisante, faut prime propre +**. Crisis-alpha 2022 fort (fixe −1.5% vs −16.4%) mais 2008 INTESTABLE (ils dès 2013). Deliverable 60/40+trend inchangé | [`risk-premia-portfolio/docs/FINDINGS.md`](risk-premia-portfolio/docs/FINDINGS.md) |
 
 **Leçon meta** : la diversification n'est un free-lunch que si le sleeve ajouté est
 orthogonal au **CŒUR**, pas seulement aux autres sleeves. Le carry (orthogonal au trend,
