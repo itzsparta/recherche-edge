@@ -54,6 +54,37 @@ Les chiffres v1 « spread funding +3.45 % / prix +7.19 % / short −4.4 % » son
 en niveau ; **signes, hiérarchie prix>funding, gross/net/turnover et les cinq verdicts de gates
 v1 sont inchangés** (aucun gate ne portait sur ces affichages).
 
+## Post-verdict : corrélation au bear (diagnostic demandé, 2026-07-02)
+
+Question posée après verdict : la corr globale −0.085 cache-t-elle une corrélation de queue ?
+**Non — c'est l'inverse : la strat est une assurance-crash crypto.**
+
+| Conditionnement | net /8h | jambe LONG | jambe SHORT |
+|---|---|---|---|
+| **BTC pire décile 8h** (n=775) | **+37.0 bps** | −335.6 bps | **+380.6 bps** |
+| Hors pire décile (n=6 967) | **−0.5 bps** | +42.0 bps | −48.3 bps |
+
+- corr par régime : bull −0.025, **bear 2022 −0.200**, range −0.135. Beta 2022 = −0.10 ;
+  **net 2022 = +19.3 %** dans l'année du bear.
+- Épisodes : **LUNA mai-22 : +11.4 %** (BTC −24 %) ; FTX nov-22 : +0.4 % (BTC −21 %) ;
+  **covid mars-20 : −6.9 %** (BTC −41 %) — l'assurance a ÉCHOUÉ sur le crash le plus violent
+  (univers jeune, funding non dispersé avant le choc : rien à récolter).
+- Requalification : la « loterie » (kurt 17, top-10 = 35 %) n'est **pas une queue aléatoire** —
+  elle est datée aux cascades de liquidation. Mécanique : shorter les crowded-longs à funding
+  élevé = être long les liquidations. 90 % du temps la strat **bleed** (−0.5 bps/8h ≈ −5 %/an
+  hors-queue, le coût de portage du short-momentum) ; elle encaisse pendant les crashs. Le
+  +35.5 % net full-sample = valeur d'une assurance sur une fenêtre contenant 3 crashs majeurs ;
+  les 12 derniers mois sans crash = bleed −4.3 %, cohérent.
+
+**Ça ne rouvre pas le verdict.** C/D restent KILL ; s'ajoutent : (a) l'assurance a raté covid
+(pas fiable sur tout crash) ; (b) même famille que le deliverable trend/60-40 (assurance-crise,
+drag en calme) — et META v1/v2 ont montré qu'empiler des sleeves d'assurance faibles dilue ;
+(c) **mur juridictionnel** : les perps offshore ne sont pas accessibles clause-safe au retail
+résident FR (leçon #26/#33 — la config jouable serait non-conforme). Valeur du diagnostic :
+classer le phénomène dans la bonne famille — **prime d'assurance réelle payée au porteur du
+short-crowding, pas un artefact** — et documenter que même les primes réelles du programme
+convergent vers le même profil (assurance conditionnelle, jamais alpha régulier).
+
 ## Pourquoi on s'arrête ici (et pas un v3)
 
 La suite « évidente » — jambe longue seule, beta-hedgée BTC — hériterait telles quelles des trois
