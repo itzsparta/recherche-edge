@@ -51,6 +51,26 @@ où l'heure investie a une valeur secondaire réelle (apprentissage, signal recr
 échouent **comme payout** (G2) mais relèvent d'un autre objectif que celui de cette étude — à
 évaluer là-bas, pas ici.
 
+## Extension crypto (2026-07-02, même time-box — question post-verdict)
+
+Question : « et sur le marché crypto ? ». Réponse : **chaque voie crypto à coût 0 tombe dans une
+classe déjà tuée** — soit par une étude dédiée, soit par les gates de ce ledger. Verdict inchangé.
+
+| Voie crypto | G0/G1/G2 | Tueur | Verdict |
+|---|---|---|---|
+| **Airdrop / points / testnet farming** (free-roll canonique crypto) | — | **#14 dédiée** : best-case généreux 8,4 €/h < 15 €/h ; base-case **−1 050 $** ; 53 % du $ = 2 jackpots non-répétables ; le clawback sybil plafonne tout scaling | **KILL** (déjà rendu) |
+| **Comps exchange réelles** (Bybit BYUSDT 200k USDT, Wall Street Showdown 100k, Binance comps) | G0 | **double** : volume réel requis → frais sur capital propre = fee déguisé ; prix = bonus/vouchers « **non-withdrawable under any circumstances** » — seuls les profits tradés dessus se retirent = re-mur no-edge (structure Grand Capital) | **KILL G0** |
+| **Demo comps « crypto »** (LiteFinance crypto contest, ZERO Markets WTC, Deriv, myfxbook) | G0/G2 | même classe que le ledger principal : brokers CFD offshore, funnel marketing, fields de centaines-milliers — le sous-jacent crypto ne change ni la structure du prix ni le field | **KILL** (classe déjà au ledger) |
+| **Learn-to-earn** (Coinbase Earn, Binance/Bitget quizzes) | G1+G2 | France **non-éligible** Coinbase Earn (waitlist) ; montants $2-10/quiz, stock fini non-répétable | **KILL G1/G2** |
+| **Crypto prop** (Breakout, HyroTrader) | — | re-#24/#26 : tenaille clauses + règle tickets, identique aux props FX | **KILL** (déjà au ledger) |
+
+Nuance honnête : le mécanisme 3 (juridiction) est **plus faible en crypto** — MiCA n'interdit pas
+les incitations comme ESMA le fait pour les CFD. Mais les mécanismes 1-2 suffisent, et la forme
+crypto du mur est la plus pure du ledger : **le prix crypto est lui-même un mini-compte prop** —
+un bonus non-retirable dont seuls les profits de trading s'extraient. Gagner le concours te donne
+l'obligation d'avoir un edge pour toucher le prix. Le mur no-edge est encapsulé **dans la
+récompense elle-même**.
+
 ## Place dans le programme
 
 **Étude #33, KILL. L'objectif « obtenir un payout » est fermé sur toutes ses branches :**
@@ -75,3 +95,4 @@ payout.**
 - [AllForexBonus — demo contests (agrégateur, juillet 2026)](https://allforexbonus.com/forex-competition/forex-demo-contest)
 - [TheTrustedProp — prop competitions 2026](https://thetrustedprop.com/blogs/top-prop-firm-trading-competitons-of-2026-win-free-account)
 - [IMC Prosperity 4](https://prosperity.imc.com/) · [Optiver Ready Trader Go](https://readytradergo.optiver.com/)
+- Extension crypto : [Bybit — Rewards T&C (bonus non-retirables)](https://www.bybit.com/en/help-center/article/Bonus-Terms-and-Conditions) · [Bybit BYUSDT 200k USDT](https://www.tradingview.com/news/chainwire:4f4e7809e094b:0-competitive-bonus-apr-bybit-introduces-byusdt-trade-earn-with-200-000-usdt-prize-pool/) · [Coinbase Earn — pays éligibles](https://www.coinbase.com/blog/coinbase-earn-now-allows-users-in-100-countries-to-earn-their-share-of) · [LiteFinance crypto contest](https://www.litefinance.org/contests/20th-anniversary-challenge/crypto-trading-competition/) · [ZERO Markets WTC](https://www.zeromarkets.com/wtc/) · [fxverify — demo contests](https://fxverify.com/contests)
