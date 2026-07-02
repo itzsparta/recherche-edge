@@ -1,5 +1,10 @@
 # FINDINGS — Piste 11 : funding cross-sectionnel — KILL (brut réel, mangé par le turnover 8h)
 
+> **Erratum (2026-07-02, découvert en v2)** : la décomposition affichée (spread funding
+> +3.45 %/prix +7.19 %) et les jambes (short −4.4 %) sont ~k≈5× trop petites en niveau (double
+> division par k dans `run_xs.py`). Signes, hiérarchie et les 5 verdicts de gates inchangés.
+> Re-creusage : [`FINDINGS-xs-v2.md`](FINDINGS-xs-v2.md) — KILL aussi (structure).
+
 **Date :** 2026-06-23
 **Verdict :** **KILL** — Gate A PASS (la dispersion paie brut), mais **B, C, D, E tous KILL**.
 **Motif :** edge brut réel **arbitré-jusqu'au-coût** par le turnover 8h. Cas d'école du motif unifié.
