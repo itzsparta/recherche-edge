@@ -107,7 +107,22 @@ Le pivot d'objectif (« valider un compte prop firm ») ne lève pas le constat 
 pousse pas la médiane positive. Gradient #16 chiffré : la convexité exploitable (refund + skim du
 compte financé) vit dans les règles que les firmes retirent (trailing-DD, consistance).
 
-## Les quatre sous-types de mort
+## V4 — clause-safe / anomalies publiées / répétabilité (#25-#33 + re-creusage)
+
+| Étude | Verdict | Tueur | Fichier |
+|---|---|---|---|
+| 25 — flux LETF fin de séance | **KILL** | flux réel et mécanique, empreinte nulle (interaction t=−0.30, dose-réponse **inversée**), fade overnight net t=−3.20 | [`eod-flow/docs/FINDINGS.md`](eod-flow/docs/FINDINGS.md) |
+| 26 — prop répété (buffer-harvest live) | **KILL pré-live** | **tenaille** : la config +EV est interdite verbatim (FTMO « one-sided bets », « account rolling »), la config autorisée est −EV (#24) ; racine B-book partagée → aucun screener ; **règle permanente : clause-safe ∧ +EV requis AVANT toute heure** | [`prop-firm-gate/docs/FINDINGS-repeated.md`](prop-firm-gate/docs/FINDINGS-repeated.md) |
+| 27 — arbitrage SPAC-trust | **KILL hurdle** | discount-vers-trust **réel, robuste, clause-safe** (t inter-noms +11 à +15, pas un bounce) mais excès **+85-145 bps < hurdle 200 bps** — compressé sous la barre | [`spac-trust/docs/FINDINGS.md`](spac-trust/docs/FINDINGS.md) |
+| 28 — PEAD | **KILL** | l'anomalie la plus publiée du factor-zoo **absente de l'univers liquide** : spread +0,00 %, t=+0,01 sur 58 917 événements 8-K (S&P 500+400, 2004-26) | [`pead/docs/FINDINGS.md`](pead/docs/FINDINGS.md) |
+| 29 — Univ3 LP sur L2 (ph.1→2.5) | **GO→KILL** | phase 2 ne trouve aucun tueur simulable, phase 2.5 mesure : **fees/LVR 0.90-0.94 à TOUTES concentrations** ; le net positif résiduel = funding carry = #6 dominé | [`univ3-l2/docs/FINDINGS-phase2.5.md`](univ3-l2/docs/FINDINGS-phase2.5.md) |
+| 30 — carry commodités (énergie) | **DOWNGRADE** | carry symétrique falsifié ; résidu long-backwardation réel + orthogonal mais DSR<0.95, décay 2009-19, narrow ; sleeve +0.04 sub-barre → non promu | [`commodity-carry/docs/FINDINGS.md`](commodity-carry/docs/FINDINGS.md) |
+| 31 — prime ILS / cat-bond | **DOWNGRADE** | prime réelle, **meilleure orthogonalité du programme** (corr SPY +0.10) mais excès +2.56 % < 3 % (t=1.51), SRRIX ~0, tout le positif = hard-market post-2022 ; skew −2.95 dans la queue | [`ils-catbond/docs/FINDINGS.md`](ils-catbond/docs/FINDINGS.md) |
+| 32 — merger-arb small-cap cash | **UNTESTABLE** | yfinance sert 0/10 cibles délistées → **survivorship directionnel** : la jambe gagnante (deals clos) disparaît du panel gratuit | [`factor-harvest/merger-arb/docs/FINDINGS.md`](factor-harvest/merger-arb/docs/FINDINGS.md) |
+| 33 — free-rolls à payout réel (+ crypto) | **KILL d'axe** | cash = montants marketing ; matériel = crédit/ticket non-cash ; gros pools interdits au résident FR (ESMA) ; variance de tournoi dissipée ; crypto : **le prix EST un mini-compte prop**. Objectif payout fermé sur ses 3 branches (#24, #26, #33) | [`prop-firm-gate/docs/FINDINGS-freeroll.md`](prop-firm-gate/docs/FINDINGS-freeroll.md) |
+| 11-v2 — funding XS lissé 7j (re-creusage) | **KILL** | le mur de frais v1 **se dissout** (72→3.25 %/an, brut retenu +38.8 %) mais révèle une **assurance-crash crypto** one-sided (short −10.9 %/an), concentrée (t=1.58 sans top-2), médiane +1.27 %, en compression (12 mo −4.3 %), non clause-safe FR (perps) | [`funding-xs/docs/FINDINGS-xs-v2.md`](funding-xs/docs/FINDINGS-xs-v2.md) |
+
+## Les cinq sous-types de mort
 
 1. **No-edge brut** — orderflow, meme-coin, RV BTC/ETH, XS-momentum (brut ns t=0.84). Pas même de signal.
 2. **Brut réel mangé par la friction** — funding-XS (turnover 8h), niche capacity,
@@ -122,6 +137,44 @@ compte financé) vit dans les règles que les firmes retirent (trailing-DD, cons
    niveau pool, mais récolté par les LP actifs/JIT ; solo passif tué par le gas). Même forme
    que CEF #8 (bounce capté par le plus rapide) et books sportifs #16 (+EV au book qui bannit).
    L'edge existe ; l'efficience est dans **qui** le capte, pas dans son absence.
+5. **Edge réel interdit par la contrepartie qui contrôle les règles** — prop répété #26 (la
+   config +EV est nommément interdite, la config autorisée est −EV), free-rolls #33 (pools
+   matériels fermés au résident FR ; prix crypto = mini-compte prop), perps #11-v2 (assurance
+   réelle, accès non clause-safe FR). La clause bat l'edge : le mur n'est plus le marché mais
+   **le contrat/le régulateur**.
+
+## Le re-vois (2026-07-02) : carte de couverture et frontières
+
+Question posée après 34 verdicts : « aucun edge trouvable nulle part ? ». Audit de couverture —
+le programme ne prouve pas un théorème universel, il prouve un théorème **conditionnel** :
+
+> Sous {solo, données gratuites, zéro infra, marchés publics liquides, résident FR, clause-safe},
+> aucun edge récoltable n'a survécu, et les morts se rangent exhaustivement dans les 5 mécanismes
+> ci-dessus.
+
+**Où l'edge EXISTE — démontré par le programme lui-même, de l'autre côté d'une contrainte :**
+
+| Contrainte relâchée | Preuve interne que l'edge y vit | Coût d'entrée |
+|---|---|---|
+| **Infra/latence** | le bounce CEF (#8), le JIT-LP (#15) et le MEV sont récoltés — par d'autres | devenir le sophistiqué (emploi/statut) |
+| **Data payante** | #32 untestable en gratuit ; l'alt-data entière hors périmètre | budget data (Norgate, terminaux) |
+| **Capital + patience** | les primes sub-hurdle sont RÉELLES (#27 +85-145 bps, #6 +3.8 %, #30, #31) — trop maigres pour transformer un petit compte, honnêtes sur du capital | épargne ; c'est le deliverable #22 (60/40+trend) |
+| **Statut/juridiction** | #16 (le book bannit les gagnants), #33 (pools fermés ESMA), #11-v2 (perps non clause-safe FR) | pro/expat — hors de question à court terme |
+
+**Classes non-testées restantes, avec prior honnête :**
+- **MEV / liquidations on-chain** : accessible sans statut, data Dune gratuite — mais gagné en
+  gas-auction par des searchers à infra (sous-type 4 quasi-certain). Prior <5 %, info marginale
+  ≈ 0. Pas d'étude #34 recommandée.
+- **Poker / jeux de skill** : edge réel possible mais c'est un **job à variance** (~seuil 15 €/h
+  aux micro-limites), pas un edge de marché. Hors périmètre.
+- **Marchés SANS ticker** (enchères, liquidations physiques, immobilier décoté) : le seul étang
+  où l'information ne circule structurellement pas — asymétrie locale réelle, non-backtestable,
+  demande heures + capital + présence. C'est de l'entrepreneuriat, pas du trading.
+
+**Conclusion du re-vois** : rien d'oublié dans le périmètre. La sortie n'est pas une 35ᵉ étude —
+c'est **relâcher une contrainte** : (a) capital lent sur les primes réelles (#22), (b) devenir le
+sophistiqué — le pipeline de 34 verdicts pré-enregistrés EST le dossier de candidature, (c) les
+marchés sans ticker, hors programme.
 
 ## Le seul deliverable & le vrai capital
 
