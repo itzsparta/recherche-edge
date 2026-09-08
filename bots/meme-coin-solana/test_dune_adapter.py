@@ -1,70 +1,68 @@
-"""TDD adapter Dune CSV -> episodes backtester. Transforms PURS (hors-ligne)."""
-import csv
+import json
+import os
+import pytest
+from dune_adapter import main
 
-from dune_adapter import rows_to_episodes, build_dataset, SUPPLY
+def test_dune_adapter_conversion(tmp_path):
+    csv_file = tmp_path / "input.csv"
+    json_file = tmp_path / "output.json"
+    
+    csv_content = """mint,pool,t_pool,pool_sol_init,n_buyers_pre,px_s0,px_s1,px_t5,px_t30,px_t120,px_t300,px_t600,px_t900,px_t1800,px_t2700,res_s0,res_t5,res_t30,res_t1800,n_swaps_50min
+MintA,PoolA,2025-08-01 12:00:00Z,85.5,150,0.001,0.0011,0.0012,0.0015,,,,,,,85.5,86.0,,,10
+MintB,PoolB,2025-08-05 15:30:00Z,100.0,40,,0.005,,,,,,,0.002,0.001,100.0,,,,5
+MintB,PoolB_dup,2025-08-05 15:30:00Z,100.0,40,,0.005,,,,,,,0.002,0.001,100.0,,,,5
+MintC_Empty,PoolC,2025-08-10 10:00:00Z,50.0,10,,,,,,,,,,,,,,,0
+"""
+    csv_file.write_text(csv_content, encoding="utf-8")
+    
+    res = main([str(csv_file), str(json_file), "--regime", "BAS"]) # defaults to lag=px_s0
+    assert res == 0
+    assert json_file.exists()
+    
+    with open(json_file, "r", encoding="utf-8") as f:
+        episodes = json.load(f)
+        
+    # MintB has no px_s0, MintC has no path, MintB dup should be deduplicated
+    assert len(episodes) == 1 
+    
+    ep_a = episodes[0]
+    assert ep_a["mint"] == "MintA"
+    assert ep_a["regime"] == "BAS"
+    assert ep_a["n_buyers_pre"] == 150
+    assert ep_a["pool_sol_init"] == 85.5
+    assert ep_a["reserves"]["0.0"] == 85.5
+    assert ep_a["liq_usd"] == 1.0 # Verify explicitly neutralized mock
+    
+    # Check path mapping (now fills missing with carried values)
+    # px_s0=0.001, px_s1=0.0011, px_t5=0.0012, px_t30=0.0015
+    # Then it carries 0.0015 for the rest!
+    path = ep_a["path"]
+    assert path[0] == [0.0, 0.001]
+    assert path[3] == [30.0, 0.0015]
+    assert path[4] == [120.0, 0.0015] # Carried
+    assert path[-1] == [2700.0, 0.0015] # Carried
+    assert ep_a["n_carried"] == 6
 
-
-def _row(mint="M1", name="tok", regime="r1", launch="1000",
-         t="0", psol="1e-7", pusd="2e-5", vol="500", n="3"):
-    """Ligne CSV brute (DictReader -> str partout)."""
-    return {"mint": mint, "name": name, "regime": regime, "launch_unix": launch,
-            "t_bucket": t, "price_sol": psol, "price_usd": pusd,
-            "bucket_vol_usd": vol, "n_trades": n}
-
-
-def test_groups_buckets_of_one_mint_into_one_episode_with_sorted_path():
-    rows = [_row(t="30", psol="2e-7"), _row(t="0", psol="1e-7")]
-    eps = rows_to_episodes(rows)
-    assert len(eps) == 1
-    ep = eps[0]
-    assert ep["mint"] == "M1"
-    assert ep["name"] == "tok"
-    assert ep["launch_time"] == 1000.0
-    assert ep["path"] == [[0, 1e-7], [30, 2e-7]]
-
-
-def test_fdv_is_first_bucket_price_usd_times_supply():
-    # 1er bucket (t=0) price_usd=2e-5 -> fdv = 2e-5 * 1e9 = 20000
-    rows = [_row(t="0", pusd="2e-5"), _row(t="30", pusd="9e-5")]
-    ep = rows_to_episodes(rows)[0]
-    assert ep["fdv_usd"] == 2e-5 * SUPPLY
-
-
-def test_carries_backtester_metadata_fields():
-    rows = [_row(regime="crash", vol="500"), _row(t="30", vol="300")]
-    ep = rows_to_episodes(rows)[0]
-    assert ep["vol24_usd"] == 800.0          # somme des bucket_vol_usd
-    assert ep["liq_usd"] == 800.0            # proxy = volume cumule (gate liq off au verdict)
-    assert ep["regime"] == "crash"
-    assert ep["rug_score"] == 0
-    assert ep["risks"] == []
-
-
-def test_distinct_mints_yield_distinct_episodes():
-    rows = [_row(mint="A", t="0"), _row(mint="B", t="0"), _row(mint="A", t="30")]
-    eps = rows_to_episodes(rows)
-    assert {e["mint"] for e in eps} == {"A", "B"}
-    by = {e["mint"]: e for e in eps}
-    assert len(by["A"]["path"]) == 2
-    assert len(by["B"]["path"]) == 1
-
-
-def test_single_bucket_mint_keeps_one_point_path():
-    # un rug instantane (1 seul bucket de trades) reste un episode valide
-    ep = rows_to_episodes([_row(mint="RUG", t="0", psol="5e-7")])[0]
-    assert ep["path"] == [[0, 5e-7]]
-
-
-def test_build_dataset_reads_real_csv_file(tmp_path):
-    csv_path = tmp_path / "dune.csv"
-    cols = ["mint", "name", "regime", "launch_unix", "t_bucket",
-            "price_sol", "price_usd", "bucket_vol_usd", "n_trades"]
-    with open(csv_path, "w", encoding="utf-8", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(cols)
-        w.writerow(["A", "tok", "r1", "1000", "0", "1e-7", "2e-5", "500", "3"])
-        w.writerow(["A", "tok", "r1", "1000", "30", "2e-7", "4e-5", "200", "2"])
-    eps = build_dataset(str(csv_path), str(tmp_path / "out.json"))
-    assert len(eps) == 1
-    assert eps[0]["path"] == [[0, 1e-7], [30, 2e-7]]
-    assert eps[0]["fdv_usd"] == 2e-5 * SUPPLY
+def test_dune_adapter_with_lag(tmp_path):
+    csv_file = tmp_path / "input.csv"
+    json_file = tmp_path / "output.json"
+    
+    csv_content = """mint,pool,t_pool,pool_sol_init,n_buyers_pre,px_s0,px_s1,px_t5,px_t30,px_t120,px_t300,px_t600,px_t900,px_t1800,px_t2700,res_s0,res_t5,res_t30,res_t1800,n_swaps_50min,lag_last
+MintB,PoolB,2025-08-05 15:30:00Z,100.0,40,,0.005,,,,,,,0.002,0.001,100.0,,,,5,
+"""
+    csv_file.write_text(csv_content, encoding="utf-8")
+    
+    # Require px_s1 instead of px_s0
+    res = main([str(csv_file), str(json_file), "--lag", "px_s1", "--regime", "BAS"])
+    assert res == 0
+    
+    with open(json_file, "r", encoding="utf-8") as f:
+        episodes = json.load(f)
+        
+    assert len(episodes) == 1
+    path = episodes[0]["path"]
+    assert path[0] == [0.4, 0.005]
+    assert path[1] == [5.0, 0.005] # Carried
+    assert path[-2] == [1800.0, 0.002]
+    assert path[-1] == [2700.0, 0.001]
+    assert episodes[0]["n_carried"] == 6

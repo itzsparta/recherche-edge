@@ -146,48 +146,44 @@ def test_can_open_refuse_solde_insuffisant():
 def test_filters_ok_dans_les_bornes():
     s = _strat(min_liquidity_usd=5000, max_liquidity_usd=200000,
                min_ratio_liq_fdv=10.0, max_ratio_liq_fdv=70.0, min_volume_24h=1000)
-    assert passes_filters(liq_usd=20000, fdv_usd=100000, vol24_usd=5000, strat=s) is True  # ratio 20%
+    assert passes_filters({"liq_usd": 20000, "fdv_usd": 100000, "vol24_usd": 5000}, s) is True  # ratio 20%
 
 
 def test_filters_fdv_zero_refuse():
-    assert passes_filters(liq_usd=20000, fdv_usd=0, vol24_usd=5000, strat=_strat()) is False
+    assert passes_filters({"liq_usd": 20000, "fdv_usd": 0, "vol24_usd": 5000}, _strat()) is False
 
 
 def test_filters_ratio_trop_bas_refuse():
     s = _strat(min_ratio_liq_fdv=10.0, max_ratio_liq_fdv=70.0,
                min_liquidity_usd=0, max_liquidity_usd=1e12, min_volume_24h=0)
-    assert passes_filters(liq_usd=5000, fdv_usd=100000, vol24_usd=5000, strat=s) is False  # 5%
+    assert passes_filters({"liq_usd": 5000, "fdv_usd": 100000, "vol24_usd": 5000}, s) is False  # 5%
 
 
 def test_filters_volume_trop_bas_refuse():
     s = _strat(min_volume_24h=10000, min_liquidity_usd=0, max_liquidity_usd=1e12,
                min_ratio_liq_fdv=0, max_ratio_liq_fdv=100)
-    assert passes_filters(liq_usd=20000, fdv_usd=100000, vol24_usd=500, strat=s) is False
+    assert passes_filters({"liq_usd": 20000, "fdv_usd": 100000, "vol24_usd": 500}, s) is False
 
-
-def _nofilter(**over):
-    # tout neutralisé sauf ce qu'on teste (utile pour isoler la bande FDV)
-    base = dict(min_liquidity_usd=0, max_liquidity_usd=1e12,
-                min_ratio_liq_fdv=0, max_ratio_liq_fdv=1e9, min_volume_24h=0)
-    base.update(over)
-    return _strat(**base)
-
+def _nofilter(**kwargs):
+    s = _strat(min_liquidity_usd=0, max_liquidity_usd=1e12,
+               min_ratio_liq_fdv=0, max_ratio_liq_fdv=100, min_volume_24h=0)
+    for k, v in kwargs.items():
+        setattr(s, k, v)
+    return s
 
 def test_filters_bande_fdv_dans_zone_passe():
     # pump.fun : acheter pré-graduation (~69k). FDV 30k dans [5k, 60k]
     s = _nofilter(min_fdv_usd=5000, max_fdv_usd=60000)
-    assert passes_filters(liq_usd=10, fdv_usd=30000, vol24_usd=0, strat=s) is True
-
+    assert passes_filters({"liq_usd": 10, "fdv_usd": 30000, "vol24_usd": 0}, s) is True
 
 def test_filters_fdv_sous_plancher_refuse():
     s = _nofilter(min_fdv_usd=5000, max_fdv_usd=60000)
-    assert passes_filters(liq_usd=10, fdv_usd=2000, vol24_usd=0, strat=s) is False
-
+    assert passes_filters({"liq_usd": 10, "fdv_usd": 2000, "vol24_usd": 0}, s) is False
 
 def test_filters_fdv_au_dessus_plafond_refuse():
     # déjà gradué / trop gros : on ne veut pas entrer
     s = _nofilter(min_fdv_usd=5000, max_fdv_usd=60000)
-    assert passes_filters(liq_usd=10, fdv_usd=120000, vol24_usd=0, strat=s) is False
+    assert passes_filters({"liq_usd": 10, "fdv_usd": 120000, "vol24_usd": 0}, s) is False
 
 
 # ---------------- security_ok ----------------

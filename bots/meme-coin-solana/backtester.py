@@ -55,26 +55,35 @@ class BacktestResult:
                 f"solde {self.start_balance:.2f}->{self.final_balance:.2f}")
 
 
-def _exit_schedule(entry_price, strat, path, launch_time):
+def _exit_schedule(entry_price, strat, path, launch_time, reserves=None):
     """Pré-calcule la suite des ventes en marchant la trajectoire à travers
     decide_exit. Chaque vente = (temps_absolu, fraction_des_tokens_restants,
-    raison, prix). Termine TOUJOURS par une clôture (SL/TIME ou liquidation FINAL)."""
+    raison, prix, reserve_pool). Termine TOUJOURS par une clôture (SL/TIME ou liquidation FINAL)."""
+    reserves = reserves or {}
     steps = []
     events = []
     closed = False
+    # La duree de detention se compte depuis l'ENTREE, pas depuis le lancement.
+    # Sinon toute entree retardee (balayage de latence, miroir placebo a t1800)
+    # depasse max_hold_seconds des son premier point et se time-stope sur place :
+    # le backtest renvoie alors -peage pour chaque episode (win_rate 0%, t=-34)
+    # en donnant l'illusion d'avoir teste quelque chose.
+    entry_t = path[0][0] if path else 0.0
     for t, price in path:
         pct_gain = (price - entry_price) / entry_price * 100
-        d = decide_exit(pct_gain, t, steps, strat)
+        d = decide_exit(pct_gain, t - entry_t, steps, strat)
+        res = reserves.get(str(t), 0.0)
         if d.action == "SELL_ALL":
-            events.append((launch_time + t, 1.0, d.reason, price))
+            events.append((launch_time + t, 1.0, d.reason, price, res))
             closed = True
             break
         if d.action == "SELL_PARTIAL":
-            events.append((launch_time + t, d.sell_ratio, d.reason, price))
+            events.append((launch_time + t, d.sell_ratio, d.reason, price, res))
             steps.append(d.step_percent)
-    if not closed:
+    if not closed and path:
         t_last, price_last = path[-1]
-        events.append((launch_time + t_last, 1.0, "FINAL", price_last))
+        res_last = reserves.get(str(t_last), 0.0)
+        events.append((launch_time + t_last, 1.0, "FINAL", price_last, res_last))
     return events
 
 
@@ -99,11 +108,13 @@ def run_backtest(episodes, strat, start_balance=100.0):
     closed_regimes = []
 
     while heap:
-        _time, _prio, _seq, kind, payload = heapq.heappop(heap)
+        item = heapq.heappop(heap)
+        type_evt = item[3]
+        payload = item[4]
 
-        if kind == "ENTRY":
+        if type_evt == "ENTRY":
             ep = payload
-            if not passes_filters(ep["liq_usd"], ep["fdv_usd"], ep["vol24_usd"], strat):
+            if not passes_filters(ep, strat):
                 continue
             if match_keyword(ep["name"], strat.keywords) is None:
                 continue
@@ -114,29 +125,31 @@ def run_backtest(episodes, strat, start_balance=100.0):
             path = ep.get("path") or []
             if not path:
                 continue
+            entry_t = path[0][0]
             entry_price = path[0][1]
             if entry_price <= 0:
                 continue
-
-            fill = simulate_buy(strat.buy_amount_sol, entry_price, strat)
+                
+            entry_reserve = ep.get("reserves", {}).get(str(entry_t), 0.0)
+            fill = simulate_buy(strat.buy_amount_sol, entry_price, strat, pool_reserve_sol=entry_reserve)
             pf.open(ep["mint"], ep["name"], fill, buy_timestamp=ep["launch_time"])
             pnl_by_mint[ep["mint"]] = 0.0
             regime_by_mint[ep["mint"]] = ep.get("regime", "")
             n_entered += 1
 
-            for abs_t, fraction, reason, price in _exit_schedule(
-                    entry_price, strat, path, ep["launch_time"]):
+            for abs_t, fraction, reason, price, res in _exit_schedule(
+                    entry_price, strat, path, ep["launch_time"], ep.get("reserves")):
                 heapq.heappush(heap, (abs_t, _PRIO_SELL, seq, "SELL",
-                                      (ep["mint"], fraction, reason, price)))
+                                      (ep["mint"], fraction, reason, price, res)))
                 seq += 1
 
         else:  # SELL
-            mint, fraction, reason, price = payload
+            mint, fraction, reason, price, res = payload
             pos = pf.positions.get(mint)
             if pos is None:
                 continue  # déjà clôturée (ex : SL avant un TP programmé plus tard)
             tokens_sold = pos.tokens * fraction
-            proceeds = simulate_sell(tokens_sold, price, strat)
+            proceeds = simulate_sell(tokens_sold, price, strat, pool_reserve_sol=res)
             cost_alloc = pos.cost_basis_sol * fraction
             pnl_by_mint[mint] += proceeds - cost_alloc
             pf.sell(mint, fraction, proceeds)

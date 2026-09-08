@@ -31,9 +31,9 @@ WITH launches AS (
     SELECT c.mint, c.name, c.evt_block_time AS launch_time,
            'jan_2025_euphoria' AS regime                     -- <-- label du regime
     FROM pumpdotfun_solana.pump_evt_createevent c
-    WHERE c.evt_block_time >= TIMESTAMP '2025-01-18 00:00'   -- <-- jour du regime
-      AND c.evt_block_time <  TIMESTAMP '2025-01-19 00:00'   -- <-- +1 jour
-      AND mod(abs(from_big_endian_64(xxhash64(to_utf8(c.mint)))), 1000) < 20  -- ~2%
+    WHERE c.evt_block_time >= TIMESTAMP '2025-01-18 12:00'   -- <-- fenetre de 4h (garantit <2min sur Free Tier)
+      AND c.evt_block_time <  TIMESTAMP '2025-01-18 16:00'
+      AND mod(abs(from_big_endian_64(xxhash64(to_utf8(c.mint)))), 1000) < 50  -- ~5%
 ),
 swaps AS (
     SELECT l.mint, l.name, l.regime, l.launch_time,
@@ -42,7 +42,9 @@ swaps AS (
            coalesce(t.token_amount, t."tokenAmount") AS token_amt
     FROM pumpdotfun_solana.pump_evt_tradeevent t
     JOIN launches l ON t.mint = l.mint
-    WHERE t.evt_block_time >= l.launch_time
+    WHERE t.evt_block_time >= TIMESTAMP '2025-01-18 12:00'
+      AND t.evt_block_time <  TIMESTAMP '2025-01-18 16:15'
+      AND t.evt_block_time >= l.launch_time
       AND t.evt_block_time <  l.launch_time + INTERVAL '15' MINUTE
 )
 SELECT

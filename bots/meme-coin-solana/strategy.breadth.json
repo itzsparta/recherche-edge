@@ -1,0 +1,33 @@
+{
+    "_note": "Config VERDICT + BREADTH.",
+    "targeting": { "keywords": [] },
+    "filters": {
+        "min_liquidity_usd": 0,
+        "max_liquidity_usd": 1e18,
+        "min_ratio_liq_fdv": 0,
+        "max_ratio_liq_fdv": 1e18,
+        "min_volume_24h": 0,
+        "min_fdv_usd": 0,
+        "max_fdv_usd": 1e18,
+        "min_uniq_buyers": 40,
+        "max_curve_span_sec": 90,
+        "min_buy_sell_ratio": 3.0
+    },
+    "security": { "check_rug": false },
+    "execution": {
+        "amm_fee_pct": 0.0025,
+        "slippage_pct": 0.15,
+        "priority_fee_sol": 0.0005,
+        "jito_tip_sol": 0.001
+    },
+    "trading": {
+        "buy_amount_sol": 0.5,
+        "stop_loss_percent": -40,
+        "max_hold_seconds": 600,
+        "max_open_positions": 100000000,
+        "take_profit_steps": [
+            {"percent": 100, "sell_ratio": 0.5},
+            {"percent": 300, "sell_ratio": 0.5}
+        ]
+    }
+}

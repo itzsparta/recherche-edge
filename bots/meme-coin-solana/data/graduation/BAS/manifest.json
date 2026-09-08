@@ -1,0 +1,20 @@
+{
+  "_note": "Executions Dune DEJA PAYEES (query 8637209, schema du 2025-09-07 avec res_* a chaque checkpoint + px_last/res_last/lag_last). Recuperer un resultat ne coute AUCUN credit : `python dune_run.py --fetch-manifest data/graduation/BAS` rapatrie les 11 jours sans re-executer.",
+  "regime": "BAS",
+  "query_id": 8637209,
+  "days": {
+    "2025-07-25": {"execution_id": "01M1YQTKDFVSB9PXM6C7QR1N83", "rows": 39, "credits": 1.174},
+    "2025-07-26": {"execution_id": "01M1YQVKVVV98FTBGT8R4P1NZG", "rows": 31, "credits": 1.040},
+    "2025-07-27": {"execution_id": "01M1YQVN8PPYBM90JVBVABV4GG", "rows": 11, "credits": 1.210},
+    "2025-07-28": {"execution_id": "01M1YQVQ289H3V5GACX8FVT1RY", "rows": 26, "credits": 1.111},
+    "2025-07-29": {"execution_id": "01M1YQWK50E9WXYXV6YZKYACVK", "rows": 39, "credits": 1.203},
+    "2025-07-30": {"execution_id": "01M1YQWMESQYVBFDE8VZZCP7JS", "rows": 30, "credits": 1.146},
+    "2025-07-31": {"execution_id": "01M1YQXJXM68FEEKV6KK5S0MYD", "rows": 28, "credits": 0.970},
+    "2025-08-01": {"execution_id": "01M1YQXME4M8F7B1TWCDQH3S32", "rows": 17, "credits": 0.871},
+    "2025-08-02": {"execution_id": "01M1YQY9JW41QV5QB70P2Q1FZM", "rows": 19, "credits": 1.188},
+    "2025-08-03": {"execution_id": "01M1YQYAXR4B7MV8N3HWCD4ER1", "rows": 9,  "credits": 1.160},
+    "2025-08-04": {"execution_id": "01M1YQZ8TN7QZQY7D4V692AC54", "rows": 28, "credits": 0.955}
+  },
+  "total_rows": 277,
+  "total_credits": 12.028
+}
