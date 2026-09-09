@@ -378,3 +378,25 @@ def test_match_keyword_sans_mots_cles_pas_de_filtre_renvoie_vide():
     # [] ou [""] => filtre désactivé => "" (truthy-différent de None = on passe)
     assert match_keyword("N IMPORTE QUOI", []) == ""
     assert match_keyword("N IMPORTE QUOI", ["", "  "]) == ""
+
+
+def test_defauts_de_filtre_sont_neutres():
+    """Un Strategy() nu ne doit JAMAIS jeter d'episode.
+
+    Regression : les defauts de la dataclass avaient ete mis a la bande
+    pre-graduation (min_fdv 5000, max_fdv 60000). Comme les quatre configs
+    fixent ces cles explicitement, le changement n'apportait rien en production
+    mais faisait jeter en silence tout episode hors bande des qu'une config
+    omettait la cle -- dont 100% des episodes graduation, qui portent un
+    fdv_usd mocke a 1.0. Un filtre qui jette tout sans lever d'erreur est la
+    signature de bug la plus couteuse de ce projet.
+    """
+    s = Strategy(check_rug=False)
+    # ratio liq/fdv garde a 20% pour isoler la bande FDV des autres filtres
+    for fdv in (1.0, 100_000.0, 1e9):
+        ep = {"liq_usd": fdv * 0.2, "fdv_usd": fdv, "vol24_usd": 5_000.0}
+        assert passes_filters(ep, s) is True, f"defaut non neutre a fdv={fdv}"
+
+    # cas reel : les episodes graduation portent des mocks a 1.0 (ratio 100%)
+    mock = {"liq_usd": 1.0, "fdv_usd": 1.0, "vol24_usd": 1.0}
+    assert passes_filters(mock, s) is True

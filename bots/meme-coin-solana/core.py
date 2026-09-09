@@ -26,8 +26,13 @@ class Strategy:
     min_ratio_liq_fdv: float = 0.0
     max_ratio_liq_fdv: float = 100.0
     min_volume_24h: float = 0.0
-    min_fdv_usd: float = 5000.0
-    max_fdv_usd: float = 60000.0
+    # Defauts NEUTRES : un defaut de dataclass est le repli quand une config
+    # omet la cle. Y encoder la bande pre-graduation (5000-60000) faisait jeter
+    # en silence tout episode hors bande -- dont 100% des episodes graduation,
+    # qui portent un fdv_usd mocke a 1.0. L'opinion appartient aux configs, ou
+    # les quatre strategy*.json la fixent deja explicitement.
+    min_fdv_usd: float = 0.0
+    max_fdv_usd: float = 1e12
     
     # --- breadth (pre-graduation selection) ---
     min_uniq_buyers: int = 0
