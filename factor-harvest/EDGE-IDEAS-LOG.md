@@ -675,3 +675,129 @@ post-baisse générique, sous-coût. Sous-type **#2 (arbitré/absorbé)** : sur 
 $100-300B = les plus liquides) le flux est entièrement absorbé. Conforme au prior textbook (Cheng-
 Madhavan 2009). Détail : [`eod-flow/docs/FINDINGS.md`](../eod-flow/docs/FINDINGS.md).
 
+---
+
+## 2026-09-11 — Revue critique du programme (36 études) + pistes neuves
+
+### Contexte lu avant de proposer
+
+- RESEARCH-ROADMAP.md, FINDINGS.md, EDGE-PISTES-V2.md, ce log ; FINDINGS #1, #16, #18, #27, #28,
+  #34, DEPLOIEMENT.md ; code `risk-premia-portfolio/run_voltarget.py`, `sleeves.py`.
+- 36 études, 0 edge déployable ; deliverable = 1,5 × (60/40 + trend), déployé 80 WTEF / 20 DBMFE.
+
+### Critique — 6 défauts de méthode, par enjeu décroissant
+
+1. **Asymétrie de scrutin : l'objet qui reçoit l'argent est le moins testé en multi-régime.** Les
+   kills exigent le multi-régime ; le deliverable levé (#34) n'est backtesté que sur 2006-2026 = **un
+   seul régime macro** (corr actions/obligs négative sauf 2022, taux bas, surperformance US). Le
+   gate C « both-halves » compare deux moitiés du même régime. Le levier 1,5× ne paie que si le 60/40
+   bat son financement (T3M + 0,40) — faux sur 1966-1981 (obligs < T-bills). Jamais mesuré.
+
+2. **Gates sous-puissants : « KILL » confond « absent » et « non prouvé ».** t = SR·√T. Sur 20 ans,
+   t > 2 ⟺ SR > 0,45 ; détecter à 80 % le SR 0,42 du trend exige ~46 ans. Le gate #1 avait ~50 % de
+   chances de tuer le premium que la littérature documente. Gate G « mûr 2023+ » (~3 ans) : t > 2
+   exige SR > 1,15 → seul un edge extrême passe ; « ns en 2023+ » = absence de preuve, pas extinction
+   (légitime quand le point estimate décroît de façon monotone, cf. #12 ; abusif quand seul le t est
+   lu, cf. #35 H2 t=0,96). Test correct = différence IS/OOS significative, ou borne haute de l'IC
+   sous le hurdle. Conséquence : #1, #17, #30, #31, #35 sont « premium plausible, non prouvé à cette
+   taille d'échantillon » — pas le même objet qu'un no-edge (#13, orderflow), pas la même décision.
+
+3. **#36 a tué le mauvais vol-target.** `run_voltarget.py:35` = `rp.rolling(W).std()` sur rendements
+   **mensuels**, W ∈ {12..48} **mois** : une vol laggée de 1 à 4 ans est un régime de levier, pas du
+   vol-targeting. La version publiée (Moreira-Muir 2017, Harvey et al. 2018) utilise la vol réalisée
+   **quotidienne** sur 1-3 mois ou l'implicite. Le diagnostic de #36 lui-même (« vol laggée basse
+   avant le krach → sur-levé ») désigne le correctif non testé. Le KILL ne vaut que pour le VT lent.
+
+4. **Le « motif unifié » est devenu infalsifiable et filtre sans données.** Les 5 sous-types
+   couvrent tout résultat possible (pas de signal / friction / tail / sophistiqué / clause). En
+   filtrage, il rejette sans test (saisonnalité commodities, rotation sectorielle, alt-data,
+   buy-write, short-interest : « les fonds le connaissent ») — asserté, pas chiffré, exactement le
+   reproche fait à l'écart prop le 2026-06-25. Taux de faux négatifs du filtre jamais mesuré : le
+   même raisonnement aurait rejeté SPAC (réel, t=11) et GEX (réel, t≈−16).
+
+5. **Cadence largeur ≫ profondeur, incompatible avec la thèse V3.** ~36 études en ~80 jours,
+   1-2 j chacune, données gratuites standard (yfinance, Binance, football-data). La « prime de
+   saleté » postule un edge dans les pipelines trop fragiles à maintenir — aucune étude n'en a
+   construit un. Données publiques + protocole court testent par construction « info publique avec
+   data publique » : la conclusion « à info publique, pas d'edge » est en partie une propriété de la
+   méthode.
+
+6. **Fiscalité absente partout.** Backtests et deliverable pré-impôt. En CTO, chaque vente réalise la
+   plus-value à 30 % (PFU) → pénalise tout ce qui tourne (VT, bande 75-85 %). L'enveloppe (PEA :
+   17,2 % après 5 ans ; AV après 8 ans, arbitrages internes non imposés) est un écart **certain** du
+   même ordre que les edges cherchés.
+
+**Solide, à garder :** pré-enregistrement, t calendar-time (#28), lag +1 anti-bounce (#8/#27),
+comparaison à vol égale (#36), refus d'abaisser un hurdle. Les faux GO démasqués (VRP, CEF, LST,
+#29) sont réels.
+
+### Pistes neuves (filtrées contre les 36 études + les rejets de ce log)
+
+#### P1 — #37 Stress séculaire du deliverable + puissance du trend ★ recommandé
+
+- **Question.** 1,5 × (60/40 + trend) survit-il aux régimes absents de 2006-2026 (stagflation
+  1966-81 à corr actions/obligs positive et obligs < cash ; répression financière 1940s) ? Le
+  premium trend est-il significatif sur un échantillon qui a la puissance ?
+- **Data gratuite.** Ken French (marché US 1926+), Shiller (S&P + GS10 1871+, obligs reconstruites
+  par duration), FRED TB3MS (1934+), AQR Data Library (TSMOM 58 marchés 1985+ ; vérifier si les
+  séries « Century » couvrent le trend, et brut/net de coûts).
+- **Gates à pré-enregistrer.** (A) maxDD à L=1,5 sur 1926→2025 > −35 % (critère de ruine #34) ;
+  (B) excès du levier > 0 sur 1966-1981 ; (C) TSMOM AQR t > 2 et ΔSharpe du sleeve > 0 hors
+  2006-2026.
+- **Pourquoi d'abord.** Seule question du programme où une erreur coûte de l'argent réel ; attaque
+  les deux points faibles (#1 sous-puissant, #34 mono-régime). ~1 j. Si A ou B FAIL → L* baisse ou le
+  cœur doit inclure un actif réel → DEPLOIEMENT.md change.
+
+#### P2 — #38 Vol-target rapide (vol quotidienne 21-63 j ou VIX)
+
+- Rouvre #36 sur la version publiée. Composants daily yfinance + ^VIX. Gates de #36 inchangés (vol
+  égale C\*, |ΔL| coûté, 2008 inclus) + contrainte fiscale : exécutable en CTO seulement si le coût
+  fiscal des ventes est inclus, sinon enveloppe AV.
+- Prior : favorable sur actions/risk-parity (Harvey 2018), défavorable en moyenne cross-facteurs
+  (Cederburg et al. 2020). ~0,5 j.
+
+#### P3 — #39 Capture de dividende sous statut PEA (arme neuve = statut fiscal)
+
+- **Arme jamais testée.** Le re-vois ne voit le statut que comme contrainte. En PEA, dividende non
+  imposé ; le cours ex-date baisse de ρ·D, ρ fixé par la fiscalité du price-setter marginal
+  (étrangers en retenue à la source). Si ρ < 1, acheter cum (close J−1) / vendre ex (open J) capte
+  (1−ρ)·D net des frais PEA.
+- **Tueur probable.** Price-setter tax-neutre (OPCVM, dealers en prêt-emprunt cum-cum) → ρ ≈ 1 ;
+  frais PEA 0,1-0,5 %/ordre vs (1−ρ)·D ~ 0,3 % ; bruit overnight ~1,5 %.
+- **Data.** yfinance `.PA` (dividendes + OHLC) SBF 120, 2005-2026, ~2-3 k événements → puissance
+  suffisante si effet ≥ 0,1 %. Market-adjust par l'ouverture/clôture du CAC 40.
+- **Gates.** (A) ρ̂ < 1, t inter-mois > 2 ; (B) net de 2 × frais PEA réalistes > 0 ; (C) 2015+ pas
+  significativement inférieur (test de différence, cf. critique 2) ; (D) survit hors top-5 noms.
+  Variante sur le même panel : *dividend month premium* (Hartzmark-Solomon 2013).
+- Prior ~15 %. ~1 j. Clause-safe (titres UE éligibles PEA).
+
+#### P4 — Lever le mur data (décision budget)
+
+- 4 résultats bloqués par le même mur (délistés / roll) : #32 merger-arb UNTESTABLE, SPAC Gate D,
+  survivorship PEAD, trend futures back-adjusté. Un mois de data EOD avec délistés (EODHD, Norgate —
+  tarifs à vérifier) les débloque tous. Conforme à la règle « exiger base payante ou kill ».
+
+#### P5 — Short-vol conditionnel VRP × GEX (interaction de deux effets réels) — prior bas
+
+- #4 : prime réelle (t=4,03) tuée par le tail. #18 : prédicteur de variance robuste (t≈−16) tué car
+  muet sur la moyenne. Interaction jamais testée : la prime est-elle concentrée en GEX haut, le tail
+  en GEX négatif ? Data déjà sur disque (DIX.csv, VIX, SVXY).
+- Tueurs connus : krach en un jour depuis un régime calme (5 fév. 2018) non évitable par un filtre
+  J−1 ; le risque défini rachète la partie la plus chère (puts OTM) ; ETP VIX inaccessibles au
+  résident FR (PRIIPs) → options SPX/Eurex seulement. Kill cheap (~2 h).
+
+#### Rejetées au filtre
+
+- Arb Polymarket/Kalshi, rewards de liquidité Polymarket : Polymarket géo-bloqué en France (ANJ,
+  fin 2024), Kalshi réservé aux US → sous-type 5 (clause).
+- Rebal d'indices S&P/Russell : effet d'inclusion documenté comme disparu (Greenwood-Sammon 2022),
+  prior < 5 %.
+- OPA/retrait obligatoire France : plancher contractuel type SPAC, mais même mur délistés que #32
+  → dépend de P4.
+
+### Reco
+
+P1 d'abord (argent réel en jeu, ~1 j), puis P3 (seule arme neuve, kill cheap). P2 si P1 passe. P4 =
+décision budget de Rémi. Aucun résultat regardé avant spec : P3 exige sa SPEC pré-enregistrée avant
+tout pull.
+
