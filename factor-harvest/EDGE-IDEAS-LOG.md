@@ -747,6 +747,9 @@ comparaison à vol égale (#36), refus d'abaisser un hurdle. Les faux GO démasq
 - **Pourquoi d'abord.** Seule question du programme où une erreur coûte de l'argent réel ; attaque
   les deux points faibles (#1 sous-puissant, #34 mono-régime). ~1 j. Si A ou B FAIL → L* baisse ou le
   cœur doit inclure un actif réel → DEPLOIEMENT.md change.
+- **FAIT (2026-09-11) → CONFIRMÉ + 2 caveats** ([`FINDINGS-secular.md`](../risk-premia-portfolio/docs/FINDINGS-secular.md)).
+  Levier +1,76 pt/an hors fenêtre ; stagflation −0,87 pt/an ; ruine −35 % = propriété de 2006-26
+  (1974 −38 %, 1929 −71 %) ; trend t = 5,4 sur 41 ans mais déclin Welch t = 3,2 (Sharpe 0 depuis 2016).
 
 #### P2 — #38 Vol-target rapide (vol quotidienne 21-63 j ou VIX)
 

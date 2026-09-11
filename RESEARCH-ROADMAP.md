@@ -520,3 +520,19 @@ Contrôle descriptif `deploy_check.py` : NTSX vs cœur levé backtesté corr **+
 non garanti). Levier dans les fonds : pas d'appel de marge, pas de seuil de capital. Risque :
 encours WTEF 18 M€ (fermeture). [`risk-premia-portfolio/docs/DEPLOIEMENT.md`](risk-premia-portfolio/docs/DEPLOIEMENT.md).
 
+## Étude #37 (2026-09-11) — stress séculaire du deliverable = CONFIRMÉ + 2 caveats
+
+Premier test du deliverable hors de son régime (critique 1 de la revue du 2026-09-11,
+`factor-harvest/EDGE-IDEAS-LOG.md`). Proxys 1926+ (marché Ken French, obligation 10 ans FRED), trend =
+TSMOM AQR 1985+ net 1 %/an à vol égale au sleeve ; fidélité W0 corr 0,973. **Le levier n'est pas un
+artefact de 2006-26** : +1,76 pt/an composé sur 1926-2006 (A PASS), positif dans 86 % des fenêtres de
+15 ans. **Deux chiffres de risque étaient mono-régime** : stagflation 1966-81 → levier −0,87 pt/an,
+portefeuille sous le cash 16 ans (réel −1,65 %/an) ; la ruine −35 % est une propriété de la fenêtre
+(L = 1 : −54 % en 1929-32 ; L = 1,5 : −38 % nominal / −48 % réel en 1973-74). **Trend** : t = 5,4 sur
+41 ans net de coûts → le KILL #1 était un défaut de puissance ; mais déclin significatif (Welch t = 3,2 :
++9,6 %/an 1985-2006 → +2,4 %/an ensuite ; Sharpe 0,00 depuis 2016). **Errata** : les Sharpe du
+programme sont des Sharpe de rendement total (deliverable 0,91 → 0,76 en excès). Déploiement
+inchangé ; `DEPLOIEMENT.md` réécrit côté risque (DD de planification −40 % / −70 % type 1929, attente
+trend ~0,3). [`risk-premia-portfolio/docs/FINDINGS-secular.md`](risk-premia-portfolio/docs/FINDINGS-secular.md).
+**Bilan : 37 études, 0 edge déployable** ; deliverable confirmé, son risque réel écrit.
+

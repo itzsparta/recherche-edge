@@ -62,7 +62,8 @@ en partie décalage d'heures de clôture EU/US) ; DBMFE vs DBMF corr **+0,87** s
 - **DBMF n'est PAS notre sleeve trend** (corr 0,63) : il réplique l'indice des CTA (univers plus
   large, devises incluses), pas notre TSMOM 12 m sur 9 ETF. Il a battu le sleeve de +6,6 %/an sur
   2019-26 : **chance d'échantillon (2022), pas une attente.** Hypothèse de travail : Sharpe trend
-  ~0,4-0,5 (backtest + littérature CTA), comme pour le sleeve.
+  **~0,3** (révisé par #37 : premium réel sur 41 ans, t = 5,4, mais en déclin significatif — net
+  0,63 en 2006-15, 0,00 en 2016-26). Rôle principal : **assurance de crise**, pas rendement.
 - **L'ensemble colle** : même vol (12,7 %), corr 0,98, drawdown −20,1 % vs −21,5 % sur la fenêtre.
 
 ## Vu en euros (non couvert)
@@ -77,7 +78,26 @@ converti en EUR (EURUSD mensuel) :
 
 Le dollar a historiquement monté pendant les crises (corr −0,44 avec le portefeuille), ce qui a
 coupé le drawdown EUR. **Ne pas compter dessus** : le change a coûté 8,5 pts en 2020, et en avril
-2025 le dollar et les actions US ont baissé ensemble. Planifier pour **−30 %**, pas −20 %.
+2025 le dollar et les actions US ont baissé ensemble. Planifier pour **−40 %** (voir stress
+séculaire ci-dessous), pas −20 %.
+
+## Stress séculaire (#37, 2026-09-11)
+
+Le backtest ci-dessus ne couvre qu'un régime (2006-26). Refait sur 1926-2026 avec des proxys
+(marché US Ken French, obligation 10 ans FRED, trend AQR dès 1985, à plat avant) →
+[`FINDINGS-secular.md`](FINDINGS-secular.md). **Le levier tient** : +1,76 pt/an composé sur
+1926-2006, positif dans 86 % des fenêtres de 15 ans. **Le risque était sous-estimé** :
+
+| Scénario (L = 1,5, USD) | nominal | réel |
+|---|---|---|
+| 2008 (backtest) | −29 % DD | |
+| 1973-74 (pire après-guerre) | **−38 % DD** | **−48 % DD** |
+| 1929-32 (trend à plat = borne pessimiste) | **−71 % DD** | |
+| Stagflation 1966-81, 16 ans | +5,2 %/an, **sous le cash** (6,8 %) | **−1,65 %/an** |
+
+En stagflation, le levier coûte (−0,87 pt/an vs non levé) : ni L ni la règle ne protègent, il
+manque au cœur un actif réel. Les Sharpe de ce document (0,91 ; 0,95) sont des Sharpe de rendement
+**total** (méthode #34) ; en excès du cash : **0,76**.
 
 ## Règles d'exploitation
 
@@ -86,8 +106,9 @@ coupé le drawdown EUR. **Ne pas compter dessus** : le change a coûté 8,5 pts 
 3. **Rééquilibrage forcé** seulement si WTEF sort de la bande **75-85 %** ; sinon rien. (Le
    backtest rééquilibre mensuellement ; la bande est une simplification déclarée, non testée —
    effet attendu négligeable sur deux lignes.)
-4. **Aucune vente en drawdown.** −29 % est dans l'historique (2008). Il n'y a pas de règle de
-   sortie : le plan se tient à travers une baisse de −30 %, ou il ne se commence pas.
+4. **Aucune vente en drawdown.** À ce levier : −29 % en 2008, **−38 % nominal / −48 % réel en
+   1973-74**, −71 % dans un 1929 (#37). Il n'y a pas de règle de sortie : le plan se tient à
+   travers une baisse de **−40 %**, accepte qu'un 1929 ferait −70 %, ou il ne se commence pas.
 5. **Hors portefeuille** : ne pas y mettre l'argent nécessaire à moins de ~5 ans.
 6. **Contrôle annuel** (~15 min) : encours de WTEF (risque de fermeture, voir plan B) ; tracking
    DBMFE (relancer `deploy_check.py` après avoir supprimé le cache `data/deploy_px.csv`).

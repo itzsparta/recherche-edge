@@ -58,6 +58,17 @@ Contrainte de ruine (maxDD > −35 %) → **L\* = 1.5** (L=2 franchit à −37.7
 4. **Toujours pas un edge** : même bêta, Sharpe légèrement inférieur (coût), plus de vol. Le
    plafond est levé, pas percé.
 
+## Errata et stress hors fenêtre (#37, 2026-09-11)
+
+- **Sharpe = rendement total, pas excès.** `audit.sharpe` divise le rendement total par sa vol :
+  il surestime tout portefeuille long-only ou levé de ~RF/σ. En excès du T-bill : L = 1 **0,78**
+  (au lieu de 1,01), L = 1,5 **0,76** (au lieu de 0,91). Le gate D, « limite exacte » en
+  rendement total, passe largement en excès (0,76 vs 0,68). Aucun verdict ne change.
+- **Mono-régime.** Hors fenêtre (1926-2006), l'incrément composé du levier 1,5 est +1,76 pt/an
+  (le gate A tient), mais −0,87 pt/an en stagflation 1966-81, et la contrainte de ruine −35 % est
+  une propriété de 2006-26 : L = 1 fait −54 % en 1929-32, L = 1,5 fait −38 % en 1973-74. Le caveat
+  3 ci-dessus est désormais chiffré → [`FINDINGS-secular.md`](FINDINGS-secular.md).
+
 ## Place dans le programme
 
 Première **extension positive** depuis la construction #22 : les 4 gates passent, dont le
