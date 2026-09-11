@@ -509,3 +509,14 @@ avant le krach → sur-levé. Il n'aide que sur les crises lentes (2022 : −3/�
 **Bilan : 36 études, 0 edge déployable.** Deliverable = #22 levé **1,5× constant** ; plus aucun
 multiplicateur identifié dans le marché — le reste est capital × temps.
 
+## Déploiement du deliverable (2026-09-11) — plan opérationnel, pas une étude
+
+**80 % WisdomTree US Efficient Core UCITS** (IE000KF370H3, Xetra `WTEF`, 90 % actions US + 60 %
+futures Treasury = 1,5× un 60/40) **+ 20 % iMGP DBi Managed Futures UCITS** (LU2951555403, Paris
+`DBMFE`). 0,80 × 1,5 = 1,2 × 60/40 exact ; 20 % DBMF ≈ 0,30 sleeve trend à vol égale (0,19 mesuré).
+Contrôle descriptif `deploy_check.py` : NTSX vs cœur levé backtesté corr **+1,00**, β 0,99, −0,33 %/an ;
+80/20 vs deliverable corr **+0,98**, même vol. DBMF ≠ notre sleeve (corr 0,63 ; son +6,6 %/an 2019-26
+= chance d'échantillon). En EUR non couvert : maxDD −20,6 % au lieu de −29 % (dollar refuge,
+non garanti). Levier dans les fonds : pas d'appel de marge, pas de seuil de capital. Risque :
+encours WTEF 18 M€ (fermeture). [`risk-premia-portfolio/docs/DEPLOIEMENT.md`](risk-premia-portfolio/docs/DEPLOIEMENT.md).
+

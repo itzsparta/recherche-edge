@@ -67,3 +67,7 @@ trend), et le levier modéré en est le multiplicateur arithmétique légitime. 
 « plafonne bas » : **~10 %/an net à DD −29 % (constant 1.5×), ~11.5 % à DD −17 % si le
 vol-target est validé à son tour**. Au-delà, la grille elle-même montre le mur (L=2 = ruine).
 Le multiplicateur restant n'est pas dans le marché : c'est capital × temps.
+
+**Déploiement (2026-09-11)** → [`DEPLOIEMENT.md`](DEPLOIEMENT.md) : 80 % WisdomTree US Efficient
+Core UCITS (90/60 = 1,5× un 60/40, corr +1,00 avec le cœur levé backtesté) + 20 % iMGP DBi Managed
+Futures UCITS ; levier dans les fonds, pas de seuil de capital ni d'appel de marge.
