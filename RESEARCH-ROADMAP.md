@@ -485,3 +485,15 @@ le prix d'assurance actuariel lui-même). Seul deliverable trading = sleeve tren
 crise, #22). Vrai capital = le pipeline de 23 verdicts pré-enregistrés. Toute reprise future exige
 une **arme structurelle neuve**, pas une nouvelle canne dans l'eau morte.
 
+## Piste #35 (2026-09-11) — fallen angels (flux forcé par MANDAT) = KILL
+
+Premier flux forcé **juridique** (mandats IG contraints de vendre les dégradés HY), vs flux public daté
+(index, LETF #25). Gating sur l'**alpha** net de bêta (HYG + IEF, NW lag 3), pas sur l'écart brut.
+Résultat : l'écart marketing est vrai (+2,15 %/an vs HYG) et l'alpha **survit** au bêta (2F +1,77 %
+t=2,27 ; 3F +1,90 % t=2,67) — **mais** DSR(n=5) 0,887 < 0,95 (A3 FAIL), et la prime est **éteinte
+depuis 2022** (h cumulé 2022→26 ≈ −3,7 pts ; H2 t=0,96 ; FALN/WING 2016+ t≈1). Tout le t vient de deux
+vagues de dégradations (énergie 2015-16, COVID 2020). Et même un GO n'aurait rien apporté : corr SPY
++0,75, incrément sleeve +0,008. Réel dans le passé, arbitré aujourd'hui, corrélé actions.
+[`fallen-angels/docs/FINDINGS.md`](fallen-angels/docs/FINDINGS.md). **Bilan : 35 études, 0 edge
+déployable.** Deliverable inchangé = #22 levé 1,5× (#34) ; multiplicateur restant = vol-target (diag #34).
+
