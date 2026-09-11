@@ -497,3 +497,15 @@ vagues de dégradations (énergie 2015-16, COVID 2020). Et même un GO n'aurait 
 [`fallen-angels/docs/FINDINGS.md`](fallen-angels/docs/FINDINGS.md). **Bilan : 35 études, 0 edge
 déployable.** Deliverable inchangé = #22 levé 1,5× (#34) ; multiplicateur restant = vol-target (diag #34).
 
+## Étude #36 (2026-09-11) — vol-target du deliverable = KILL artefact
+
+Test du diagnostic #34 (VT 10 %, W=36, cap 3× : Sharpe 1,16, DD −17 % « domine le constant sur
+3 axes ») contre ses 3 confounds. **Tout était la fenêtre** : le warmup 36 m retirait 2008 du seul
+côté VT ; constant 1,5 sur la même fenêtre = Sharpe 1,16 aussi. À volatilité égale (C\*), coût |ΔL|
+inclus : ΔSharpe **négatif sur les 4 fenêtres** (W12 −0,07, W24 −0,09, W36 −0,02, W48 −0,01), DSR
+0,25. Avec 2008 en échantillon, le VT fait **pire** (W12 2008 : −22,8 % vs −16,0 %) : vol laggée basse
+avant le krach → sur-levé. Il n'aide que sur les crises lentes (2022 : −3/−4 pts). Erratum ajouté à
+`FINDINGS-lever.md`. [`risk-premia-portfolio/docs/FINDINGS-voltarget.md`](risk-premia-portfolio/docs/FINDINGS-voltarget.md).
+**Bilan : 36 études, 0 edge déployable.** Deliverable = #22 levé **1,5× constant** ; plus aucun
+multiplicateur identifié dans le marché — le reste est capital × temps.
+

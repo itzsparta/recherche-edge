@@ -39,6 +39,11 @@ Contrainte de ruine (maxDD > −35 %) → **L\* = 1.5** (L=2 franchit à −37.7
   connue : dé-lever quand la vol monte = éviter les crises à plein levier. Pré-enregistré comme
   diagnostic → **NON promu deliverable** (ce serait une promotion post-hoc) ; extension
   pré-enregistrable si voulu (un seul paramètre nouveau, la fenêtre 36 m, déjà celle du méta).
+  > **ERRATUM (#36, 2026-09-11) : cette « domination » est un ARTEFACT DE FENÊTRE.** Le warmup
+  > 36 m fait démarrer le VT en 2009-04 (sans 2008) alors que le constant ci-dessus inclut 2008.
+  > Sur la même fenêtre, le constant 1,5 a le même Sharpe (1,16) ; à volatilité égale le VT fait
+  > ΔSharpe −0,01 à −0,09 sur W∈{12,24,36,48}, et **pire en 2008** (W12 : −22,8 % vs −16,0 %).
+  > KILL artefact → [`FINDINGS-voltarget.md`](FINDINGS-voltarget.md).
 - Pire mois base −8.1 % → −12.2 % à L=1.5 (marge futures loin du call) ; −24.4 % à L=3
   (call intra-mois probable — la grille avait raison de l'exclure).
 
