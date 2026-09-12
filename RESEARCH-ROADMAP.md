@@ -536,3 +536,19 @@ inchangé ; `DEPLOIEMENT.md` réécrit côté risque (DD de planification −40 
 trend ~0,3). [`risk-premia-portfolio/docs/FINDINGS-secular.md`](risk-premia-portfolio/docs/FINDINGS-secular.md).
 **Bilan : 37 études, 0 edge déployable** ; deliverable confirmé, son risque réel écrit.
 
+## Étude #39 (2026-09-12) — capture de dividende sous statut PEA = KILL friction (TTF)
+
+Première attaque du statut fiscal comme **arme** (piste P3 du log du 2026-09-11) : en PEA le dividende
+FR est encaissé brut ; si le cours ex baisse de ρ·D avec ρ < 1, achat au fixing de clôture J−1 / vente au
+fixing d'ouverture J capte (1−ρ)·y. SBF 120 à ISIN FR, yfinance 2005-2026, 2 173 événements. **L'arme
+existe** : ρ ≈ 0,85-0,90 depuis 2013, significativement < 1 — premier avantage propre au résident FR
+mesuré par le programme. **L'État le reprend** : la TTF (0,40 % à l'achat, overnight non exonéré, PEA
+compris — tueur trouvé en écrivant la SPEC) mange la capture ; segment y ≥ 3 % net 2015+ **−0,08 %**/évt
+(t = −1,1), 10 années sur 12 négatives ; hors TTF +0,32 % (t = 4,55). Mapping mécanique = DOWNGRADE
+(C FAIL : « décru ») **invalidé par override défavorable** : yfinance `.PA` est désaligné en 2005-08 (la
+baisse du dividende n'apparaît sur aucune nuit J±5), G0 poolé l'avait masqué ; sur 2009+ propre, B FAIL
+(t = 0,60). Leçon : G0 **par période** dès qu'un verdict compare des périodes. Porte restante =
+sociétés < 1 Md€ exonérées de TTF (#40, SPEC à écrire ; tueurs a priori : price-setter domestique → ρ→1,
+fixings minces, data). [`dividend-pea/docs/FINDINGS.md`](dividend-pea/docs/FINDINGS.md).
+**Bilan : 38 études, 0 edge déployable.**
+

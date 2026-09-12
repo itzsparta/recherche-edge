@@ -773,6 +773,10 @@ comparaison à vol égale (#36), refus d'abaisser un hurdle. Les faux GO démasq
   significativement inférieur (test de différence, cf. critique 2) ; (D) survit hors top-5 noms.
   Variante sur le même panel : *dividend month premium* (Hartzmark-Solomon 2013).
 - Prior ~15 %. ~1 j. Clause-safe (titres UE éligibles PEA).
+- **FAIT (2026-09-12) → KILL friction** ([`FINDINGS.md`](../dividend-pea/docs/FINDINGS.md)). Tueur non vu
+  ici, trouvé en écrivant la SPEC : la TTF (0,40 %, overnight non exonéré, PEA compris). ρ ≈ 0,85-0,90
+  réel depuis 2013, mais y ≥ 3 % net 2015+ −0,08 % ; hors TTF +0,32 % (t = 4,55) → porte = sociétés
+  < 1 Md€ exonérées (#40, SPEC à écrire). DOWNGRADE mécanique invalidé : 2005-08 yfinance désaligné.
 
 #### P4 — Lever le mur data (décision budget)
 
