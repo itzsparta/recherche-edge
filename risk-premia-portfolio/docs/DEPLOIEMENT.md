@@ -96,7 +96,11 @@ Le backtest ci-dessus ne couvre qu'un régime (2006-26). Refait sur 1926-2026 av
 | Stagflation 1966-81, 16 ans | +5,2 %/an, **sous le cash** (6,8 %) | **−1,65 %/an** |
 
 En stagflation, le levier coûte (−0,87 pt/an vs non levé) : ni L ni la règle ne protègent, il
-manque au cœur un actif réel. Les Sharpe de ce document (0,91 ; 0,95) sont des Sharpe de rendement
+manque au cœur un actif réel. **L'or ne comble pas ce trou de façon répétable (#41)** : 10 % d'or
+aident en 1968-81 (+1,5 pt/an réel), mais c'est la réévaluation post-Bretton Woods ; dans chaque choc
+d'inflation après 1982 (1990, 2022), il fait moins bien que la même part laissée en cash. Si le risque
+stagflation devient insupportable, le seul substitut qui fasse aussi bien est de **dé-lever**
+([`FINDINGS-gold.md`](FINDINGS-gold.md)). Les Sharpe de ce document (0,91 ; 0,95) sont des Sharpe de rendement
 **total** (méthode #34) ; en excès du cash : **0,76**.
 
 ## Règles d'exploitation

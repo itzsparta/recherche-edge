@@ -565,3 +565,17 @@ N ≥ 100 (≈ 2028). **Axe « statut fiscal »** : l'avantage existe (ρ ≈ 0,
 du volume, et il est trop rare là où il n'y en a pas. [`dividend-pea/docs/FINDINGS-smallcap.md`](dividend-pea/docs/FINDINGS-smallcap.md).
 **Bilan : 39 études, 0 edge déployable.**
 
+## Étude #41 (2026-09-12) — l'or dans le cœur du deliverable = ASSURANCE 1970s SEULEMENT (non ajouté)
+
+Suite du caveat B de #37 (stagflation 1966-81 : levier −0,87 pt/an, 16 ans sous le cash). Pg = 0,9·P0
++ 0,1·or (Banque mondiale, 1968-04+, ETC −0,25 %/an), comparé à P0 **et** à Pc = la même part en cash
+(dé-risquage mécanique, piège déclaré). A PASS (+1,51 pt/an réel en 1968-81 ; maxDD réel −48 → −39 %),
+B PASS de justesse (−0,69 pt/an 1982+, limite −0,75 ; **−0,83 sans 2024-26**), D PASS de justesse
+(Sharpe 0,819 vs 0,804, négatif sur 1982-2001). **C FAIL** : dans les 47 mois d'inflation > 5 % après 1982,
+l'or fait **moins bien que le cash** (−2,61 pts), dans chaque épisode (1982, 1989-91, 2021-23) ; 2022 :
+Pg = Pc = −16,8 %. La protection des années 1970 est la réévaluation post-Bretton Woods (n = 1). Aucun
+poids ne sauve C (5-20 %). Déploiement inchangé ; TIPS non testables en gratuit (séries 1997+, sans
+stagflation). [`risk-premia-portfolio/docs/FINDINGS-gold.md`](risk-premia-portfolio/docs/FINDINGS-gold.md).
+**Bilan : 40 études, 0 edge déployable** ; le trou stagflation est chiffré et reste ouvert, dé-lever est
+le seul substitut qui fasse aussi bien.
+

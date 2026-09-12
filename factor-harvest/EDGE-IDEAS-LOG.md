@@ -782,6 +782,13 @@ comparaison à vol égale (#36), refus d'abaisser un hurdle. Les faux GO démasq
   compte que 85 événements (< 100 pré-enregistrés), A-D non lus. ρ̂ petites 0,87-0,92 ≈ SBF 120 : pas
   de signe de capacité. Ensemble d'opportunités ~7 trades/an. Re-test à SPEC inchangée vers 2028.
 
+#### Suite de P1 — #41 actif réel contre la stagflation (2026-09-12)
+
+- **Or, 10 % du deliverable → ASSURANCE 1970s SEULEMENT, non ajouté**
+  ([`FINDINGS-gold.md`](../risk-premia-portfolio/docs/FINDINGS-gold.md)). +1,51 pt/an réel en 1968-81,
+  mais moins bien que la même part en cash dans chaque choc d'inflation post-1982 (−2,61 pts / 47 mois).
+  Protection = réévaluation post-Bretton Woods. TIPS/OATi non testables en gratuit (séries 1997+).
+
 #### P4 — Lever le mur data (décision budget)
 
 - 4 résultats bloqués par le même mur (délistés / roll) : #32 merger-arb UNTESTABLE, SPAC Gate D,
