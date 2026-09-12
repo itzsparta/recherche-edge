@@ -552,3 +552,16 @@ sociétés < 1 Md€ exonérées de TTF (#40, SPEC à écrire ; tueurs a priori 
 fixings minces, data). [`dividend-pea/docs/FINDINGS.md`](dividend-pea/docs/FINDINGS.md).
 **Bilan : 38 études, 0 edge déployable.**
 
+## Étude #40 (2026-09-12) — capture de dividende PEA sur les exonérés de TTF = UNTESTABLE (sous-puissant)
+
+Branche pré-enregistrée de #39. Univers = 455 ISIN FR Euronext Paris + Growth hors liste TTF BOFiP 2025
+(120 exclus, appariés nom par nom), 218 payeurs, 2 201 événements 2009-2026. **Data fiable cette fois** :
+G0 **par période** PASS ×3 (ρ̂ J 0,87 / 0,89 / 0,92, placebos J±3 tous < 0,13). Mais le segment
+déployable (y ≥ 3 %, turnover ≥ 200 k€, 2015+) ne compte que **85 événements < 100** → UNTESTABLE ;
+A-D **non lus** (règle de la SPEC, pas d'abaissement de N ni du filtre). Lecture permise, issue du G0 : le
+ρ des petites valeurs ≈ celui du SBF 120 (0,89 sur 2013-26) → aucun signe de la thèse capacité ; et
+l'ensemble d'opportunités vaut ~7 trades/an : même un PASS pèserait peu. Re-test = SPEC inchangée quand
+N ≥ 100 (≈ 2028). **Axe « statut fiscal »** : l'avantage existe (ρ ≈ 0,9), la TTF le reprend là où il y a
+du volume, et il est trop rare là où il n'y en a pas. [`dividend-pea/docs/FINDINGS-smallcap.md`](dividend-pea/docs/FINDINGS-smallcap.md).
+**Bilan : 39 études, 0 edge déployable.**
+

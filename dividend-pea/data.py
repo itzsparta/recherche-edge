@@ -63,6 +63,74 @@ def universe():
     return u
 
 
+TTF_ALIAS = {   # nom BOFiP -> nom Euronext, résolu à la main (noms abrégés côté Euronext)
+    "Aéroports De Paris (ADP)": "ADP",
+    "Antin Infrastructure Partners": "ANTIN INFRA PARTN",
+    "BNP Paribas": "BNP PARIBAS ACT.A",
+    "Cambodge (compagnie du)": "CAMBODGE NOM.",
+    "Compagnie de l’Odet": "COMPAGNIE ODET",
+    "Électricité de Strasbourg": "ELEC.STRASBOURG",
+    "Eutelsat Communications": "EUTELSAT COMMUNIC.",
+    "Financière Moncey": "MONCEY (FIN.) NOM.",
+    "Hermès International": "HERMES INTL",
+    "L’Oréal": "L'OREAL",
+    "Lagardère S.A.": "LAGARDERE SA",
+    "M6 Métropole Télévision": "METROPOLE TV",
+    "Sartorius Stedim Biotech": "SARTORIUS STED BIO",
+    "Société Industrielle et Financière de l’Artois SA": "ARTOIS NOM.",
+    "Unibail-Rodamco-Westfield": "UNIBAIL-RODAMCO-WE",
+    "Veolia Environnement": "VEOLIA ENVIRON.",
+    "VusionGroup": "Vusion",
+}
+TTF_ABSENT = {"Tarkett"}   # sur la liste BOFiP, plus coté sur Euronext (retrait de cote)
+
+
+def _norm_ttf(s):
+    import unicodedata
+    s = unicodedata.normalize("NFKD", str(s)).encode("ascii", "ignore").decode().lower()
+    s = re.sub(r"\(.*?\)", "", s)
+    s = re.sub(r"\b(sa|se|s\.a\.|groupe|group|compagnie|cie|de|du|des|la|le|l|d|et)\b", " ", s)
+    return re.sub(r"[^a-z0-9]", "", s)
+
+
+def universe_small():
+    """#40 : ISIN FR, Euronext Paris + Growth, hors liste TTF 2025 (> 1 Md€ au 1er décembre 2025)."""
+    f = DATA / "universe_small.csv"
+    if f.exists():
+        return pd.read_csv(f)
+    from bs4 import BeautifulSoup
+    html = _get("https://bofip.impots.gouv.fr/bofip/9789-PGP.html/identifiant=BOI-ANNX-000467-20251217",
+                "ttf_2025.html")
+    lines = [x.strip() for x in BeautifulSoup(html, "lxml").get_text("\n").split("\n") if x.strip()]
+    a = lines.index("Abivax")
+    b = next(k for k in range(a, len(lines)) if lines[k].startswith("Commentaire"))
+    ttf = lines[a:b]
+    parts = []
+    for mic, cache, seg in (("XPAR", "euronext_paris.csv", "reglemente"), ("ALXP", "euronext_growth.csv", "growth")):
+        txt = _get(f"https://live.euronext.com/en/pd_es/data/stocks/download?mics={mic}", cache)
+        L = pd.read_csv(io.StringIO(txt), sep=";", skiprows=[1, 2, 3])
+        parts.append(L.assign(segment=seg))
+    L = pd.concat(parts)
+    L = L[L.ISIN.str[:2] == "FR"].drop_duplicates("ISIN")
+    L["k"] = L.Name.map(_norm_ttf)
+    taxed = set()
+    for n in ttf:
+        if n in TTF_ABSENT:
+            continue
+        if n in TTF_ALIAS:
+            hit = L[L.Name == TTF_ALIAS[n]]
+        else:
+            hit = L[L.k == _norm_ttf(n)]
+        if len(hit) != 1:
+            raise RuntimeError(f"nom TTF non résolu : {n} ({len(hit)} candidats)")
+        taxed.add(hit.ISIN.iat[0])
+    u = L[~L.ISIN.isin(taxed)].rename(columns={"Name": "name", "ISIN": "isin", "Symbol": "symbol"})
+    u = u[["name", "isin", "symbol", "segment"]].assign(ticker=lambda d: d.symbol + ".PA")
+    u.to_csv(f, index=False)
+    print(f"[univers #40] {len(L)} ISIN FR, {len(taxed)} taxés TTF exclus, {len(TTF_ABSENT)} absents -> {len(u)}")
+    return u
+
+
 def prices(ticker):
     """Open, Close, Volume, Dividends, Splits quotidiens (ajustés des splits, pas des dividendes)."""
     f = PX / f"{ticker}.csv"
@@ -91,7 +159,33 @@ def panel():
     return out, prices(INDEX)
 
 
-if __name__ == "__main__":
+def panel_small():
+    """{ticker: DataFrame} pour l'univers #40 (titres avec prix)."""
+    u = universe_small()
+    out = {}
+    for tk in u.ticker:
+        h = prices(tk)
+        if len(h):
+            out[tk] = h
+    return out, u
+
+
+if __name__ == "__main__" and len(__import__("sys").argv) > 1 and __import__("sys").argv[1] == "small":
+    u = universe_small()
+    print(u.segment.value_counts().to_dict())
+    for tk in u.ticker:
+        if not (PX / f"{tk}.csv").exists():
+            try:
+                prices(tk)
+            except Exception as e:
+                print("échec", tk, e)
+                pd.DataFrame().to_csv(PX / f"{tk}.csv")
+            time.sleep(0.3)
+    pan, _ = panel_small()
+    nd = sum(int((h.Dividends > 0).sum()) for h in pan.values())
+    npay = sum(int((h.Dividends > 0).any()) for h in pan.values())
+    print(f"[panel #40] {len(pan)}/{len(u)} tickers avec prix | {npay} payeurs | {nd} lignes dividende")
+elif __name__ == "__main__":
     u = universe()
     print(u.match.value_counts().to_dict(), u.domicile.value_counts().to_dict())
     print(u[u.match != "isin"].to_string())

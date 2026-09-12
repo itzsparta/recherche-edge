@@ -777,6 +777,10 @@ comparaison à vol égale (#36), refus d'abaisser un hurdle. Les faux GO démasq
   ici, trouvé en écrivant la SPEC : la TTF (0,40 %, overnight non exonéré, PEA compris). ρ ≈ 0,85-0,90
   réel depuis 2013, mais y ≥ 3 % net 2015+ −0,08 % ; hors TTF +0,32 % (t = 4,55) → porte = sociétés
   < 1 Md€ exonérées (#40, SPEC à écrire). DOWNGRADE mécanique invalidé : 2005-08 yfinance désaligné.
+- **#40 (2026-09-12) → UNTESTABLE** ([`FINDINGS-smallcap.md`](../dividend-pea/docs/FINDINGS-smallcap.md)).
+  Exonérés TTF (455 ISIN FR hors liste BOFiP 2025) : data fiable, mais le segment déployable 2015+ ne
+  compte que 85 événements (< 100 pré-enregistrés), A-D non lus. ρ̂ petites 0,87-0,92 ≈ SBF 120 : pas
+  de signe de capacité. Ensemble d'opportunités ~7 trades/an. Re-test à SPEC inchangée vers 2028.
 
 #### P4 — Lever le mur data (décision budget)
 
