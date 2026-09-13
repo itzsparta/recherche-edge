@@ -1,242 +1,238 @@
 <meta charset="utf-8">
-<title>Quarante autopsies</title>
+<title>Zéro edge</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Registre vulgarisé des 40 études de la chasse à l'edge : chaque thèse, pourquoi on y croyait, et ce qui l'a tuée.">
+<meta name="description" content="Tableau de bord vulgarisé des 40 études de la chasse à l'edge : chaque thèse, pourquoi on y croyait, et ce qui l'a fait échouer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..700&family=Caveat:wght@600;700&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap">
 <style>
 :root{
-  /* la pièce : vert bloc opératoire */
-  --ground:#DCE6E1; --surface:#EEF3F0; --ink:#10271F; --muted:#4A5F57; --line:#BACAC2;
-  --accent:#00806A; --accent-text:#00614F;
-  --c-before:#C0701A; --c-after:#00806A;
-  --backdrop:rgba(12,30,24,.55);
-  /* les objets : papier, identiques dans les deux thèmes */
-  --tag:#EBDDB8; --tag-edge:#C9B585; --tag-ring:#DCCB9D; --tag-ink:#2A2416; --tag-muted:#6A5D40;
-  --sheet:#FAFBF9; --sheet-ink:#15231D; --sheet-muted:#55665F; --sheet-line:#D5DDD9;
-  --s-kill:#B3261E; --s-down:#8A5A00; --s-unt:#4F5B63; --s-keep:#1F6B45;
-  --serif:"Newsreader",Georgia,"Times New Roman",serif;
-  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
-  --hand:"Caveat","Segoe Print","Bradley Hand",cursive;
-  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .12 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --ground:#0D1714; --surface:#14221D; --ink:#DDE8E3; --muted:#93A89F; --line:#2A3B35;
-    --accent:#2FA58B; --accent-text:#5CC4AC; --c-before:#C8792F; --c-after:#2FA58B;
-    --backdrop:rgba(2,8,6,.72); --tag:#D9CBA4; --tag-edge:#B09D70; --tag-ring:#C9B98E;
-  }
-}
-:root[data-theme="dark"]{
-  --ground:#0D1714; --surface:#14221D; --ink:#DDE8E3; --muted:#93A89F; --line:#2A3B35;
-  --accent:#2FA58B; --accent-text:#5CC4AC; --c-before:#C8792F; --c-after:#2FA58B;
-  --backdrop:rgba(2,8,6,.72); --tag:#D9CBA4; --tag-edge:#B09D70; --tag-ring:#C9B98E;
+  color-scheme:dark;
+  --bg:#060B18; --ink:#E7EEFB; --muted:#98A7C3; --faint:#6B7A96;
+  --line:rgba(160,190,255,.12); --line-strong:rgba(170,200,255,.22);
+  --glass:linear-gradient(150deg,rgba(255,255,255,.09),rgba(255,255,255,.025) 60%);
+  --glass-edge:rgba(190,215,255,.17);
+  --accent:#7DB0FF; --blue:#3B82F6; --cyan:#5FD4F5; --indigo:#6366F1;
+  --c-before:#CF7F2C; --c-after:#3B82F6;
+  --kill:#FF7B7B; --down:#F2B45A; --unt:#A3B1CB; --keep:#52D69C;
+  --sans:"Geist",ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --r:22px;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;padding-inline:20px;background:var(--ground);color:var(--ink);font-family:var(--serif);font-size:1.125rem;line-height:1.62;font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1140px;margin-inline:auto}
-a{color:var(--accent-text);text-decoration-thickness:1px;text-underline-offset:.2em}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
-h1,h2,h3,h4{margin:0;font-weight:400;text-wrap:balance}
+html{scroll-behavior:smooth;scroll-padding-top:150px}
+body{margin:0;padding-inline:20px;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+/* atmosphère : halos derrière le verre */
+body::before{content:"";position:fixed;inset:-20%;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(38% 34% at 18% 12%,rgba(59,130,246,.42),transparent 70%),
+    radial-gradient(34% 30% at 86% 18%,rgba(99,102,241,.34),transparent 70%),
+    radial-gradient(40% 36% at 62% 88%,rgba(34,211,238,.20),transparent 70%),
+    radial-gradient(30% 30% at 8% 78%,rgba(37,99,235,.22),transparent 70%);
+  animation:drift 38s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-3%,2%,0) scale(1.06)}}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(rgba(150,180,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(150,180,255,.05) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 20%,#000 30%,transparent 80%);mask-image:radial-gradient(ellipse 80% 60% at 50% 20%,#000 30%,transparent 80%)}
+.wrap{max-width:1180px;margin-inline:auto}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:.2em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
 p{margin:0}
 button{font:inherit;color:inherit}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before{animation:none!important;transition:none!important}}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* le verre */
+.glass{position:relative;background:var(--glass);border:1px solid var(--glass-edge);border-radius:var(--r);
+  -webkit-backdrop-filter:blur(22px) saturate(165%);backdrop-filter:blur(22px) saturate(165%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -1px 0 rgba(255,255,255,.03),0 28px 60px -24px rgba(0,0,0,.65)}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(120% 70% at 15% 0%,rgba(255,255,255,.10),transparent 55%)}
+.glass>*{position:relative}
 
 /* barre */
-.bar{display:flex;justify-content:space-between;align-items:center;gap:12px 28px;flex-wrap:wrap;padding-block:20px}
-.bar .name{font-size:1.15rem;font-style:italic}
-.bar nav{display:flex;gap:4px 22px;flex-wrap:wrap;font-family:var(--sans);font-size:.9rem}
-.bar nav a{color:var(--ink);text-decoration:none;padding-block:6px}
-.bar nav a:hover{color:var(--accent-text);text-decoration:underline}
+.bar{position:sticky;top:12px;z-index:30;margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:10px 24px;flex-wrap:wrap;padding:10px 12px 10px 20px;border-radius:999px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-.01em}
+.brand i{width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.bar nav{display:flex;gap:2px;flex-wrap:wrap;font-size:.9rem}
+.bar nav a{color:var(--muted);text-decoration:none;padding:7px 12px;border-radius:999px;transition:background-color .15s,color .15s}
+.bar nav a:hover{color:var(--ink);background:rgba(255,255,255,.07)}
 
 /* ouverture */
-.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.85fr);gap:48px;align-items:start;padding-block:48px 72px}
-.hero h1{font-size:clamp(3.6rem,10vw,8.4rem);font-weight:300;line-height:.9;letter-spacing:-.025em;font-variation-settings:"opsz" 72}
-.lead{margin-top:30px;font-size:1.36rem;line-height:1.5;max-width:31em}
-.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;font-family:var(--sans);font-size:.98rem}
-.btn{display:inline-flex;align-items:center;min-height:46px;padding:0 20px;border-radius:999px;text-decoration:none;cursor:pointer;border:1.5px solid var(--ink);transition:background-color .18s,color .18s}
-.btn-solid{background:var(--ink);color:var(--ground)}
-.btn-solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn-line{color:var(--ink)}
-.btn-line:hover{background:var(--surface)}
-
-.hang{position:relative;padding-top:92px;justify-self:center;width:min(100%,360px)}
-.hang svg.string{position:absolute;left:0;top:0;width:100%;height:120px;overflow:visible;pointer-events:none}
-.tag-hero{transform-origin:50% 28px;animation:swing 2.6s cubic-bezier(.3,.6,.4,1) both;transform:rotate(-2deg)}
-@keyframes swing{0%{transform:rotate(9deg)}28%{transform:rotate(-6deg)}50%{transform:rotate(3deg)}70%{transform:rotate(-3.2deg)}86%{transform:rotate(-1.4deg)}100%{transform:rotate(-2deg)}}
-
-/* l'étiquette */
-.tag{position:relative;background:var(--noise),var(--tag);color:var(--tag-ink);clip-path:polygon(26px 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%,0 26px);padding:48px 20px 20px;display:flex;flex-direction:column;gap:10px}
-.cell,.hang{filter:drop-shadow(0 1px 0 var(--tag-edge)) drop-shadow(0 10px 14px rgba(20,40,32,.16))}
-.tag::before{content:"";position:absolute;left:50%;top:15px;width:15px;height:15px;margin-left:-7.5px;border-radius:50%;background:var(--ground);box-shadow:0 0 0 5px var(--tag-ring),0 0 0 6px var(--tag-edge)}
-.tag .no{display:flex;align-items:baseline;gap:6px;font-family:var(--sans);font-size:.8rem;color:var(--tag-muted)}
-.tag .no b{font-family:var(--hand);font-weight:700;font-size:2.1rem;line-height:.9;color:var(--tag-ink)}
-.tag h3{font-family:var(--sans);font-weight:600;font-size:1.02rem;line-height:1.22;font-variation-settings:"wdth" 88}
-.field{border-top:1px solid color-mix(in srgb,var(--tag-edge) 70%,transparent);padding-top:6px;display:grid;gap:0}
-.field span{font-family:var(--sans);font-size:.72rem;color:var(--tag-muted)}
-.field .hw{font-family:var(--hand);font-size:1.42rem;line-height:1.05;font-weight:600}
-.field .fig{font-family:var(--sans);font-size:.86rem;font-variant-numeric:tabular-nums;line-height:1.3}
-.stamp{align-self:flex-end;margin-top:auto;font-family:var(--sans);font-weight:700;font-stretch:75%;font-variation-settings:"wdth" 75;text-transform:uppercase;letter-spacing:.05em;font-size:.95rem;line-height:1.05;padding:5px 9px 4px;border:2px solid currentColor;border-radius:4px;transform:rotate(-5deg);opacity:.88;box-shadow:inset 0 0 0 2px var(--tag),inset 0 0 0 3.5px currentColor;text-align:center;max-width:12em}
-.v-kill{color:var(--s-kill)} .v-down{color:var(--s-down)} .v-unt{color:var(--s-unt)} .v-keep{color:var(--s-keep)}
-
-.tag-hero{padding:58px 26px 26px;gap:12px}
-.tag-hero::before{top:20px;width:18px;height:18px;margin-left:-9px}
-.tag-hero h2{font-family:var(--sans);font-weight:600;font-size:1.2rem;line-height:1.2}
-.tag-hero .facts{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}
-.tag-hero .death .hw{font-size:1.65rem}
-.tag-hero .stamp{font-size:1.25rem}
+.hero{padding-block:72px 28px;display:grid;gap:28px}
+.hero h1{font-size:clamp(3rem,8.5vw,6.6rem);font-weight:600;line-height:.95;letter-spacing:-.045em;
+  background:linear-gradient(180deg,#FFFFFF 10%,#A9C6FF 95%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:1.2rem;line-height:1.55;color:var(--muted);max-width:40em}
+.lead strong{color:var(--ink);font-weight:500}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi{padding:20px 22px}
+.kpi b{display:block;font-size:clamp(2.2rem,4.4vw,3.2rem);font-weight:600;line-height:1;letter-spacing:-.03em}
+.kpi span{display:block;margin-top:10px;color:var(--muted);font-size:.92rem;line-height:1.4}
+.kpi.zero b{color:var(--kill)}
+.vbar{padding:20px 22px}
+.vbar-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px 20px;flex-wrap:wrap;margin-bottom:14px}
+.vbar h2{font-size:1rem;font-weight:500}
+.vbar-top span{color:var(--muted);font-size:.9rem}
+.stack{display:flex;gap:2px;height:14px;border-radius:7px;overflow:hidden}
+.stack i{display:block;height:100%}
+.vlegend{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:14px;font-size:.9rem;color:var(--muted)}
+.vlegend span{display:inline-flex;align-items:center;gap:8px}
+.vlegend b{color:var(--ink);font-weight:500}
+.sw{width:10px;height:10px;border-radius:3px;display:inline-block}
 
 /* sections */
-section{padding-block:80px 24px}
-.head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:20px 56px;align-items:end;margin-bottom:40px}
-.head h2{font-size:clamp(2.3rem,5vw,3.5rem);line-height:1;letter-spacing:-.015em;font-variation-settings:"opsz" 60}
-.head p{max-width:36em;color:var(--ink)}
-.head p+p{margin-top:.8em}
+section{padding-block:64px 8px}
+.head{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);gap:14px 48px;align-items:end;margin-bottom:26px}
+.head h2{font-size:clamp(1.9rem,3.6vw,2.6rem);font-weight:600;line-height:1.05;letter-spacing:-.03em}
+.head p{color:var(--muted);max-width:44em}
+.head p+p{margin-top:.7em}
+.panel{padding:24px}
+.panel-h{display:flex;justify-content:space-between;align-items:baseline;gap:6px 16px;flex-wrap:wrap;margin-bottom:6px}
+.panel-h h3{font-size:1.15rem;font-weight:600;letter-spacing:-.01em}
+.panel-sub{color:var(--muted);font-size:.93rem;margin-bottom:16px;max-width:46em}
 
-/* protocole */
-.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 44px;counter-reset:s}
-.steps li{counter-increment:s;display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline}
-.steps li::before{content:counter(s);grid-row:1/3;font-size:3.4rem;line-height:.8;font-weight:300;color:var(--accent-text);font-variant-numeric:oldstyle-nums;font-variation-settings:"opsz" 72}
-.steps h3{font-size:1.3rem;font-weight:500;line-height:1.2}
-.steps p{font-size:1rem;color:var(--muted);line-height:1.55}
-
-/* graphique */
-.figure{margin:0;background:var(--surface);border-radius:14px;padding:26px 26px 20px}
-.legend{display:flex;gap:8px 24px;flex-wrap:wrap;font-family:var(--sans);font-size:.88rem;color:var(--muted);margin-bottom:10px}
+/* tableau de bord */
+.dash{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+.legend{display:flex;gap:8px 22px;flex-wrap:wrap;font-size:.88rem;color:var(--muted);margin-bottom:6px}
 .legend span{display:inline-flex;align-items:center;gap:8px}
 .dot{width:12px;height:12px;border-radius:50%;display:inline-block}
-.dot-before{border:2.5px solid var(--c-before);background:var(--surface)}
+.dot-before{border:2.5px solid var(--c-before)}
 .dot-after{background:var(--c-after)}
-.chart{position:relative;overflow-x:auto}
-.chart svg{display:block;min-width:640px;width:100%;height:auto}
+.chart{position:relative;overflow-x:auto;margin-inline:-6px}
+.chart svg{display:block;min-width:600px;width:100%;height:auto}
 .chart svg text{font-family:var(--sans)}
-.row-hit{cursor:default}
-.row-hit:hover rect.hl,.row-hit:focus rect.hl{fill:var(--ground)}
-.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--ground);font-family:var(--sans);font-size:.84rem;line-height:1.4;padding:9px 12px;border-radius:8px;max-width:260px;transform:translate(-50%,-100%);margin-top:-10px;opacity:0;transition:opacity .12s}
+.chart svg .t-num{font-family:var(--mono)}
+.row-hit:hover rect.hl,.row-hit:focus rect.hl{fill:rgba(255,255,255,.05)}
+.row-hit:focus{outline:none}
+.row-hit:focus-visible rect.hl{stroke:var(--accent);stroke-width:1.5}
+.tip{position:absolute;pointer-events:none;background:rgba(12,20,40,.92);border:1px solid var(--line-strong);color:var(--ink);font-size:.84rem;line-height:1.45;padding:9px 12px;border-radius:10px;max-width:270px;transform:translate(-50%,-100%);margin-top:-10px;opacity:0;transition:opacity .12s;box-shadow:0 12px 30px rgba(0,0,0,.5)}
 .tip.on{opacity:1}
 .tip b{font-weight:600}
-.figure details{margin-top:14px;font-family:var(--sans);font-size:.9rem}
-.figure summary{cursor:pointer;color:var(--accent-text);padding-block:6px}
+details.more{margin-top:12px;font-size:.9rem}
+details.more summary{cursor:pointer;color:var(--accent);padding-block:6px;width:max-content}
 .tbl{overflow-x:auto}
 table{border-collapse:collapse;width:100%;margin-top:8px;font-variant-numeric:tabular-nums}
-th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
-th{font-weight:600;color:var(--muted)}
-td.n{text-align:right}
-.note{margin-top:22px;max-width:40em;color:var(--muted);font-size:1rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{font-weight:500;color:var(--muted)}
+td.n{text-align:right;font-family:var(--mono)}
+.note{margin-top:14px;color:var(--muted);font-size:.93rem}
 
-/* causes */
-.causes{display:grid;gap:4px}
-.cause{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 2.2em;gap:6px 28px;align-items:center;padding:16px 14px;border-radius:12px;transition:background-color .18s}
-.cause:hover{background:var(--surface)}
-.cause:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.cause[aria-pressed="true"]{background:var(--surface);box-shadow:inset 3px 0 0 var(--accent)}
-.cause h3{font-size:1.3rem;font-weight:500;line-height:1.2}
-.cause p{font-size:.98rem;color:var(--muted);line-height:1.45;margin-top:2px}
-.track{height:10px;background:color-mix(in srgb,var(--line) 55%,transparent);border-radius:5px;overflow:hidden}
-.track i{display:block;height:100%;background:var(--ink);border-radius:0 5px 5px 0}
-.cause .n{font-family:var(--sans);font-weight:600;font-size:1.2rem;text-align:right}
-.causes-foot{margin-top:14px;padding-inline:14px;color:var(--muted);font-size:.98rem}
+.causes{display:grid;gap:4px;margin-inline:-10px}
+.cause{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 14px;align-items:center;padding:12px 10px;border-radius:14px;transition:background-color .15s}
+.cause:hover{background:rgba(255,255,255,.05)}
+.cause:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.cause[aria-pressed="true"]{background:rgba(59,130,246,.14);box-shadow:inset 0 0 0 1px rgba(125,176,255,.35)}
+.cause h4{font-size:1rem;font-weight:500}
+.cause .n{font-family:var(--mono);font-size:1.05rem}
+.cause .track{grid-column:1/-1;height:6px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.cause .track i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.cause p{grid-column:1/-1;font-size:.86rem;color:var(--muted);line-height:1.45}
+.causes-foot{margin-top:12px;color:var(--faint);font-size:.86rem}
 
 /* registre */
-.filters{position:sticky;top:0;z-index:20;background:var(--ground);padding-block:14px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;font-family:var(--sans);box-shadow:0 1px 0 var(--line)}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{cursor:pointer;min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.86rem;transition:background-color .15s,border-color .15s}
-.chip:hover{border-color:var(--ink)}
-.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--ground)}
-.search{flex:1 1 220px;min-width:0;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.92rem}
-.search::placeholder{color:var(--muted)}
-.count{font-size:.86rem;color:var(--muted);margin-left:auto}
-.fam{padding-top:52px}
-.fam-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:8px 56px;align-items:baseline;margin-bottom:26px}
-.fam-head h3{font-size:1.75rem;font-weight:400;line-height:1.1}
-.fam-head p{color:var(--muted);font-size:1rem;max-width:38em}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:30px 22px}
-.cell{position:relative;transition:transform .22s cubic-bezier(.3,.7,.4,1)}
-.cell:nth-child(4n+1){transform:rotate(-1.2deg)} .cell:nth-child(4n+2){transform:rotate(.9deg)}
-.cell:nth-child(4n+3){transform:rotate(-.5deg)} .cell:nth-child(4n){transform:rotate(1.3deg)}
-.cell:hover,.cell:focus-within{transform:rotate(0) translateY(-4px)}
-.cell .tag{height:100%}
-.open{position:absolute;inset:0;z-index:2;cursor:pointer;background:none;border:0;border-radius:6px}
-.open:focus-visible{outline-offset:4px}
-.empty{padding:48px 0;color:var(--muted);font-style:italic}
+.toolbar{position:sticky;top:84px;z-index:20;display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;padding:10px;border-radius:18px;margin-bottom:16px;background:linear-gradient(150deg,rgba(20,32,62,.82),rgba(12,20,42,.78))}
+.seg{display:flex;flex-wrap:wrap;gap:4px;padding:3px;border-radius:12px;background:rgba(0,0,0,.25)}
+.chip{cursor:pointer;min-height:36px;padding:0 12px;border-radius:9px;border:0;background:transparent;color:var(--muted);font-size:.86rem;transition:background-color .15s,color .15s}
+.chip:hover{color:var(--ink)}
+.chip[aria-pressed="true"]{background:rgba(255,255,255,.12);color:var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+.chip .num{margin-left:6px;color:var(--faint);font-size:.8rem}
+.search{flex:1 1 220px;min-width:0;min-height:42px;padding:0 14px;border-radius:12px;border:1px solid var(--line-strong);background:rgba(0,0,0,.25);color:var(--ink);font:inherit;font-size:.92rem}
+.search::placeholder{color:var(--faint)}
+.active-cause{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 6px 0 12px;border-radius:9px;background:rgba(59,130,246,.18);color:var(--ink);font-size:.86rem;border:1px solid rgba(125,176,255,.35)}
+.active-cause button{cursor:pointer;border:0;background:transparent;width:26px;height:26px;border-radius:6px;color:var(--muted)}
+.active-cause button:hover{background:rgba(255,255,255,.1);color:var(--ink)}
+.count{font-size:.86rem;color:var(--muted);margin-left:auto;padding-right:6px}
 
-/* rapport */
-dialog{border:0;padding:0;width:min(780px,calc(100% - 32px));max-height:90vh;border-radius:6px;background:var(--noise),var(--sheet);color:var(--sheet-ink);box-shadow:0 30px 80px rgba(0,0,0,.35)}
-dialog::backdrop{background:var(--backdrop);backdrop-filter:blur(3px)}
-dialog[open]{animation:rise .24s cubic-bezier(.2,.7,.3,1)}
-@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.rep{padding:34px clamp(20px,5vw,48px) 30px;display:grid;gap:22px}
-.rep-top{display:grid;grid-template-columns:1fr auto;gap:12px 20px;align-items:start;border-bottom:1.5px solid var(--sheet-ink);padding-bottom:18px}
-.rep-kind{font-family:var(--sans);font-size:.86rem;color:var(--sheet-muted)}
-.rep-kind b{font-family:var(--hand);font-size:1.9rem;color:var(--sheet-ink);font-weight:700;margin-left:6px;vertical-align:-3px}
-.rep h2{font-size:clamp(1.8rem,4.2vw,2.5rem);line-height:1.08;margin-top:6px;letter-spacing:-.01em;font-variation-settings:"opsz" 48}
-.rep .hook{margin-top:8px;color:var(--sheet-muted);font-style:italic}
-.rep .stamp{margin-top:4px;box-shadow:inset 0 0 0 2px var(--sheet),inset 0 0 0 3.5px currentColor;font-size:1.1rem}
-.rep-meta{display:flex;flex-wrap:wrap;gap:6px 26px;font-family:var(--sans);font-size:.9rem}
-.rep-meta div span{display:block;font-size:.76rem;color:var(--sheet-muted)}
-.rep-meta .hw{font-family:var(--hand);font-size:1.5rem;line-height:1}
-.rep-body{display:grid;grid-template-columns:1fr 1fr;gap:20px 34px}
-.rep-body h4{font-family:var(--sans);font-size:.84rem;font-weight:600;color:var(--sheet-muted);margin-bottom:4px}
-.rep-body p{font-size:1.04rem;line-height:1.58}
-.rep-lesson{grid-column:1/-1;padding:18px 20px;border-radius:4px;background:color-mix(in srgb,var(--s-keep) 7%,var(--sheet))}
-.rep-lesson p{font-size:1.2rem;font-style:italic;line-height:1.45}
-.rep-src{font-family:var(--sans);font-size:.8rem;color:var(--sheet-muted);word-break:break-word}
-.rep-nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--sheet-line);padding-top:16px;font-family:var(--sans)}
-.rep-nav button{cursor:pointer;min-height:42px;padding:0 16px;border-radius:999px;border:1px solid var(--sheet-line);background:transparent;color:var(--sheet-ink);font-size:.92rem}
-.rep-nav button:hover{border-color:var(--sheet-ink)}
-.rep-nav .close{background:var(--sheet-ink);color:var(--sheet);border-color:var(--sheet-ink)}
-.rep-nav button:disabled{opacity:.35;cursor:default}
+.phase{padding:8px;margin-bottom:14px}
+.phase-h{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);gap:4px 36px;align-items:baseline;padding:16px 16px 12px}
+.phase-h h3{font-size:1.2rem;font-weight:600;letter-spacing:-.01em}
+.phase-h h3 .num{color:var(--faint);font-size:.85rem;font-weight:400;margin-left:8px}
+.phase-h p{color:var(--muted);font-size:.92rem}
+.rows{display:grid;gap:2px}
+details.row{border-radius:14px;transition:background-color .15s}
+details.row:hover{background:rgba(255,255,255,.035)}
+details.row[open]{background:rgba(59,130,246,.07);box-shadow:inset 0 0 0 1px rgba(125,176,255,.18)}
+details.row summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:4.2rem minmax(0,1fr) minmax(0,15rem) 8.4rem 22px;gap:6px 18px;align-items:center;padding:14px 16px;border-radius:14px}
+details.row summary::-webkit-details-marker{display:none}
+.r-id{font-family:var(--mono);color:var(--accent);font-size:.95rem}
+.r-t h4{font-size:1.02rem;font-weight:500;line-height:1.3}
+.r-t p{font-size:.88rem;color:var(--muted);line-height:1.4;margin-top:2px}
+.r-key{font-family:var(--mono);font-size:.84rem;color:var(--ink);opacity:.86;line-height:1.35}
+.chev{width:22px;height:22px;color:var(--faint);transition:transform .2s}
+details.row[open] .chev{transform:rotate(180deg);color:var(--accent)}
+.pill{justify-self:start;display:inline-flex;align-items:center;gap:7px;padding:4px 10px;border-radius:999px;font-size:.8rem;font-weight:500;white-space:nowrap;color:var(--c);background:color-mix(in srgb,var(--c) 13%,transparent);border:1px solid color-mix(in srgb,var(--c) 34%,transparent)}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.p-kill{--c:var(--kill)} .p-down{--c:var(--down)} .p-unt{--c:var(--unt)} .p-keep{--c:var(--keep)}
+.r-body{padding:4px 16px 20px calc(4.2rem + 34px);display:grid;gap:18px;animation:open .22s ease-out}
+@keyframes open{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.r-meta{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:.88rem;color:var(--muted)}
+.r-meta b{color:var(--ink);font-weight:500}
+.r-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 32px}
+.r-grid h5{margin:0 0 4px;font-size:.84rem;font-weight:500;color:var(--accent)}
+.r-grid p{font-size:.97rem;line-height:1.62;max-width:36em}
+.lesson{grid-column:1/-1;padding:14px 18px;border-radius:14px;background:linear-gradient(100deg,rgba(59,130,246,.16),rgba(95,212,245,.06));border:1px solid rgba(125,176,255,.22)}
+.lesson p{font-size:1.06rem;color:var(--ink);max-width:none}
+.r-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 20px;font-size:.82rem;color:var(--faint)}
+.r-foot code{font-family:var(--mono);font-size:.8rem;word-break:break-word}
+.empty{padding:40px 16px;color:var(--muted)}
+
+/* protocole */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:s}
+.steps li{counter-increment:s;padding:20px 22px}
+.steps li::after{content:"0" counter(s);position:absolute;top:18px;right:20px;font-family:var(--mono);font-size:.85rem;color:var(--faint)}
+.steps h3{font-size:1.05rem;font-weight:600;padding-right:36px}
+.steps p{margin-top:6px;font-size:.93rem;color:var(--muted);line-height:1.55}
 
 /* survivant */
-.surv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px 56px}
-.alloc{display:flex;gap:2px;height:62px;border-radius:10px;overflow:hidden;font-family:var(--sans);font-size:.92rem}
-.alloc div{display:flex;align-items:center;padding-inline:16px}
-.alloc .a{flex:80;background:var(--ink);color:var(--ground)}
-.alloc .b{flex:20;background:var(--accent);color:#fff}
-.kv{display:grid;grid-template-columns:auto 1fr;gap:12px 22px;margin:22px 0 0}
-.kv dt{font-family:var(--sans);font-weight:600;font-size:.9rem;padding-top:3px}
-.kv dd{margin:0;font-size:1.02rem}
-.fine{margin-top:24px;font-size:.95rem;color:var(--muted);font-style:italic}
+.surv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 44px;padding:28px}
+.alloc{display:flex;gap:3px;height:64px;border-radius:14px;overflow:hidden;font-size:.95rem;font-weight:500}
+.alloc div{display:flex;align-items:center;padding-inline:16px;color:#fff}
+.alloc .a{flex:80;background:linear-gradient(135deg,#2F6FE0,#3B82F6)}
+.alloc .b{flex:20;background:linear-gradient(135deg,#1FA9CF,#5FD4F5);color:#04202B}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:12px 20px;margin:22px 0 0}
+.kv dt{font-weight:600;font-size:.9rem;padding-top:1px}
+.kv dd{margin:0;color:var(--muted);font-size:.95rem}
+.kv dd .num{color:var(--ink)}
+.fine{margin-top:22px;font-size:.88rem;color:var(--faint)}
 
 /* glossaire */
-.gloss{columns:2 320px;column-gap:56px;margin:0}
-.gloss div{break-inside:avoid;padding-block:12px;border-bottom:1px solid var(--line)}
-.gloss dt{font-size:1.2rem;font-weight:500}
-.gloss dd{margin:2px 0 0;color:var(--muted);font-size:1rem;line-height:1.5}
+.gloss{columns:2 320px;column-gap:40px;margin:0;padding:12px 26px}
+.gloss div{break-inside:avoid;padding-block:14px;border-bottom:1px solid var(--line)}
+.gloss dt{font-weight:600}
+.gloss dd{margin:3px 0 0;color:var(--muted);font-size:.93rem;line-height:1.55}
 
-footer{margin-top:80px;padding-block:28px 56px;border-top:1px solid var(--line);font-family:var(--sans);font-size:.86rem;color:var(--muted);display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap}
+footer{margin-top:72px;padding-block:24px 48px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint);display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap}
 
-@media (max-width:900px){
-  .hero,.head,.fam-head,.surv{grid-template-columns:1fr}
-  .hero{gap:20px}
+@media (max-width:980px){
+  .dash,.surv,.head,.phase-h{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
   .steps{grid-template-columns:1fr 1fr}
-  .cause{grid-template-columns:minmax(0,1fr) 2.2em}
-  .cause .track{grid-column:1/-1;grid-row:2}
-  .rep-body{grid-template-columns:1fr}
+  details.row summary{grid-template-columns:3.4rem minmax(0,1fr) auto 22px}
+  .r-key{grid-column:2/4;grid-row:2}
+  .r-body{padding-left:16px}
 }
-@media (max-width:560px){
-  body{font-size:1.06rem}
-  .steps{grid-template-columns:1fr}
-  .grid{grid-template-columns:1fr 1fr;gap:22px 14px}
-  .tag{padding:44px 14px 16px}
-  .tag .no b{font-size:1.8rem}
-  .tag h3{font-size:.95rem}
-  .field .hw{font-size:1.25rem}
-  .rep-top{grid-template-columns:1fr}
-  .rep .stamp{justify-self:start}
+@media (max-width:620px){
+  .bar{border-radius:20px}
+  .bar nav{display:none}
+  .toolbar{top:76px}
+  .steps,.r-grid{grid-template-columns:1fr}
+  details.row summary{grid-template-columns:3rem minmax(0,1fr) 22px;padding:12px}
+  .pill{grid-column:2;grid-row:3}
+  .r-key{grid-column:2/3}
+  .panel{padding:18px}
+  .count{margin-left:0}
 }
 </style>
 
 <div class="wrap">
-  <header class="bar">
-    <span class="name">Quarante autopsies</span>
+  <header class="bar glass">
+    <span class="brand"><i aria-hidden="true"></i>Zéro edge</span>
     <nav aria-label="Sections">
-      <a href="#protocole">Protocole</a>
-      <a href="#fonte">Le t qui fond</a>
-      <a href="#causes">Causes</a>
+      <a href="#tableau">Tableau de bord</a>
       <a href="#registre">Registre</a>
+      <a href="#protocole">Protocole</a>
       <a href="#survivant">Le survivant</a>
       <a href="#glossaire">Glossaire</a>
     </nav>
@@ -244,81 +240,55 @@ footer{margin-top:80px;padding-block:28px 56px;border-top:1px solid var(--line);
 
   <main>
     <div class="hero">
-      <div>
-        <h1>Quarante autopsies</h1>
-        <p class="lead">De juin à septembre 2026, quarante idées pour battre le marché ont été testées une à une, avec des règles écrites avant de voir le moindre chiffre. Aucune n’a survécu comme source de profit. Chaque étiquette raconte l’idée, pourquoi on y croyait, et ce qui l’a tuée.</p>
-        <div class="cta">
-          <a class="btn btn-solid" href="#registre">Ouvrir le registre</a>
-          <a class="btn btn-line" href="#protocole">Comment on tue une idée</a>
-        </div>
+      <h1>40 études.<br>0 edge.</h1>
+      <p class="lead">De juin à septembre 2026, quarante idées pour battre le marché ont été testées une à une, <strong>avec des règles écrites avant de voir le moindre chiffre</strong>. Aucune n’a tenu comme source de profit. Chaque ligne du registre explique l’idée, pourquoi on y croyait, et ce qui l’a fait échouer.</p>
+      <div class="kpis">
+        <div class="kpi glass"><b>40</b><span>études pré-enregistrées</span></div>
+        <div class="kpi glass zero"><b>0</b><span>edge déployable</span></div>
+        <div class="kpi glass"><b>5</b><span>faux GO démasqués avant d’engager un euro</span></div>
+        <div class="kpi glass"><b>1</b><span>portefeuille gardé, qui n’est pas un edge</span></div>
       </div>
-      <div class="hang" aria-label="Étiquette du programme">
-        <svg class="string" viewBox="0 0 360 120" preserveAspectRatio="none" aria-hidden="true"><path d="M150 -10 C 170 40, 196 70, 180 118" fill="none" stroke="var(--tag-edge)" stroke-width="2.2" stroke-linecap="round"/></svg>
-        <div class="tag tag-hero">
-          <div class="no">N° <b>0</b></div>
-          <h2>Le programme de chasse à l’edge</h2>
-          <div class="facts">
-            <div class="field"><span>Études</span><span class="fig">40, toutes pré-enregistrées</span></div>
-            <div class="field"><span>Edge déployable</span><span class="fig">0</span></div>
-            <div class="field"><span>GO retournés</span><span class="fig">5, avant d’engager un euro</span></div>
-            <div class="field"><span>Gardé</span><span class="fig">1 portefeuille</span></div>
-          </div>
-          <div class="field death"><span>Cause du décès</span><span class="hw">à information publique, pas d’edge pour un trader seul</span></div>
-          <span class="stamp v-kill">Clos</span>
-        </div>
+      <div class="vbar glass">
+        <div class="vbar-top"><h2>Verdicts du registre</h2><span id="vtotal"></span></div>
+        <div class="stack" id="stack" role="img"></div>
+        <div class="vlegend" id="vlegend"></div>
       </div>
     </div>
 
-    <section id="protocole" aria-labelledby="h-proto">
+    <section id="tableau" aria-labelledby="h-dash">
       <div class="head">
-        <h2 id="h-proto">Comment on tue une idée</h2>
-        <div>
-          <p>Un edge, c’est un avantage répétable : une façon de trader qui rapporte plus qu’elle ne coûte, en moyenne, sur la durée. Presque toutes les stratégies ont l’air d’en avoir un quand on les regarde avec indulgence. Ici, chaque idée passe un protocole conçu pour la tuer.</p>
-          <p>C’est ce protocole qui a démasqué un t-stat de 7,13 qui n’était qu’une illusion de prix, alors que la plupart des traders particuliers l’auraient joué.</p>
+        <h2 id="h-dash">Tableau de bord</h2>
+        <p>Le t-stat mesure combien un gain moyen se distingue du hasard : au-dessus de 2, on commence à y croire. À gauche, six cas où un premier t prometteur a fondu dès qu’on l’a rendu honnête. À droite, les cinq mécanismes qui expliquent presque tous les échecs.</p>
+      </div>
+      <div class="dash">
+        <figure class="panel glass" style="margin:0">
+          <div class="panel-h"><h3>Le t qui fond</h3></div>
+          <p class="panel-sub">Vrais coûts, vraie exécution, vraies erreurs-types : le même test, avant et après correction.</p>
+          <div class="legend"><span><i class="dot dot-before"></i>Premier calcul</span><span><i class="dot dot-after"></i>Après correction</span></div>
+          <div class="chart" id="chart"><div class="tip" id="tip" role="status"></div></div>
+          <details class="more">
+            <summary>Voir les chiffres en tableau</summary>
+            <div class="tbl"><table id="tbl"><thead><tr><th>Étude</th><th>Premier calcul</th><th class="n">t</th><th>Après correction</th><th class="n">t</th></tr></thead><tbody></tbody></table></div>
+          </details>
+          <p class="note">Hors graphique, le cas extrême : le carry crypto (#6) affichait t = 27,6 en données quotidiennes. Les gains d’un jour ressemblant à ceux de la veille, ce chiffre était gonflé. En mois indépendants, il tombe à 6,88 : toujours solide, mais quatre fois moins.</p>
+        </figure>
+        <div class="panel glass">
+          <div class="panel-h"><h3>Pourquoi ça échoue</h3></div>
+          <p class="panel-sub">Là où l’information et le prix sont publics, un trader seul n’a pas d’avantage à récolter. Choisissez une cause pour filtrer le registre.</p>
+          <div class="causes" id="causeList"></div>
+          <p class="causes-foot" id="causeFoot"></p>
         </div>
       </div>
-      <ol class="steps">
-        <li><h3>Écrire la règle d’abord</h3><p>Hypothèse, critère de succès et critère de mort, datés dans git avant la première donnée. Impossible de déplacer les poteaux après coup.</p></li>
-        <li><h3>Traverser plusieurs régimes</h3><p>Un bull, un krach, une période calme. Un résultat porté par une seule période relève de la chance.</p></li>
-        <li><h3>Compter les frais, toujours</h3><p>Spread, commission, glissement, financement, taxes. Aucune décision sur un chiffre brut.</p></li>
-        <li><h3>Punir le nombre d’essais</h3><p>Sur cinquante variantes, la meilleure a l’air bonne par hasard. Le Deflated Sharpe Ratio retire cette part de chance.</p></li>
-        <li><h3>Chercher la faille</h3><p>Inverser le signal, retirer le marché qui porte tout, décaler l’entrée d’un jour. Un vrai effet survit, un artefact s’effondre.</p></li>
-        <li><h3>Tuer franchement</h3><p>Une espérance négative ne se sauve par aucun dimensionnement. On documente, on gèle, on passe à la suivante.</p></li>
-      </ol>
-    </section>
-
-    <section id="fonte" aria-labelledby="h-fonte">
-      <div class="head">
-        <h2 id="h-fonte">Le t qui fond</h2>
-        <p>Le t-stat mesure combien un gain moyen se distingue du hasard ; au-dessus de 2, on commence à y croire. Voici six cas où un premier t prometteur a fondu dès qu’on l’a rendu honnête : vrais coûts, vraie exécution, vraies erreurs-types.</p>
-      </div>
-      <figure class="figure">
-        <div class="legend"><span><i class="dot dot-before"></i>Premier calcul</span><span><i class="dot dot-after"></i>Après correction</span></div>
-        <div class="chart" id="chart"><div class="tip" id="tip" role="status"></div></div>
-        <details>
-          <summary>Voir les chiffres en tableau</summary>
-          <div class="tbl"><table id="tbl"><thead><tr><th>Étude</th><th>Premier calcul</th><th class="n">t</th><th>Après correction</th><th class="n">t</th></tr></thead><tbody></tbody></table></div>
-        </details>
-      </figure>
-      <p class="note">Hors graphique, le cas extrême : le carry crypto (#6) affichait un t de 27,6 en données quotidiennes. Les gains d’un jour ressemblant à ceux de la veille, ce chiffre était gonflé ; en mois indépendants, il tombe à 6,88. Toujours solide, mais quatre fois moins.</p>
-    </section>
-
-    <section id="causes" aria-labelledby="h-causes">
-      <div class="head">
-        <h2 id="h-causes">Cinq causes de décès</h2>
-        <p>Classées, les morts se rangent en cinq mécanismes, qui disent tous la même chose : là où l’information et le prix sont publics, un trader seul, sans vitesse, sans infrastructure et sans gros capital, n’a pas d’avantage à récolter. Choisissez une cause pour filtrer le registre.</p>
-      </div>
-      <div class="causes" id="causeList"></div>
-      <p class="causes-foot" id="causeFoot"></p>
     </section>
 
     <section id="registre" aria-labelledby="h-reg">
       <div class="head">
         <h2 id="h-reg">Le registre</h2>
-        <p>Une étiquette par thèse, rangées par phase du programme. Le tampon donne le verdict, la mesure celle qui a tranché. Ouvrez une étiquette pour lire le rapport complet. Quelques numéros manquent : sous-études fusionnées, ou jamais lancées comme le #38.</p>
+        <p>Une ligne par thèse, rangées par phase du programme. Dépliez une ligne pour lire le détail. Quelques numéros manquent : sous-études fusionnées, ou jamais lancées comme le #38.</p>
       </div>
-      <div class="filters" role="search">
-        <div class="chips" id="vchips" aria-label="Filtrer par verdict"></div>
+      <div class="toolbar glass" role="search">
+        <div class="seg" id="vchips" aria-label="Filtrer par verdict"></div>
+        <span id="activeCause"></span>
         <label for="q" style="position:absolute;left:-9999px">Chercher une thèse</label>
         <input id="q" class="search" type="search" placeholder="Chercher : bitcoin, Fed, dividende…" autocomplete="off">
         <span class="count" id="count" aria-live="polite"></span>
@@ -326,12 +296,30 @@ footer{margin-top:80px;padding-block:28px 56px;border-top:1px solid var(--line);
       <div id="reg"></div>
     </section>
 
+    <section id="protocole" aria-labelledby="h-proto">
+      <div class="head">
+        <h2 id="h-proto">Le protocole</h2>
+        <div>
+          <p>Un edge, c’est un avantage répétable : une façon de trader qui rapporte plus qu’elle ne coûte, en moyenne, sur la durée. Presque toutes les stratégies ont l’air d’en avoir un quand on les regarde avec indulgence. Ici, chaque idée passe six étapes conçues pour la faire tomber.</p>
+          <p>C’est ce protocole qui a démasqué un t-stat de 7,13 qui n’était qu’une illusion de prix.</p>
+        </div>
+      </div>
+      <ol class="steps">
+        <li class="glass"><h3>Écrire la règle d’abord</h3><p>Hypothèse, critère de succès et critère d’échec, datés dans git avant la première donnée. Impossible de déplacer les poteaux après coup.</p></li>
+        <li class="glass"><h3>Traverser plusieurs régimes</h3><p>Un bull, un krach, une période calme. Un résultat porté par une seule période relève de la chance.</p></li>
+        <li class="glass"><h3>Compter tous les frais</h3><p>Spread, commission, glissement, financement, taxes. Aucune décision sur un chiffre brut.</p></li>
+        <li class="glass"><h3>Punir le nombre d’essais</h3><p>Sur cinquante variantes, la meilleure a l’air bonne par hasard. Le Deflated Sharpe Ratio retire cette part de chance.</p></li>
+        <li class="glass"><h3>Chercher la faille</h3><p>Inverser le signal, retirer le marché qui porte tout, décaler l’entrée d’un jour. Un vrai effet survit, un artefact s’effondre.</p></li>
+        <li class="glass"><h3>Trancher net</h3><p>Une espérance négative ne se sauve par aucun dimensionnement. On documente, on gèle, on passe à la suivante.</p></li>
+      </ol>
+    </section>
+
     <section id="survivant" aria-labelledby="h-surv">
       <div class="head">
-        <h2 id="h-surv">Le seul sorti vivant</h2>
-        <p>Ce n’est pas un edge mais un portefeuille. Les primes de risque classiques (actions, obligations, suivi de tendance) sont réelles, simplement trop minces pour être « battues ». La conclusion honnête : les porter longtemps plutôt que les trader. Le suivi de tendance, tué comme stratégie autonome (#1), revient ici en assurance-crise.</p>
+        <h2 id="h-surv">Le seul qui reste</h2>
+        <p>Ce n’est pas un edge mais un portefeuille. Les primes de risque classiques (actions, obligations, suivi de tendance) sont réelles, simplement trop minces pour être « battues ». La conclusion honnête : les porter longtemps plutôt que les trader. Le suivi de tendance, écarté comme stratégie autonome (#1), revient ici en assurance-crise.</p>
       </div>
-      <div class="surv">
+      <div class="surv glass">
         <div>
           <div class="alloc" role="img" aria-label="Répartition : 80 % WTEF, 20 % DBMFE"><div class="a">80 % WTEF</div><div class="b">20 %</div></div>
           <dl class="kv">
@@ -342,10 +330,10 @@ footer{margin-top:80px;padding-block:28px 56px;border-top:1px solid var(--line);
         </div>
         <div>
           <dl class="kv" style="margin-top:0">
-            <dt>Rendement</dt><dd>+10,0 % par an net en backtest 2006-2026, avec le levier de 1,5 (#34).</dd>
-            <dt>Pire perte</dt><dd>−29 % dans cette fenêtre, mais à planifier à −40 %, voire −70 % dans un scénario type 1929 (#37).</dd>
+            <dt>Rendement</dt><dd><span class="num">+10,0 %</span> par an net en backtest 2006-2026, avec le levier de 1,5 (#34).</dd>
+            <dt>Pire perte</dt><dd><span class="num">−29 %</span> dans cette fenêtre, mais à planifier à −40 %, voire −70 % dans un scénario type 1929 (#37).</dd>
             <dt>Trou connu</dt><dd>La stagflation : de 1966 à 1981, le portefeuille serait resté 16 ans sous le cash. L’or ne comble pas ce trou de façon répétable (#41) ; seul remède équivalent, réduire le levier.</dd>
-            <dt>Tendance</dt><dd>Réelle sur 41 ans (t = 5,4), mais en déclin : Sharpe proche de zéro depuis 2016.</dd>
+            <dt>Tendance</dt><dd>Réelle sur 41 ans (<span class="num">t = 5,4</span>), mais en déclin : Sharpe proche de zéro depuis 2016.</dd>
           </dl>
           <p class="fine">Ce site documente un travail de recherche personnel. Ce n’est pas un conseil en investissement : les chiffres sont des backtests, pas des promesses.</p>
         </div>
@@ -355,9 +343,9 @@ footer{margin-top:80px;padding-block:28px 56px;border-top:1px solid var(--line);
     <section id="glossaire" aria-labelledby="h-gloss">
       <div class="head">
         <h2 id="h-gloss">Glossaire</h2>
-        <p>Les mots qui reviennent dans les rapports, dans l’ordre où on les rencontre.</p>
+        <p>Les mots qui reviennent dans le registre, dans l’ordre où on les rencontre.</p>
       </div>
-      <dl class="gloss" id="gloss"></dl>
+      <dl class="gloss glass" id="gloss"></dl>
     </section>
   </main>
 
@@ -367,47 +355,30 @@ footer{margin-top:80px;padding-block:28px 56px;border-top:1px solid var(--line);
   </footer>
 </div>
 
-<dialog id="report" aria-labelledby="rep-title">
-  <div class="rep">
-    <div class="rep-top">
-      <div>
-        <div class="rep-kind">Rapport d’autopsie, étiquette <b id="rep-no"></b></div>
-        <h2 id="rep-title"></h2>
-        <p class="hook" id="rep-hook"></p>
-      </div>
-      <span class="stamp" id="rep-stamp"></span>
-    </div>
-    <div class="rep-meta">
-      <div><span>Cause du décès</span><span class="hw" id="rep-cause"></span></div>
-      <div><span>Mesure qui a tranché</span><span id="rep-key"></span></div>
-      <div><span>Phase</span><span id="rep-fam"></span></div>
-    </div>
-    <div class="rep-body">
-      <div><h4>L’idée</h4><p id="rep-idea"></p></div>
-      <div><h4>Pourquoi y croire</h4><p id="rep-why"></p></div>
-      <div><h4>Ce qu’on a trouvé</h4><p id="rep-found"></p></div>
-      <div><h4 id="rep-kill-h">Ce qui l’a tuée</h4><p id="rep-kill"></p></div>
-      <div class="rep-lesson"><h4>À retenir</h4><p id="rep-lesson"></p></div>
-    </div>
-    <p class="rep-src" id="rep-src"></p>
-    <div class="rep-nav">
-      <div style="display:flex;gap:8px"><button type="button" id="prev">Étiquette précédente</button><button type="button" id="next">Étiquette suivante</button></div>
-      <button type="button" class="close" id="close">Fermer le rapport</button>
-    </div>
-  </div>
-</dialog>
-
 <script src="data.js"></script>
 <script>
 const CAUSE_SPECIAL={"#24":"Une loterie","#36":"Un artefact de fenêtre","—":"Déjà vendu ailleurs"};
 function cause(f){
   if(CAUSE_SPECIAL[f.id]) return CAUSE_SPECIAL[f.id];
   if(f.m) return MODES[f.m].name;
-  return {keep:"Toujours en vie",unt:"Autopsie impossible",down:"Trop faible",kill:"Trop faible"}[f.v];
+  return {keep:"Toujours en place",unt:"Impossible à trancher",down:"Trop faible",kill:"Trop faible"}[f.v];
 }
 const VLABEL={kill:"KILL",down:"Rétrogradé",unt:"Non testable",keep:"Gardé"};
+const VCOLOR={kill:"var(--kill)",down:"var(--down)",unt:"var(--unt)",keep:"var(--keep)"};
 const famName=k=>FAM.find(x=>x[0]===k)[1];
-const esc=s=>String(s);
+const sid=f=>"e-"+(f.id.replace(/[^a-z0-9]/gi,"").toLowerCase()||"altdata");
+const $=id=>document.getElementById(id);
+const smooth=()=>matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth";
+
+/* ---------- barre des verdicts ---------- */
+(function(){
+  const order=["kill","down","unt","keep"], names={kill:"KILL",down:"Rétrogradés",unt:"Non testables",keep:"Gardés"};
+  const n=k=>F.filter(f=>f.v===k).length;
+  $("vtotal").textContent=`${F.length} fiches, bots de départ inclus`;
+  $("stack").innerHTML=order.map(k=>`<i style="flex:${n(k)};background:${VCOLOR[k]}"></i>`).join("");
+  $("stack").setAttribute("aria-label",order.map(k=>`${names[k]} : ${n(k)}`).join(", "));
+  $("vlegend").innerHTML=order.map(k=>`<span><i class="sw" style="background:${VCOLOR[k]}"></i>${names[k]} <b class="num">${n(k)}</b></span>`).join("");
+})();
 
 /* ---------- graphique : le t qui fond ---------- */
 (function(){
@@ -420,33 +391,34 @@ const esc=s=>String(s);
     ["Fonds fermés","#8","backtest","entrée réaliste, long seul",7.13,-0.64]
   ];
   const fmt=v=>(v<0?"−":"")+Math.abs(v).toFixed(2).replace(".",",");
-  const box=document.getElementById("chart"), tip=document.getElementById("tip"), NS="http://www.w3.org/2000/svg";
-  const W=780,L=230,R=36,T=40,RH=54,B=T+rows.length*RH,H=B+36;
-  const x0=-4,x1=8,sx=v=>L+(v-x0)/(x1-x0)*(W-L-R);
+  const box=$("chart"), tip=$("tip"), NS="http://www.w3.org/2000/svg";
+  const W=700,L=196,R=30,T=38,RH=50,B=T+rows.length*RH,H=B+34;
+  const x0=-6,x1=8,sx=v=>L+(v-x0)/(x1-x0)*(W-L-R);
   const svg=document.createElementNS(NS,"svg");
   svg.setAttribute("viewBox",`0 0 ${W} ${H}`);svg.setAttribute("role","img");
   svg.setAttribute("aria-label","Six t-stats, avant et après correction honnête ; détail dans le tableau");
   const el=(p,t,a,txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;p.appendChild(e);return e;};
   for(let v=x0;v<=x1;v+=2){
-    el(svg,"line",{x1:sx(v),x2:sx(v),y1:T-6,y2:B,stroke:"var(--line)","stroke-width":v===0?1.6:1});
-    el(svg,"text",{x:sx(v),y:B+22,"text-anchor":"middle","font-size":12,fill:"var(--muted)"},(v>0?"+":v<0?"−":"")+Math.abs(v));
+    el(svg,"line",{x1:sx(v),x2:sx(v),y1:T-6,y2:B,stroke:v===0?"rgba(170,200,255,.28)":"rgba(160,190,255,.10)","stroke-width":1});
+    el(svg,"text",{x:sx(v),y:B+22,"text-anchor":"middle","font-size":12,fill:"#6B7A96",class:"t-num"},(v>0?"+":v<0?"−":"")+Math.abs(v));
   }
-  el(svg,"line",{x1:sx(2),x2:sx(2),y1:T-16,y2:B,stroke:"var(--ink)","stroke-width":1.5});
-  el(svg,"text",{x:sx(2)+7,y:T-20,"font-size":12,"font-weight":600,fill:"var(--ink)"},"seuil t = 2");
-  el(svg,"text",{x:0,y:B+22,"font-size":12,fill:"var(--muted)"},"t-stat");
+  el(svg,"rect",{x:sx(2),y:T-6,width:sx(8)-sx(2),height:B-T+6,fill:"rgba(59,130,246,.06)"});
+  el(svg,"line",{x1:sx(2),x2:sx(2),y1:T-16,y2:B,stroke:"#7DB0FF","stroke-width":1.5});
+  el(svg,"text",{x:sx(2)+7,y:T-18,"font-size":12,"font-weight":500,fill:"#7DB0FF"},"seuil t = 2");
+  el(svg,"text",{x:0,y:B+22,"font-size":12,fill:"#6B7A96"},"t-stat");
   rows.forEach((r,i)=>{
     const y=T+i*RH+RH/2, a=sx(r[4]), b=sx(r[5]), left=b<a;
     const g=el(svg,"g",{class:"row-hit",tabindex:0,"aria-label":`${r[0]} : ${r[2]} t = ${fmt(r[4])}, ${r[3]} t = ${fmt(r[5])}`});
-    el(g,"rect",{class:"hl",x:0,y:T+i*RH+2,width:W-R+10,height:RH-4,rx:8,fill:"transparent"});
-    el(g,"text",{x:10,y:y+5,"font-size":15,"font-weight":600,fill:"var(--ink)"},r[0]);
-    el(g,"text",{x:L-18,y:y+5,"text-anchor":"end","font-size":12,fill:"var(--muted)"},r[1]);
-    el(g,"line",{x1:a,x2:b,y1:y,y2:y,stroke:"var(--muted)","stroke-width":2,"stroke-opacity":.5});
-    el(g,"circle",{cx:a,cy:y,r:7,fill:"var(--surface)",stroke:"var(--c-before)","stroke-width":2.5});
-    el(g,"circle",{cx:b,cy:y,r:8,fill:"var(--c-after)",stroke:"var(--surface)","stroke-width":2});
-    el(g,"text",{x:b+(left?-14:14),y:y+5,"text-anchor":left?"end":"start","font-size":13,"font-weight":600,fill:"var(--ink)"},fmt(r[5]));
+    el(g,"rect",{class:"hl",x:0,y:T+i*RH+2,width:W-R+14,height:RH-4,rx:10,fill:"transparent"});
+    el(g,"text",{x:10,y:y+5,"font-size":14,"font-weight":500,fill:"#E7EEFB"},r[0]);
+    el(g,"text",{x:L-16,y:y+5,"text-anchor":"end","font-size":12,fill:"#6B7A96",class:"t-num"},r[1]);
+    el(g,"line",{x1:a,x2:b,y1:y,y2:y,stroke:"rgba(170,190,230,.35)","stroke-width":2});
+    el(g,"circle",{cx:a,cy:y,r:6.5,fill:"#0C1530",stroke:"var(--c-before)","stroke-width":2.5});
+    el(g,"circle",{cx:b,cy:y,r:8,fill:"var(--c-after)",stroke:"#0C1530","stroke-width":2});
+    el(g,"text",{x:b+(left?-14:14),y:y+5,"text-anchor":left?"end":"start","font-size":13,"font-weight":500,fill:"#E7EEFB",class:"t-num"},fmt(r[5]));
     const show=()=>{const bb=box.getBoundingClientRect(), gb=g.getBoundingClientRect();
       tip.innerHTML=`<b>${r[0]} (${r[1]})</b><br>${r[2]} : t = ${fmt(r[4])}<br>${r[3]} : t = ${fmt(r[5])}`;
-      tip.style.left=Math.min(Math.max((a+b)/2/W*gb.width+gb.left-bb.left+box.scrollLeft,130),bb.width-130)+"px";
+      tip.style.left=Math.min(Math.max((a+b)/2/W*gb.width+gb.left-bb.left+box.scrollLeft,135),bb.width-135)+"px";
       tip.style.top=(gb.top-bb.top+10)+"px"; tip.classList.add("on");};
     const hide=()=>tip.classList.remove("on");
     g.addEventListener("mouseenter",show);g.addEventListener("mouseleave",hide);
@@ -459,85 +431,84 @@ const esc=s=>String(s);
 /* ---------- état et filtres ---------- */
 const state={v:"all",m:0,q:""};
 const norm=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
-let visible=[];
 
-const causeList=document.getElementById("causeList");
+const causeList=$("causeList");
 const max=Math.max(...Object.keys(MODES).map(k=>F.filter(f=>f.m==k).length));
 Object.entries(MODES).forEach(([k,o])=>{
   const n=F.filter(f=>f.m==k).length;
   const b=document.createElement("button");
   b.type="button";b.className="cause";b.id="cause-"+k;b.setAttribute("aria-pressed","false");
-  b.innerHTML=`<div><h3>${o.name}</h3><p>${o.desc}</p></div><div class="track" aria-hidden="true"><i style="width:${n/max*100}%"></i></div><span class="n">${n}</span>`;
-  b.addEventListener("click",()=>{state.m=state.m==k?0:+k;render();if(state.m)document.getElementById("registre").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});});
+  b.innerHTML=`<h4>${o.name}</h4><span class="n">${n}</span><div class="track" aria-hidden="true"><i style="width:${n/max*100}%"></i></div><p>${o.desc}</p>`;
+  b.addEventListener("click",()=>{state.m=state.m==k?0:+k;render();if(state.m)$("registre").scrollIntoView({behavior:smooth()});});
   causeList.appendChild(b);
 });
 const unclassed=F.filter(f=>!f.m).length;
-document.getElementById("causeFoot").textContent=`Les ${unclassed} autres étiquettes sortent de ce classement : primes trop faibles, études impossibles à trancher avec des données gratuites, et les pièces du portefeuille gardé.`;
+$("causeFoot").textContent=`Les ${unclassed} autres fiches sortent de ce classement : primes trop faibles, études impossibles à trancher avec des données gratuites, et les pièces du portefeuille gardé.`;
 
-const vchips=document.getElementById("vchips");
+const vchips=$("vchips");
 [["all","Toutes"],["kill","KILL"],["down","Rétrogradées"],["unt","Non testables"],["keep","Gardées"]].forEach(([k,l])=>{
   const b=document.createElement("button");b.type="button";b.className="chip";b.dataset.v=k;
-  b.textContent=`${l} (${k==="all"?F.length:F.filter(f=>f.v===k).length})`;
+  b.innerHTML=`${l}<span class="num">${k==="all"?F.length:F.filter(f=>f.v===k).length}</span>`;
   b.addEventListener("click",()=>{state.v=k;render();});vchips.appendChild(b);
 });
-document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value.trim();render();});
+$("q").addEventListener("input",e=>{state.q=e.target.value.trim();render();});
 
-function tagHTML(f,i){
-  return `<div class="cell"><article class="tag">
-    <div class="no">N° <b>${f.id.replace("#","")}</b></div>
-    <h3>${f.t}</h3>
-    <div class="field"><span>Cause du décès</span><span class="hw">${cause(f)}</span></div>
-    <div class="field"><span>Mesure</span><span class="fig">${f.key}</span></div>
-    <span class="stamp v-${f.v}">${f.vl||VLABEL[f.v]}</span>
-  </article><button type="button" class="open" data-i="${i}" aria-label="Lire le rapport : ${f.t}"></button></div>`;
+const CHEV=`<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>`;
+function rowHTML(f){
+  const keep=f.v==="keep";
+  return `<details class="row" id="${sid(f)}">
+    <summary>
+      <span class="r-id">${f.id}</span>
+      <span class="r-t"><h4>${f.t}</h4><p>${f.hook}</p></span>
+      <span class="r-key">${f.key}</span>
+      <span class="pill p-${f.v}">${f.vl||VLABEL[f.v]}</span>
+      ${CHEV}
+    </summary>
+    <div class="r-body">
+      <div class="r-meta"><span>Cause : <b>${cause(f)}</b></span><span>Mesure qui a tranché : <b>${f.key}</b></span></div>
+      <div class="r-grid">
+        <div><h5>L’idée</h5><p>${f.idea}</p></div>
+        <div><h5>Pourquoi y croire</h5><p>${f.why}</p></div>
+        <div><h5>Ce qu’on a trouvé</h5><p>${f.found}</p></div>
+        <div><h5>${keep?"La limite":"Ce qui l’a fait échouer"}</h5><p>${f.kill}</p></div>
+        <div class="lesson"><h5>À retenir</h5><p>${f.lesson}</p></div>
+      </div>
+      <div class="r-foot"><span>Source : <code>code python/${f.src}</code></span><a href="#${sid(f)}">Lien direct vers cette fiche</a></div>
+    </div>
+  </details>`;
 }
-const reg=document.getElementById("reg");
+const reg=$("reg");
 function render(){
   vchips.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.v===state.v));
   causeList.querySelectorAll(".cause").forEach(c=>c.setAttribute("aria-pressed",c.id==="cause-"+state.m));
+  $("activeCause").innerHTML=state.m?`<span class="active-cause">${MODES[state.m].name}<button type="button" id="clearCause" aria-label="Retirer le filtre de cause">✕</button></span>`:"";
+  if(state.m) $("clearCause").onclick=()=>{state.m=0;render();};
   const q=norm(state.q);
-  visible=F.filter(f=>(state.v==="all"||f.v===state.v)&&(!state.m||f.m===state.m)&&(!q||norm([f.id,f.t,f.hook,f.key,f.idea,f.why,f.found,f.kill,f.lesson,cause(f)].join(" ")).includes(q)));
-  let html="",i=0;
+  const visible=F.filter(f=>(state.v==="all"||f.v===state.v)&&(!state.m||f.m===state.m)&&(!q||norm([f.id,f.t,f.hook,f.key,f.idea,f.why,f.found,f.kill,f.lesson,cause(f)].join(" ")).includes(q)));
+  let html="";
   FAM.forEach(([k,name,blurb])=>{
     const items=visible.filter(f=>f.fam===k); if(!items.length) return;
-    html+=`<div class="fam"><div class="fam-head"><h3>${name}</h3><p>${blurb}</p></div><div class="grid">`;
-    items.forEach(f=>{html+=tagHTML(f,visible.indexOf(f));});
-    html+=`</div></div>`;
+    html+=`<div class="phase glass"><div class="phase-h"><h3>${name}<span class="num">${items.length}</span></h3><p>${blurb}</p></div><div class="rows">${items.map(rowHTML).join("")}</div></div>`;
   });
-  reg.innerHTML=html||`<p class="empty">Aucune étiquette ne correspond. Essayez un autre mot, ou revenez à « Toutes ».</p>`;
-  document.getElementById("count").textContent=`${visible.length} sur ${F.length} étiquettes`+(state.m?`, cause : ${MODES[state.m].name.toLowerCase()}`:"");
+  reg.innerHTML=html||`<p class="empty">Aucune fiche ne correspond. Essayez un autre mot, ou revenez à « Toutes ».</p>`;
+  $("count").textContent=`${visible.length} sur ${F.length} fiches`;
 }
-reg.addEventListener("click",e=>{const b=e.target.closest(".open");if(b)openReport(+b.dataset.i);});
+reg.addEventListener("toggle",e=>{
+  const d=e.target; if(!d.matches||!d.matches("details.row")) return;
+  if(d.open) history.replaceState(null,"","#"+d.id);
+  else if(location.hash==="#"+d.id) history.replaceState(null,"",location.pathname+location.search);
+},true);
 
-/* ---------- rapport ---------- */
-const dlg=document.getElementById("report");let cur=-1,opener=null;
-const $=id=>document.getElementById(id);
-function fill(i){
-  const f=visible[i];cur=i;
-  $("rep-no").textContent=f.id.replace("#","");$("rep-title").textContent=f.t;$("rep-hook").textContent=f.hook;
-  const s=$("rep-stamp");s.className="stamp v-"+f.v;s.textContent=f.vl||VLABEL[f.v];
-  $("rep-cause").textContent=cause(f);$("rep-key").textContent=f.key;$("rep-fam").textContent=famName(f.fam);
-  $("rep-idea").textContent=f.idea;$("rep-why").textContent=f.why;$("rep-found").textContent=f.found;
-  $("rep-kill-h").textContent=f.v==="keep"?"La limite":"Ce qui l’a tuée";$("rep-kill").textContent=f.kill;
-  $("rep-lesson").textContent=f.lesson;$("rep-src").textContent="Source : code python/"+f.src;
-  $("prev").disabled=i<=0;$("next").disabled=i>=visible.length-1;
-  history.replaceState(null,"","#e-"+f.id.replace(/[^a-z0-9]/gi,"").toLowerCase());
-  dlg.querySelector(".rep").scrollTop=0;dlg.scrollTop=0;
+function openFromHash(){
+  const m=location.hash.match(/^#(e-.+)$/); if(!m) return;
+  let d=document.getElementById(m[1]);
+  if(!d){state.v="all";state.m=0;state.q="";$("q").value="";render();d=document.getElementById(m[1]);}
+  if(!d) return;
+  d.open=true; d.scrollIntoView({block:"start",behavior:smooth()}); d.querySelector("summary").focus({preventScroll:true});
 }
-function openReport(i){
-  opener=document.activeElement;fill(i);
-  if(!dlg.open)dlg.showModal();
-  const top=dlg.querySelector(".rep");top.setAttribute("tabindex","-1");top.focus({preventScroll:true});dlg.scrollTop=0;
-}
-$("prev").onclick=()=>cur>0&&fill(cur-1);
-$("next").onclick=()=>cur<visible.length-1&&fill(cur+1);
-$("close").onclick=()=>dlg.close();
-dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close();});
-dlg.addEventListener("keydown",e=>{if(e.key==="ArrowRight"&&cur<visible.length-1)fill(cur+1);if(e.key==="ArrowLeft"&&cur>0)fill(cur-1);});
-dlg.addEventListener("close",()=>{history.replaceState(null,"",location.pathname+location.search);opener&&opener.focus&&opener.focus();});
-
 render();
-(function(){const m=location.hash.match(/^#e-(.+)$/);if(!m)return;const i=visible.findIndex(f=>f.id.replace(/[^a-z0-9]/gi,"").toLowerCase()===m[1]);if(i>=0)openReport(i);})();
+openFromHash();
+addEventListener("hashchange",openFromHash);
 
 /* ---------- glossaire ---------- */
 $("gloss").innerHTML=GLOSS.map(([t,d])=>`<div><dt>${t}</dt><dd>${d}</dd></div>`).join("");
