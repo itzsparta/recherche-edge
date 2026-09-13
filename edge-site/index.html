@@ -4,741 +4,541 @@
 <meta name="description" content="Registre vulgarisé des 40 études de la chasse à l'edge : chaque thèse, pourquoi on y croyait, et ce qui l'a tuée.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..700&family=Caveat:wght@600;700&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..500&display=swap">
 <style>
 :root{
-  --ground:#E6EBEE; --paper:#F5F7F8; --sunk:#DCE3E7;
-  --ink:#14202B; --muted:#52616D; --rule:#C3CCD3;
-  --accent:#2B3FA8; --accent-soft:#D9DDF3;
-  --kill:#AE2530; --down:#8F5C00; --unt:#566572; --keep:#1B6D45;
-  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
-  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
-  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
-  --measure:66ch;
+  /* la pièce : vert bloc opératoire */
+  --ground:#DCE6E1; --surface:#EEF3F0; --ink:#10271F; --muted:#4A5F57; --line:#BACAC2;
+  --accent:#00806A; --accent-text:#00614F;
+  --c-before:#C0701A; --c-after:#00806A;
+  --backdrop:rgba(12,30,24,.55);
+  /* les objets : papier, identiques dans les deux thèmes */
+  --tag:#EBDDB8; --tag-edge:#C9B585; --tag-ring:#DCCB9D; --tag-ink:#2A2416; --tag-muted:#6A5D40;
+  --sheet:#FAFBF9; --sheet-ink:#15231D; --sheet-muted:#55665F; --sheet-line:#D5DDD9;
+  --s-kill:#B3261E; --s-down:#8A5A00; --s-unt:#4F5B63; --s-keep:#1F6B45;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --hand:"Caveat","Segoe Print","Bradley Hand",cursive;
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .12 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --ground:#0E141A; --paper:#162029; --sunk:#1C2832;
-    --ink:#E1E7EB; --muted:#93A1AC; --rule:#2B3743;
-    --accent:#9AA7FF; --accent-soft:#232C57;
-    --kill:#F27A82; --down:#E2AA45; --unt:#9DAAB5; --keep:#62C995;
+    --ground:#0D1714; --surface:#14221D; --ink:#DDE8E3; --muted:#93A89F; --line:#2A3B35;
+    --accent:#2FA58B; --accent-text:#5CC4AC; --c-before:#C8792F; --c-after:#2FA58B;
+    --backdrop:rgba(2,8,6,.72); --tag:#D9CBA4; --tag-edge:#B09D70; --tag-ring:#C9B98E;
   }
 }
 :root[data-theme="dark"]{
-  --ground:#0E141A; --paper:#162029; --sunk:#1C2832;
-  --ink:#E1E7EB; --muted:#93A1AC; --rule:#2B3743;
-  --accent:#9AA7FF; --accent-soft:#232C57;
-  --kill:#F27A82; --down:#E2AA45; --unt:#9DAAB5; --keep:#62C995;
+  --ground:#0D1714; --surface:#14221D; --ink:#DDE8E3; --muted:#93A89F; --line:#2A3B35;
+  --accent:#2FA58B; --accent-text:#5CC4AC; --c-before:#C8792F; --c-after:#2FA58B;
+  --backdrop:rgba(2,8,6,.72); --tag:#D9CBA4; --tag-edge:#B09D70; --tag-ring:#C9B98E;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
-body{background:var(--ground);color:var(--ink);font-family:var(--serif);font-size:1.0625rem;line-height:1.6;margin:0;padding-inline:20px}
-.wrap{max-width:1080px;margin-inline:auto}
-a{color:var(--accent);text-underline-offset:.18em}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
-h1,h2,h3{font-family:var(--display);line-height:1;text-wrap:balance;margin:0}
+body{margin:0;padding-inline:20px;background:var(--ground);color:var(--ink);font-family:var(--serif);font-size:1.125rem;line-height:1.62;font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1140px;margin-inline:auto}
+a{color:var(--accent-text);text-decoration-thickness:1px;text-underline-offset:.2em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+h1,h2,h3,h4{margin:0;font-weight:400;text-wrap:balance}
 p{margin:0}
-.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
-.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+button{font:inherit;color:inherit}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before{animation:none!important;transition:none!important}}
 
-/* nav */
-.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-block:18px;border-bottom:1px solid var(--rule)}
-.top nav{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:.8rem}
-.top nav a{color:var(--ink);text-decoration:none}
-.top nav a:hover{color:var(--accent);text-decoration:underline}
+/* barre */
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px 28px;flex-wrap:wrap;padding-block:20px}
+.bar .name{font-size:1.15rem;font-style:italic}
+.bar nav{display:flex;gap:4px 22px;flex-wrap:wrap;font-family:var(--sans);font-size:.9rem}
+.bar nav a{color:var(--ink);text-decoration:none;padding-block:6px}
+.bar nav a:hover{color:var(--accent-text);text-decoration:underline}
 
-/* hero */
-.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:end;padding-block:56px 40px}
-.hero h1{font-size:clamp(3.4rem,10vw,7.4rem);font-weight:900;letter-spacing:-.01em;text-transform:uppercase;line-height:.86}
-.hero h1 span{display:block;color:var(--accent)}
-.lead{font-size:1.25rem;line-height:1.5;max-width:40ch;margin-top:22px}
-.lead em{font-style:italic}
-.ledger{border-top:3px solid var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:0}
-.ledger div{padding:14px 4px 12px;border-bottom:1px solid var(--rule)}
-.ledger div:nth-child(odd){border-right:1px solid var(--rule);padding-right:14px}
-.ledger div:nth-child(even){padding-left:16px}
-.ledger b{display:block;font-family:var(--display);font-weight:800;font-size:3rem;line-height:1}
-.ledger span{font-family:var(--mono);font-size:.74rem;color:var(--muted);letter-spacing:.04em}
-.ledger .zero b{color:var(--kill)}
+/* ouverture */
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.85fr);gap:48px;align-items:start;padding-block:48px 72px}
+.hero h1{font-size:clamp(3.6rem,10vw,8.4rem);font-weight:300;line-height:.9;letter-spacing:-.025em;font-variation-settings:"opsz" 72}
+.lead{margin-top:30px;font-size:1.36rem;line-height:1.5;max-width:31em}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;font-family:var(--sans);font-size:.98rem}
+.btn{display:inline-flex;align-items:center;min-height:46px;padding:0 20px;border-radius:999px;text-decoration:none;cursor:pointer;border:1.5px solid var(--ink);transition:background-color .18s,color .18s}
+.btn-solid{background:var(--ink);color:var(--ground)}
+.btn-solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-line{color:var(--ink)}
+.btn-line:hover{background:var(--surface)}
+
+.hang{position:relative;padding-top:92px;justify-self:center;width:min(100%,360px)}
+.hang svg.string{position:absolute;left:0;top:0;width:100%;height:120px;overflow:visible;pointer-events:none}
+.tag-hero{transform-origin:50% 28px;animation:swing 2.6s cubic-bezier(.3,.6,.4,1) both;transform:rotate(-2deg)}
+@keyframes swing{0%{transform:rotate(9deg)}28%{transform:rotate(-6deg)}50%{transform:rotate(3deg)}70%{transform:rotate(-3.2deg)}86%{transform:rotate(-1.4deg)}100%{transform:rotate(-2deg)}}
+
+/* l'étiquette */
+.tag{position:relative;background:var(--noise),var(--tag);color:var(--tag-ink);clip-path:polygon(26px 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%,0 26px);padding:48px 20px 20px;display:flex;flex-direction:column;gap:10px}
+.cell,.hang{filter:drop-shadow(0 1px 0 var(--tag-edge)) drop-shadow(0 10px 14px rgba(20,40,32,.16))}
+.tag::before{content:"";position:absolute;left:50%;top:15px;width:15px;height:15px;margin-left:-7.5px;border-radius:50%;background:var(--ground);box-shadow:0 0 0 5px var(--tag-ring),0 0 0 6px var(--tag-edge)}
+.tag .no{display:flex;align-items:baseline;gap:6px;font-family:var(--sans);font-size:.8rem;color:var(--tag-muted)}
+.tag .no b{font-family:var(--hand);font-weight:700;font-size:2.1rem;line-height:.9;color:var(--tag-ink)}
+.tag h3{font-family:var(--sans);font-weight:600;font-size:1.02rem;line-height:1.22;font-variation-settings:"wdth" 88}
+.field{border-top:1px solid color-mix(in srgb,var(--tag-edge) 70%,transparent);padding-top:6px;display:grid;gap:0}
+.field span{font-family:var(--sans);font-size:.72rem;color:var(--tag-muted)}
+.field .hw{font-family:var(--hand);font-size:1.42rem;line-height:1.05;font-weight:600}
+.field .fig{font-family:var(--sans);font-size:.86rem;font-variant-numeric:tabular-nums;line-height:1.3}
+.stamp{align-self:flex-end;margin-top:auto;font-family:var(--sans);font-weight:700;font-stretch:75%;font-variation-settings:"wdth" 75;text-transform:uppercase;letter-spacing:.05em;font-size:.95rem;line-height:1.05;padding:5px 9px 4px;border:2px solid currentColor;border-radius:4px;transform:rotate(-5deg);opacity:.88;box-shadow:inset 0 0 0 2px var(--tag),inset 0 0 0 3.5px currentColor;text-align:center;max-width:12em}
+.v-kill{color:var(--s-kill)} .v-down{color:var(--s-down)} .v-unt{color:var(--s-unt)} .v-keep{color:var(--s-keep)}
+
+.tag-hero{padding:58px 26px 26px;gap:12px}
+.tag-hero::before{top:20px;width:18px;height:18px;margin-left:-9px}
+.tag-hero h2{font-family:var(--sans);font-weight:600;font-size:1.2rem;line-height:1.2}
+.tag-hero .facts{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}
+.tag-hero .death .hw{font-size:1.65rem}
+.tag-hero .stamp{font-size:1.25rem}
 
 /* sections */
-section{padding-block:56px;border-top:1px solid var(--rule)}
-.sec-head{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:32px;margin-bottom:32px}
-.sec-head h2{font-size:clamp(2.2rem,5vw,3.2rem);font-weight:800;text-transform:uppercase}
-.sec-head p{max-width:var(--measure);color:var(--ink)}
-.prose p+p{margin-top:.9em}
+section{padding-block:80px 24px}
+.head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:20px 56px;align-items:end;margin-bottom:40px}
+.head h2{font-size:clamp(2.3rem,5vw,3.5rem);line-height:1;letter-spacing:-.015em;font-variation-settings:"opsz" 60}
+.head p{max-width:36em;color:var(--ink)}
+.head p+p{margin-top:.8em}
 
-/* thesis quote */
-.law{margin:0;padding:28px 0 4px;border-top:3px solid var(--ink);max-width:28em}
-.law p{font-size:clamp(1.45rem,3.2vw,2rem);line-height:1.3;font-style:italic}
-.law cite{display:block;margin-top:14px;font-style:normal;font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+/* protocole */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 44px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline}
+.steps li::before{content:counter(s);grid-row:1/3;font-size:3.4rem;line-height:.8;font-weight:300;color:var(--accent-text);font-variant-numeric:oldstyle-nums;font-variation-settings:"opsz" 72}
+.steps h3{font-size:1.3rem;font-weight:500;line-height:1.2}
+.steps p{font-size:1rem;color:var(--muted);line-height:1.55}
 
-/* protocol */
-.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--ink)}
-.steps li{padding:18px 20px 22px 0;border-bottom:1px solid var(--rule);counter-increment:step;display:grid;gap:6px;align-content:start}
-.steps li:not(:nth-child(3n)){border-right:1px solid var(--rule)}
-.steps li:not(:nth-child(3n+1)){padding-left:20px}
-.steps li::before{content:"Étape " counter(step);font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-.steps h3{font-size:1.5rem;font-weight:800;text-transform:uppercase}
-.steps p{font-size:.97rem;color:var(--muted)}
-.steps{counter-reset:step}
+/* graphique */
+.figure{margin:0;background:var(--surface);border-radius:14px;padding:26px 26px 20px}
+.legend{display:flex;gap:8px 24px;flex-wrap:wrap;font-family:var(--sans);font-size:.88rem;color:var(--muted);margin-bottom:10px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.dot-before{border:2.5px solid var(--c-before);background:var(--surface)}
+.dot-after{background:var(--c-after)}
+.chart{position:relative;overflow-x:auto}
+.chart svg{display:block;min-width:640px;width:100%;height:auto}
+.chart svg text{font-family:var(--sans)}
+.row-hit{cursor:default}
+.row-hit:hover rect.hl,.row-hit:focus rect.hl{fill:var(--ground)}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--ground);font-family:var(--sans);font-size:.84rem;line-height:1.4;padding:9px 12px;border-radius:8px;max-width:260px;transform:translate(-50%,-100%);margin-top:-10px;opacity:0;transition:opacity .12s}
+.tip.on{opacity:1}
+.tip b{font-weight:600}
+.figure details{margin-top:14px;font-family:var(--sans);font-size:.9rem}
+.figure summary{cursor:pointer;color:var(--accent-text);padding-block:6px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;margin-top:8px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+th{font-weight:600;color:var(--muted)}
+td.n{text-align:right}
+.note{margin-top:22px;max-width:40em;color:var(--muted);font-size:1rem}
 
-/* chart */
-.chart-box{background:var(--paper);border:1px solid var(--rule);padding:22px 22px 14px}
-.chart-scroll{overflow-x:auto}
-.chart-scroll svg{display:block;min-width:640px;width:100%;height:auto}
-.legend{display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:.76rem;color:var(--muted);margin-top:10px}
-.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:6px}
-.chart-note{margin-top:18px;max-width:var(--measure);font-size:.97rem;color:var(--muted)}
+/* causes */
+.causes{display:grid;gap:4px}
+.cause{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 2.2em;gap:6px 28px;align-items:center;padding:16px 14px;border-radius:12px;transition:background-color .18s}
+.cause:hover{background:var(--surface)}
+.cause:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.cause[aria-pressed="true"]{background:var(--surface);box-shadow:inset 3px 0 0 var(--accent)}
+.cause h3{font-size:1.3rem;font-weight:500;line-height:1.2}
+.cause p{font-size:.98rem;color:var(--muted);line-height:1.45;margin-top:2px}
+.track{height:10px;background:color-mix(in srgb,var(--line) 55%,transparent);border-radius:5px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--ink);border-radius:0 5px 5px 0}
+.cause .n{font-family:var(--sans);font-weight:600;font-size:1.2rem;text-align:right}
+.causes-foot{margin-top:14px;padding-inline:14px;color:var(--muted);font-size:.98rem}
 
-/* modes */
-.modes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
-.mode{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-rows:auto auto 1fr auto;gap:8px;padding:16px;background:var(--paper);border:1px solid var(--rule);border-top:4px solid var(--ink);transition:transform .15s,border-color .15s}
-.mode:hover{transform:translateY(-2px)}
-.mode:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.mode[aria-pressed="true"]{border-color:var(--accent);border-top-color:var(--accent);background:var(--accent-soft)}
-.mode .n{font-family:var(--display);font-weight:800;font-size:2.4rem;line-height:1}
-.mode h3{font-size:1.2rem;font-weight:800;text-transform:uppercase;line-height:1.05}
-.mode p{font-size:.9rem;color:var(--muted);line-height:1.45}
-.mode small{font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.04em}
-
-/* registry controls */
-.controls{position:sticky;top:0;z-index:5;background:var(--ground);padding-block:14px;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+/* registre */
+.filters{position:sticky;top:0;z-index:20;background:var(--ground);padding-block:14px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;font-family:var(--sans);box-shadow:0 1px 0 var(--line)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font-family:var(--mono);font-size:.76rem;letter-spacing:.03em;padding:6px 11px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer;border-radius:999px}
+.chip{cursor:pointer;min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.86rem;transition:background-color .15s,border-color .15s}
 .chip:hover{border-color:var(--ink)}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.search{flex:1 1 200px;min-width:0;font:inherit;font-family:var(--mono);font-size:.85rem;padding:7px 12px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:4px}
-.count{font-family:var(--mono);font-size:.76rem;color:var(--muted);margin-left:auto}
-.linkbtn{font-family:var(--mono);font-size:.76rem;background:none;border:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:.2em;padding:4px 0}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--ground)}
+.search{flex:1 1 220px;min-width:0;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.92rem}
+.search::placeholder{color:var(--muted)}
+.count{font-size:.86rem;color:var(--muted);margin-left:auto}
+.fam{padding-top:52px}
+.fam-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:8px 56px;align-items:baseline;margin-bottom:26px}
+.fam-head h3{font-size:1.75rem;font-weight:400;line-height:1.1}
+.fam-head p{color:var(--muted);font-size:1rem;max-width:38em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:30px 22px}
+.cell{position:relative;transition:transform .22s cubic-bezier(.3,.7,.4,1)}
+.cell:nth-child(4n+1){transform:rotate(-1.2deg)} .cell:nth-child(4n+2){transform:rotate(.9deg)}
+.cell:nth-child(4n+3){transform:rotate(-.5deg)} .cell:nth-child(4n){transform:rotate(1.3deg)}
+.cell:hover,.cell:focus-within{transform:rotate(0) translateY(-4px)}
+.cell .tag{height:100%}
+.open{position:absolute;inset:0;z-index:2;cursor:pointer;background:none;border:0;border-radius:6px}
+.open:focus-visible{outline-offset:4px}
+.empty{padding:48px 0;color:var(--muted);font-style:italic}
 
-/* registry */
-.family{margin-top:44px}
-.family-head{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:32px;align-items:baseline;padding-bottom:12px;border-bottom:3px solid var(--ink)}
-.family-head h3{font-size:1.9rem;font-weight:800;text-transform:uppercase}
-.family-head p{color:var(--muted);max-width:var(--measure);font-size:.98rem}
-.fiche{border-bottom:1px solid var(--rule)}
-.fiche summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,210px) 150px;gap:18px;align-items:center;padding:16px 4px}
-.fiche summary::-webkit-details-marker{display:none}
-.fiche summary:hover{background:var(--sunk)}
-.fiche[open] summary{background:var(--paper)}
-.fid{font-family:var(--mono);font-size:.9rem;color:var(--muted)}
-.ftitle h4{font-family:var(--serif);font-size:1.16rem;font-weight:600;line-height:1.25;margin:0}
-.ftitle p{font-size:.93rem;color:var(--muted);margin-top:3px;line-height:1.4}
-.fkey{font-family:var(--mono);font-size:.8rem;line-height:1.35;color:var(--ink)}
-.fkey .mchip{display:inline-block;margin-top:6px;font-size:.68rem;color:var(--muted);letter-spacing:.03em}
-.stamp{justify-self:end;font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:1rem;line-height:1.05;text-align:center;padding:5px 9px 4px;border:2.5px solid currentColor;border-radius:3px;transform:rotate(-3deg);max-width:150px;box-shadow:inset 0 0 0 1.5px var(--paper),inset 0 0 0 3px currentColor;mix-blend-mode:multiply}
-:root[data-theme="dark"] .stamp{mix-blend-mode:normal}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stamp{mix-blend-mode:normal}}
-.v-kill{color:var(--kill)} .v-down{color:var(--down)} .v-unt{color:var(--unt)} .v-keep{color:var(--keep)}
-.fbody{background:var(--paper);padding:6px 4px 26px 86px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 36px}
-.fbody div h5{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 4px;font-weight:500}
-.fbody div p{font-size:.99rem;max-width:62ch}
-.fbody .lesson{grid-column:1/-1;border-left:3px solid var(--accent);padding-left:16px}
-.fbody .lesson p{font-style:italic;font-size:1.06rem}
-.fbody .src{grid-column:1/-1;font-family:var(--mono);font-size:.74rem;color:var(--muted);word-break:break-all}
-.empty{padding:40px 0;color:var(--muted);font-style:italic}
+/* rapport */
+dialog{border:0;padding:0;width:min(780px,calc(100% - 32px));max-height:90vh;border-radius:6px;background:var(--noise),var(--sheet);color:var(--sheet-ink);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:var(--backdrop);backdrop-filter:blur(3px)}
+dialog[open]{animation:rise .24s cubic-bezier(.2,.7,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.rep{padding:34px clamp(20px,5vw,48px) 30px;display:grid;gap:22px}
+.rep-top{display:grid;grid-template-columns:1fr auto;gap:12px 20px;align-items:start;border-bottom:1.5px solid var(--sheet-ink);padding-bottom:18px}
+.rep-kind{font-family:var(--sans);font-size:.86rem;color:var(--sheet-muted)}
+.rep-kind b{font-family:var(--hand);font-size:1.9rem;color:var(--sheet-ink);font-weight:700;margin-left:6px;vertical-align:-3px}
+.rep h2{font-size:clamp(1.8rem,4.2vw,2.5rem);line-height:1.08;margin-top:6px;letter-spacing:-.01em;font-variation-settings:"opsz" 48}
+.rep .hook{margin-top:8px;color:var(--sheet-muted);font-style:italic}
+.rep .stamp{margin-top:4px;box-shadow:inset 0 0 0 2px var(--sheet),inset 0 0 0 3.5px currentColor;font-size:1.1rem}
+.rep-meta{display:flex;flex-wrap:wrap;gap:6px 26px;font-family:var(--sans);font-size:.9rem}
+.rep-meta div span{display:block;font-size:.76rem;color:var(--sheet-muted)}
+.rep-meta .hw{font-family:var(--hand);font-size:1.5rem;line-height:1}
+.rep-body{display:grid;grid-template-columns:1fr 1fr;gap:20px 34px}
+.rep-body h4{font-family:var(--sans);font-size:.84rem;font-weight:600;color:var(--sheet-muted);margin-bottom:4px}
+.rep-body p{font-size:1.04rem;line-height:1.58}
+.rep-lesson{grid-column:1/-1;padding:18px 20px;border-radius:4px;background:color-mix(in srgb,var(--s-keep) 7%,var(--sheet))}
+.rep-lesson p{font-size:1.2rem;font-style:italic;line-height:1.45}
+.rep-src{font-family:var(--sans);font-size:.8rem;color:var(--sheet-muted);word-break:break-word}
+.rep-nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--sheet-line);padding-top:16px;font-family:var(--sans)}
+.rep-nav button{cursor:pointer;min-height:42px;padding:0 16px;border-radius:999px;border:1px solid var(--sheet-line);background:transparent;color:var(--sheet-ink);font-size:.92rem}
+.rep-nav button:hover{border-color:var(--sheet-ink)}
+.rep-nav .close{background:var(--sheet-ink);color:var(--sheet);border-color:var(--sheet-ink)}
+.rep-nav button:disabled{opacity:.35;cursor:default}
 
-/* deliverable */
-.deliv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px}
-.alloc{border-top:3px solid var(--ink)}
-.bar{display:flex;height:54px;margin-top:16px;border:1px solid var(--ink)}
-.bar div{display:flex;align-items:center;padding-inline:12px;font-family:var(--mono);font-size:.8rem}
-.bar .a{flex:80;background:var(--ink);color:var(--paper)}
-.bar .b{flex:20;background:var(--accent-soft);color:var(--ink)}
-.kv{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;margin-top:20px;font-size:.96rem}
-.kv dt{font-family:var(--mono);font-size:.78rem;color:var(--muted);padding-top:3px}
-.kv dd{margin:0}
-.warn{margin-top:22px;padding:14px 16px;border:1px solid var(--rule);background:var(--paper);font-size:.92rem;color:var(--muted)}
+/* survivant */
+.surv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px 56px}
+.alloc{display:flex;gap:2px;height:62px;border-radius:10px;overflow:hidden;font-family:var(--sans);font-size:.92rem}
+.alloc div{display:flex;align-items:center;padding-inline:16px}
+.alloc .a{flex:80;background:var(--ink);color:var(--ground)}
+.alloc .b{flex:20;background:var(--accent);color:#fff}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:12px 22px;margin:22px 0 0}
+.kv dt{font-family:var(--sans);font-weight:600;font-size:.9rem;padding-top:3px}
+.kv dd{margin:0;font-size:1.02rem}
+.fine{margin-top:24px;font-size:.95rem;color:var(--muted);font-style:italic}
 
-/* glossary */
-.gloss{columns:2 300px;column-gap:40px}
-.gloss div{break-inside:avoid;padding-block:10px;border-bottom:1px solid var(--rule)}
-.gloss dt{font-family:var(--display);font-weight:800;font-size:1.25rem;text-transform:uppercase;letter-spacing:.01em}
-.gloss dd{margin:2px 0 0;font-size:.95rem;color:var(--ink)}
+/* glossaire */
+.gloss{columns:2 320px;column-gap:56px;margin:0}
+.gloss div{break-inside:avoid;padding-block:12px;border-bottom:1px solid var(--line)}
+.gloss dt{font-size:1.2rem;font-weight:500}
+.gloss dd{margin:2px 0 0;color:var(--muted);font-size:1rem;line-height:1.5}
 
-footer{padding-block:36px 56px;border-top:3px solid var(--ink);font-family:var(--mono);font-size:.76rem;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer{margin-top:80px;padding-block:28px 56px;border-top:1px solid var(--line);font-family:var(--sans);font-size:.86rem;color:var(--muted);display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap}
 
 @media (max-width:900px){
-  .hero,.sec-head,.family-head,.deliv{grid-template-columns:1fr;gap:18px}
-  .modes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero,.head,.fam-head,.surv{grid-template-columns:1fr}
+  .hero{gap:20px}
   .steps{grid-template-columns:1fr 1fr}
-  .steps li:nth-child(n){border-right:0;padding-left:0}
-  .steps li:nth-child(odd){border-right:1px solid var(--rule);padding-right:20px}
-  .steps li:nth-child(even){padding-left:20px}
-  .fiche summary{grid-template-columns:52px minmax(0,1fr) 128px;}
-  .fkey{grid-column:2/3;grid-row:2}
-  .stamp{grid-row:1/3;grid-column:3}
-  .fbody{padding-left:4px}
+  .cause{grid-template-columns:minmax(0,1fr) 2.2em}
+  .cause .track{grid-column:1/-1;grid-row:2}
+  .rep-body{grid-template-columns:1fr}
 }
 @media (max-width:560px){
-  body{font-size:1rem}
+  body{font-size:1.06rem}
   .steps{grid-template-columns:1fr}
-  .steps li:nth-child(n){border-right:0;padding-inline:0}
-  .modes{grid-template-columns:1fr}
-  .fiche summary{grid-template-columns:44px minmax(0,1fr);gap:10px 12px}
-  .fkey{grid-column:2}
-  .stamp{grid-column:2;grid-row:auto;justify-self:start;transform:rotate(-2deg)}
-  .fbody{grid-template-columns:1fr}
-  .ledger b{font-size:2.4rem}
+  .grid{grid-template-columns:1fr 1fr;gap:22px 14px}
+  .tag{padding:44px 14px 16px}
+  .tag .no b{font-size:1.8rem}
+  .tag h3{font-size:.95rem}
+  .field .hw{font-size:1.25rem}
+  .rep-top{grid-template-columns:1fr}
+  .rep .stamp{justify-self:start}
 }
 </style>
 
 <div class="wrap">
-  <header class="top">
-    <span class="eyebrow">Registre de la chasse à l’edge · 2026</span>
+  <header class="bar">
+    <span class="name">Quarante autopsies</span>
     <nav aria-label="Sections">
-      <a href="#methode">Méthode</a>
+      <a href="#protocole">Protocole</a>
       <a href="#fonte">Le t qui fond</a>
-      <a href="#morts">Cinq morts</a>
+      <a href="#causes">Causes</a>
       <a href="#registre">Registre</a>
-      <a href="#survivant">Survivant</a>
+      <a href="#survivant">Le survivant</a>
       <a href="#glossaire">Glossaire</a>
     </nav>
   </header>
 
-  <div class="hero">
-    <div>
-      <h1>Quarante <span>autopsies</span></h1>
-      <p class="lead">Quarante idées pour battre le marché, testées une à une avec des règles écrites <em>avant</em> de voir le moindre chiffre. Aucune n’a survécu comme source de profit. Voici, pour chacune, l’idée, pourquoi on y croyait et ce qui l’a tuée, sans jargon.</p>
-    </div>
-    <div class="ledger" aria-label="Bilan du programme">
-      <div><b class="mono">40</b><span>études numérotées</span></div>
-      <div class="zero"><b class="mono">0</b><span>edge déployable</span></div>
-      <div><b class="mono">5</b><span>« GO » retournés avant d’engager un euro</span></div>
-      <div><b class="mono">1</b><span>portefeuille gardé (pas un edge)</span></div>
-    </div>
-  </div>
-
-  <section id="methode" aria-labelledby="h-methode">
-    <div class="sec-head">
-      <h2 id="h-methode">Comment on tue une idée</h2>
-      <div class="prose">
-        <p>Un <strong>edge</strong>, c’est un avantage répétable : une façon de trader qui rapporte plus qu’elle ne coûte, en moyenne, sur la durée. Presque toutes les stratégies ont l’air d’en avoir un quand on les regarde avec indulgence. Le programme a donc fait l’inverse : chaque idée passe un protocole conçu pour la tuer, et elle n’est gardée que si elle résiste.</p>
-        <p>Le protocole compte plus que les résultats. C’est lui qui a démasqué un t-stat de 7,13 qui n’était qu’une illusion de prix, alors que la plupart des traders particuliers l’auraient joué.</p>
-      </div>
-    </div>
-    <ol class="steps">
-      <li><h3>Écrire la règle d’abord</h3><p>Hypothèse, critère de succès et critère de mort, datés et enregistrés dans git avant la première donnée. On ne peut plus déplacer les poteaux après coup.</p></li>
-      <li><h3>Plusieurs régimes</h3><p>Un bull, un krach, une période calme. Un résultat porté par une seule période, c’est de la chance, pas un avantage.</p></li>
-      <li><h3>Net de frais, toujours</h3><p>Spread, commission, glissement, financement, taxes. Aucune décision n’est prise sur un chiffre « brut ».</p></li>
-      <li><h3>Punir le nombre d’essais</h3><p>Testez cinquante variantes, la meilleure aura l’air bonne par hasard. Le Deflated Sharpe Ratio (DSR) retire cette part de chance.</p></li>
-      <li><h3>Miroir et drop-one</h3><p>Inverser le signal, retirer le marché qui porte tout le gain, décaler l’entrée d’un jour. Un vrai effet survit ; un artefact s’effondre.</p></li>
-      <li><h3>Kill franc</h3><p>Une espérance négative ne se sauve par aucun dimensionnement. On documente, on gèle, on passe à la suivante.</p></li>
-    </ol>
-  </section>
-
-  <section id="fonte" aria-labelledby="h-fonte">
-    <div class="sec-head">
-      <h2 id="h-fonte">Le t qui fond</h2>
-      <div class="prose">
-        <p>Le <strong>t-stat</strong> mesure à quel point un gain moyen se distingue du hasard. La convention du programme : au-dessus de 2, on commence à y croire. Ce graphique montre six cas où un premier t prometteur a fondu dès qu’on l’a rendu honnête : vrais coûts, vraie exécution, vraies erreurs-types.</p>
-      </div>
-    </div>
-    <figure class="chart-box" style="margin:0">
-      <div class="chart-scroll"><svg id="melt" role="img" aria-label="Six t-stats avant et après correction honnête"></svg></div>
-      <div class="legend" aria-hidden="true"><span><i style="border:2px solid var(--muted)"></i>premier calcul</span><span><i style="background:var(--accent)"></i>après correction</span><span><i style="background:var(--kill);border-radius:0;width:3px;height:12px"></i>seuil t = 2</span></div>
-    </figure>
-    <p class="chart-note">Hors graphique, le cas le plus extrême : le carry crypto (#6) affichait un t de 27,6 en données quotidiennes. Les gains d’un jour ressemblant à ceux de la veille, ce t était gonflé ; en mois indépendants, il tombe à 6,88. Toujours solide, mais quatre fois moins.</p>
-  </section>
-
-  <section id="morts" aria-labelledby="h-morts">
-    <div class="sec-head">
-      <h2 id="h-morts">Cinq façons de mourir</h2>
-      <div class="prose">
-        <p>Les morts ne sont pas toutes pareilles. Une fois classées, elles se rangent dans cinq mécanismes, et tous disent la même chose : <em>là où l’information et le prix sont publics, un petit trader seul, sans vitesse, sans infrastructure et sans gros capital, n’a pas d’avantage récoltable.</em> Cliquez sur un mécanisme pour filtrer le registre.</p>
-      </div>
-    </div>
-    <div class="modes" id="modes"></div>
-  </section>
-
-  <section id="registre" aria-labelledby="h-registre">
-    <div class="sec-head">
-      <h2 id="h-registre">Le registre</h2>
-      <div class="prose">
-        <p>Chaque ligne est une thèse. Le tampon donne le verdict ; le chiffre à côté, la mesure qui a tranché. Ouvrez une fiche pour la version complète. Les numéros sont ceux du programme (quelques numéros manquent : sous-études fusionnées, ou non lancées comme le #38).</p>
-      </div>
-    </div>
-    <div class="controls" role="search">
-      <div class="chips" id="vchips" aria-label="Filtrer par verdict"></div>
-      <label for="q" class="eyebrow" style="position:absolute;left:-9999px">Rechercher</label>
-      <input id="q" class="search" type="search" placeholder="Chercher : bitcoin, Fed, dividende…" autocomplete="off">
-      <button class="linkbtn" id="toggleAll" type="button">Tout déplier</button>
-      <span class="count mono" id="count" aria-live="polite"></span>
-    </div>
-    <div id="reg"></div>
-  </section>
-
-  <section id="survivant" aria-labelledby="h-surv">
-    <div class="sec-head">
-      <h2 id="h-surv">Ce qui a survécu</h2>
-      <div class="prose">
-        <p>Pas un edge : un portefeuille. Les primes de risque classiques (actions, obligations, suivi de tendance) sont réelles, simplement trop minces pour être « battues ». La conclusion honnête est de les porter longtemps plutôt que de les trader. Le suivi de tendance, tué comme stratégie autonome (#1), revient ici comme assurance-crise : il a coupé environ la moitié des pertes du 60/40 en 2008 et en 2022.</p>
-      </div>
-    </div>
-    <div class="deliv">
-      <div class="alloc">
-        <p class="eyebrow" style="margin-top:14px">Mise en œuvre actée · 2026-09-11</p>
-        <div class="bar" aria-label="Répartition 80 / 20">
-          <div class="a">80 % WTEF</div><div class="b">20 % DBMFE</div>
+  <main>
+    <div class="hero">
+      <div>
+        <h1>Quarante autopsies</h1>
+        <p class="lead">De juin à septembre 2026, quarante idées pour battre le marché ont été testées une à une, avec des règles écrites avant de voir le moindre chiffre. Aucune n’a survécu comme source de profit. Chaque étiquette raconte l’idée, pourquoi on y croyait, et ce qui l’a tuée.</p>
+        <div class="cta">
+          <a class="btn btn-solid" href="#registre">Ouvrir le registre</a>
+          <a class="btn btn-line" href="#protocole">Comment on tue une idée</a>
         </div>
-        <dl class="kv">
-          <dt>WTEF</dt><dd>WisdomTree US Efficient Core : 90 % actions US + 60 % contrats sur Treasuries, soit un 60/40 levé 1,5× à l’intérieur du fonds.</dd>
-          <dt>DBMFE</dt><dd>iMGP DBi Managed Futures : réplique le suivi de tendance des CTA.</dd>
-          <dt>Pourquoi</dt><dd>0,80 × 1,5 = 1,2 fois un 60/40, plus une poche trend. Levier dans les fonds : pas d’appel de marge.</dd>
-        </dl>
       </div>
-      <div class="alloc">
-        <p class="eyebrow" style="margin-top:14px">Ce que disent les tests (#22, #34, #37, #41)</p>
-        <dl class="kv">
-          <dt>Rendement</dt><dd><span class="mono">+10,0 %/an</span> net en backtest 2006-2026, levier 1,5×.</dd>
-          <dt>Pire perte</dt><dd><span class="mono">−29 %</span> dans cette fenêtre, mais à planifier à <span class="mono">−40 %</span>, voire <span class="mono">−70 %</span> dans un scénario type 1929 (#37).</dd>
-          <dt>Trou connu</dt><dd>La stagflation : en 1966-81, le portefeuille serait resté 16 ans sous le rendement du cash. L’or ne comble pas ce trou de façon répétable (#41). Seul remède équivalent : réduire le levier.</dd>
-          <dt>Trend</dt><dd>Réel sur 41 ans (t = 5,4) mais en déclin : Sharpe ≈ 0 depuis 2016. Attente réaliste modeste.</dd>
-        </dl>
-        <p class="warn">Ce site documente un travail de recherche personnel. Ce n’est pas un conseil en investissement : les chiffres sont des backtests, pas des promesses.</p>
+      <div class="hang" aria-label="Étiquette du programme">
+        <svg class="string" viewBox="0 0 360 120" preserveAspectRatio="none" aria-hidden="true"><path d="M150 -10 C 170 40, 196 70, 180 118" fill="none" stroke="var(--tag-edge)" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <div class="tag tag-hero">
+          <div class="no">N° <b>0</b></div>
+          <h2>Le programme de chasse à l’edge</h2>
+          <div class="facts">
+            <div class="field"><span>Études</span><span class="fig">40, toutes pré-enregistrées</span></div>
+            <div class="field"><span>Edge déployable</span><span class="fig">0</span></div>
+            <div class="field"><span>GO retournés</span><span class="fig">5, avant d’engager un euro</span></div>
+            <div class="field"><span>Gardé</span><span class="fig">1 portefeuille</span></div>
+          </div>
+          <div class="field death"><span>Cause du décès</span><span class="hw">à information publique, pas d’edge pour un trader seul</span></div>
+          <span class="stamp v-kill">Clos</span>
+        </div>
       </div>
     </div>
-  </section>
 
-  <section id="glossaire" aria-labelledby="h-gloss">
-    <div class="sec-head">
-      <h2 id="h-gloss">Glossaire</h2>
-      <div class="prose"><p>Les mots qui reviennent dans les fiches, dans l’ordre où on les rencontre.</p></div>
-    </div>
-    <dl class="gloss" id="gloss"></dl>
-  </section>
+    <section id="protocole" aria-labelledby="h-proto">
+      <div class="head">
+        <h2 id="h-proto">Comment on tue une idée</h2>
+        <div>
+          <p>Un edge, c’est un avantage répétable : une façon de trader qui rapporte plus qu’elle ne coûte, en moyenne, sur la durée. Presque toutes les stratégies ont l’air d’en avoir un quand on les regarde avec indulgence. Ici, chaque idée passe un protocole conçu pour la tuer.</p>
+          <p>C’est ce protocole qui a démasqué un t-stat de 7,13 qui n’était qu’une illusion de prix, alors que la plupart des traders particuliers l’auraient joué.</p>
+        </div>
+      </div>
+      <ol class="steps">
+        <li><h3>Écrire la règle d’abord</h3><p>Hypothèse, critère de succès et critère de mort, datés dans git avant la première donnée. Impossible de déplacer les poteaux après coup.</p></li>
+        <li><h3>Traverser plusieurs régimes</h3><p>Un bull, un krach, une période calme. Un résultat porté par une seule période relève de la chance.</p></li>
+        <li><h3>Compter les frais, toujours</h3><p>Spread, commission, glissement, financement, taxes. Aucune décision sur un chiffre brut.</p></li>
+        <li><h3>Punir le nombre d’essais</h3><p>Sur cinquante variantes, la meilleure a l’air bonne par hasard. Le Deflated Sharpe Ratio retire cette part de chance.</p></li>
+        <li><h3>Chercher la faille</h3><p>Inverser le signal, retirer le marché qui porte tout, décaler l’entrée d’un jour. Un vrai effet survit, un artefact s’effondre.</p></li>
+        <li><h3>Tuer franchement</h3><p>Une espérance négative ne se sauve par aucun dimensionnement. On documente, on gèle, on passe à la suivante.</p></li>
+      </ol>
+    </section>
+
+    <section id="fonte" aria-labelledby="h-fonte">
+      <div class="head">
+        <h2 id="h-fonte">Le t qui fond</h2>
+        <p>Le t-stat mesure combien un gain moyen se distingue du hasard ; au-dessus de 2, on commence à y croire. Voici six cas où un premier t prometteur a fondu dès qu’on l’a rendu honnête : vrais coûts, vraie exécution, vraies erreurs-types.</p>
+      </div>
+      <figure class="figure">
+        <div class="legend"><span><i class="dot dot-before"></i>Premier calcul</span><span><i class="dot dot-after"></i>Après correction</span></div>
+        <div class="chart" id="chart"><div class="tip" id="tip" role="status"></div></div>
+        <details>
+          <summary>Voir les chiffres en tableau</summary>
+          <div class="tbl"><table id="tbl"><thead><tr><th>Étude</th><th>Premier calcul</th><th class="n">t</th><th>Après correction</th><th class="n">t</th></tr></thead><tbody></tbody></table></div>
+        </details>
+      </figure>
+      <p class="note">Hors graphique, le cas extrême : le carry crypto (#6) affichait un t de 27,6 en données quotidiennes. Les gains d’un jour ressemblant à ceux de la veille, ce chiffre était gonflé ; en mois indépendants, il tombe à 6,88. Toujours solide, mais quatre fois moins.</p>
+    </section>
+
+    <section id="causes" aria-labelledby="h-causes">
+      <div class="head">
+        <h2 id="h-causes">Cinq causes de décès</h2>
+        <p>Classées, les morts se rangent en cinq mécanismes, qui disent tous la même chose : là où l’information et le prix sont publics, un trader seul, sans vitesse, sans infrastructure et sans gros capital, n’a pas d’avantage à récolter. Choisissez une cause pour filtrer le registre.</p>
+      </div>
+      <div class="causes" id="causeList"></div>
+      <p class="causes-foot" id="causeFoot"></p>
+    </section>
+
+    <section id="registre" aria-labelledby="h-reg">
+      <div class="head">
+        <h2 id="h-reg">Le registre</h2>
+        <p>Une étiquette par thèse, rangées par phase du programme. Le tampon donne le verdict, la mesure celle qui a tranché. Ouvrez une étiquette pour lire le rapport complet. Quelques numéros manquent : sous-études fusionnées, ou jamais lancées comme le #38.</p>
+      </div>
+      <div class="filters" role="search">
+        <div class="chips" id="vchips" aria-label="Filtrer par verdict"></div>
+        <label for="q" style="position:absolute;left:-9999px">Chercher une thèse</label>
+        <input id="q" class="search" type="search" placeholder="Chercher : bitcoin, Fed, dividende…" autocomplete="off">
+        <span class="count" id="count" aria-live="polite"></span>
+      </div>
+      <div id="reg"></div>
+    </section>
+
+    <section id="survivant" aria-labelledby="h-surv">
+      <div class="head">
+        <h2 id="h-surv">Le seul sorti vivant</h2>
+        <p>Ce n’est pas un edge mais un portefeuille. Les primes de risque classiques (actions, obligations, suivi de tendance) sont réelles, simplement trop minces pour être « battues ». La conclusion honnête : les porter longtemps plutôt que les trader. Le suivi de tendance, tué comme stratégie autonome (#1), revient ici en assurance-crise.</p>
+      </div>
+      <div class="surv">
+        <div>
+          <div class="alloc" role="img" aria-label="Répartition : 80 % WTEF, 20 % DBMFE"><div class="a">80 % WTEF</div><div class="b">20 %</div></div>
+          <dl class="kv">
+            <dt>WTEF</dt><dd>WisdomTree US Efficient Core : 90 % actions US et 60 % contrats sur Treasuries, soit un 60/40 levé 1,5 fois à l’intérieur du fonds.</dd>
+            <dt>DBMFE</dt><dd>iMGP DBi Managed Futures, qui réplique le suivi de tendance des CTA.</dd>
+            <dt>Au total</dt><dd>1,2 fois un 60/40, plus une poche de tendance. Le levier reste dans les fonds : pas d’appel de marge.</dd>
+          </dl>
+        </div>
+        <div>
+          <dl class="kv" style="margin-top:0">
+            <dt>Rendement</dt><dd>+10,0 % par an net en backtest 2006-2026, avec le levier de 1,5 (#34).</dd>
+            <dt>Pire perte</dt><dd>−29 % dans cette fenêtre, mais à planifier à −40 %, voire −70 % dans un scénario type 1929 (#37).</dd>
+            <dt>Trou connu</dt><dd>La stagflation : de 1966 à 1981, le portefeuille serait resté 16 ans sous le cash. L’or ne comble pas ce trou de façon répétable (#41) ; seul remède équivalent, réduire le levier.</dd>
+            <dt>Tendance</dt><dd>Réelle sur 41 ans (t = 5,4), mais en déclin : Sharpe proche de zéro depuis 2016.</dd>
+          </dl>
+          <p class="fine">Ce site documente un travail de recherche personnel. Ce n’est pas un conseil en investissement : les chiffres sont des backtests, pas des promesses.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="glossaire" aria-labelledby="h-gloss">
+      <div class="head">
+        <h2 id="h-gloss">Glossaire</h2>
+        <p>Les mots qui reviennent dans les rapports, dans l’ordre où on les rencontre.</p>
+      </div>
+      <dl class="gloss" id="gloss"></dl>
+    </section>
+  </main>
 
   <footer>
-    <span>Sources : <span class="mono">code python/RESEARCH-ROADMAP.md</span>, <span class="mono">FINDINGS.md</span> et le FINDINGS de chaque dossier.</span>
-    <span>Dernière étude : #41, 2026-09-12</span>
+    <span>Sources : code python/RESEARCH-ROADMAP.md, FINDINGS.md et le rapport de chaque dossier.</span>
+    <span>Dernière étude : #41, le 12 septembre 2026</span>
   </footer>
 </div>
 
+<dialog id="report" aria-labelledby="rep-title">
+  <div class="rep">
+    <div class="rep-top">
+      <div>
+        <div class="rep-kind">Rapport d’autopsie, étiquette <b id="rep-no"></b></div>
+        <h2 id="rep-title"></h2>
+        <p class="hook" id="rep-hook"></p>
+      </div>
+      <span class="stamp" id="rep-stamp"></span>
+    </div>
+    <div class="rep-meta">
+      <div><span>Cause du décès</span><span class="hw" id="rep-cause"></span></div>
+      <div><span>Mesure qui a tranché</span><span id="rep-key"></span></div>
+      <div><span>Phase</span><span id="rep-fam"></span></div>
+    </div>
+    <div class="rep-body">
+      <div><h4>L’idée</h4><p id="rep-idea"></p></div>
+      <div><h4>Pourquoi y croire</h4><p id="rep-why"></p></div>
+      <div><h4>Ce qu’on a trouvé</h4><p id="rep-found"></p></div>
+      <div><h4 id="rep-kill-h">Ce qui l’a tuée</h4><p id="rep-kill"></p></div>
+      <div class="rep-lesson"><h4>À retenir</h4><p id="rep-lesson"></p></div>
+    </div>
+    <p class="rep-src" id="rep-src"></p>
+    <div class="rep-nav">
+      <div style="display:flex;gap:8px"><button type="button" id="prev">Étiquette précédente</button><button type="button" id="next">Étiquette suivante</button></div>
+      <button type="button" class="close" id="close">Fermer le rapport</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="data.js"></script>
 <script>
-const MODES = {
-  1:{name:"Pas de signal", desc:"Même avant les frais, il n’y a rien : le gain moyen est indiscernable de zéro, ou l’information était déjà dans le prix."},
-  2:{name:"Mangé par la friction", desc:"L’effet existe, mais le capter coûte autant qu’il rapporte : frais, spread, taxe, rebalancement."},
-  3:{name:"Mangé par la queue", desc:"La prime rémunère un vrai risque de catastrophe, ou n’a existé que pendant une seule période."},
-  4:{name:"Capté par un plus rapide", desc:"L’avantage existe bel et bien, mais il revient au professionnel équipé, pas au particulier."},
-  5:{name:"Interdit par la règle", desc:"Le gain est réel, mais le contrat, la plateforme ou le régulateur ferment la porte."}
-};
-const VERD = {kill:"KILL", down:"Rétrogradé", unt:"Non testable", keep:"Gardé"};
-const FAM = [
-  ["avant","Avant le programme","Les deux bots de départ essayaient de prédire la direction du prix, dans les marchés les plus disputés du monde. C’est leur échec qui a lancé le programme."],
-  ["v1","V1 · L’edge structurel","Changement de cap : ne plus deviner le prix, mais exploiter ce qu’un fonds ne peut pas faire. Petite taille, patience, et flux forcés des autres."],
-  ["v2","V2 · Assurance, calendrier, carry","Ni prédiction ni arbitrage : se faire payer pour porter un risque que d’autres veulent fuir, ou pour être là au bon moment du calendrier."],
-  ["etang","Changer l’étang","Si les fonds sont trop forts, aller là où la contrepartie n’optimise pas : épargnants, parieurs, foule. Bilan : 0 sur 3."],
-  ["v3","V3 · La prime de saleté","Ce que les institutions ne peuvent pas ou ne veulent pas faire : DeFi complexe, liquidité on-chain, travail manuel."],
-  ["prop","Prop firms et gains gratuits","Changement d’objectif : réussir un challenge de prop firm. Un autre jeu, où il faut franchir une barrière plutôt que récolter un avantage."],
-  ["v4","V4 · Anomalies publiées, flux forcés, fiscalité","Les anomalies les plus citées de la littérature, les ventes forcées par mandat, et l’avantage fiscal propre au PEA."],
-  ["construction","Construire avec ce qui reste","Pas des chasses : l’assemblage des primes réelles en portefeuille, puis ses tests de résistance."]
-];
+const CAUSE_SPECIAL={"#24":"Une loterie","#36":"Un artefact de fenêtre","—":"Déjà vendu ailleurs"};
+function cause(f){
+  if(CAUSE_SPECIAL[f.id]) return CAUSE_SPECIAL[f.id];
+  if(f.m) return MODES[f.m].name;
+  return {keep:"Toujours en vie",unt:"Autopsie impossible",down:"Trop faible",kill:"Trop faible"}[f.v];
+}
+const VLABEL={kill:"KILL",down:"Rétrogradé",unt:"Non testable",keep:"Gardé"};
+const famName=k=>FAM.find(x=>x[0]===k)[1];
+const esc=s=>String(s);
 
-const F = [
-{id:"OF",fam:"avant",t:"Lire le carnet d’ordres du bitcoin",hook:"Repérer les déséquilibres acheteurs/vendeurs sur des niveaux de prix clés.",v:"kill",m:1,key:"brut +0,021R, t = 0,83",
- idea:"Dans le flux de transactions du bitcoin, minute par minute, chercher des « empilements » d’ordres agressifs sur des niveaux où beaucoup de volume s’est échangé, puis parier sur un rebond ou une continuation.",
- why:"Toute une école de traders « orderflow » affirme que ces zones trahissent les gros acteurs.",
- found:"Six mois de trades Binance (1,5 Go), treize leviers testés : sortie, cible, sens, horizon, filtres de tendance, de session, de volatilité. Parier sur le rebond ou sur la continuation donne le même résultat.",
- kill:"Le gain brut plafonne à +0,021 fois le risque par trade (t = 0,83, du bruit), alors que les frais en coûtent 0,16. Corrigé du nombre d’essais, le DSR tombe à 0,008.",
- lesson:"Quand parier dans un sens ou dans l’autre donne le même résultat, le signal ne contient aucune information.",src:"orderflow-bot/docs/FINDINGS.md"},
-{id:"MC",fam:"avant",t:"Sniper les meme-coins pump.fun",hook:"Acheter un token à la seconde de son lancement, revendre sur un ×2.",v:"kill",m:1,key:"t = −35 · −28 % par trade",
- idea:"Acheter les tokens au lancement sur pump.fun (Solana), couper à −40 %, encaisser à +100 % ou +300 %.",
- why:"Certains tokens font ×100. Si on en attrape assez, les gagnants paient les perdants.",
- found:"1 219 lancements réels tirés de Dune, arnaques incluses, en pleine euphorie (janvier 2025) et en plein krach (août 2024). 6,2 % de trades gagnants.",
- kill:"Il faut environ +40 % de hausse juste pour payer le glissement et les frais. 94 % des tokens ne bougent pas autant en 15 minutes. Les deux périodes perdent, et la version sans stop ni cible perd autant.",
- lesson:"Les histoires de ×100 sont du biais du survivant. La moyenne, elle, est une saignée.",src:"bots/meme-coin-solana/FINDINGS.md"},
-
-{id:"#1",fam:"v1",t:"Suivre la tendance",hook:"Acheter ce qui monte depuis un an, vendre ce qui baisse, sur tous les marchés.",v:"down",vl:"KILL seul",m:0,key:"Sharpe 0,42 · t = 1,87",
- idea:"Sur neuf ETF (actions, obligations, or, matières premières…), être acheteur de ce qui a monté sur 12 mois et vendeur de ce qui a baissé, en ajustant la taille à la volatilité.",
- why:"C’est une prime de risque documentée sur un siècle (Moskowitz, Ooi et Pedersen, 2012). Elle paie surtout pendant les crises, quand tout le reste perd.",
- found:"La prime est réelle : 4 régimes sur 5 positifs, +21 % en 2008, +7 % en 2022, DSR 0,988. Mais un premier calcul affichait t = 2,05 : il empilait un levier de 6,3×. Ramené à un levier honnête, t = 1,87.",
- kill:"t sous 2, et un Sharpe de 0,42 contre 0,93 pour un simple 60/40 passif. Sur 32 marchés à terme, c’est pire (t = 1,22).",
- lesson:"Réel ne veut pas dire suffisant. Rejugé en 2026 sur 41 ans (#37), t = 5,4 : l’échec venait d’un manque de données. Mais la prime décline. Seul survivant, recyclé en assurance-crise.",src:"factor-harvest/docs/FINDINGS.md"},
-{id:"#2",fam:"v1",t:"Vendre avant les déblocages de tokens",hook:"Quand les fondateurs récupèrent leurs tokens, ils vendent : parier contre.",v:"kill",m:1,key:"après la date : −0,22 %, t = −0,16",
- idea:"Les projets crypto débloquent des tokens pour leurs fondateurs et investisseurs à des dates publiées. Se positionner à la baisse juste avant.",
- why:"Flux forcé : une offre nouvelle arrive à date connue, et ceux qui la reçoivent vendent souvent.",
- found:"10 642 déblocages exploitables sur 78 tokens (DefiLlama + Binance, données gratuites).",
- kill:"Tout le mouvement a lieu avant la date. Après, rien : −0,22 % par token, t = −0,16. Une date publique est déjà dans le prix.",
- lesson:"Un calendrier que tout le monde lit n’est pas une arme.",src:"forced-flows/docs/FINDINGS-unlocks.md"},
-{id:"#3",fam:"v1",t:"Arbitrer les petites cryptos entre plateformes",hook:"Même token, prix différent sur Binance, MEXC et Gate.",v:"kill",m:2,key:"1 253 $ de profondeur au total",
- idea:"Acheter là où c’est moins cher, vendre là où c’est plus cher, sur des paires trop petites pour intéresser un fonds.",
- why:"La petite taille est le seul monopole d’un trader solo : un fonds ne peut pas entrer sans bouger le prix.",
- found:"Les écarts existent et persistent : 79 paires rentables sur au moins 60 % des relevés, t = +7,07. Ce n’est pas du bruit.",
- kill:"Derrière le meilleur prix, le carnet est vide : 1 253 $ au total sur les meilleures paires, et 0 à 1 $ derrière les plus gros écarts (MEMEFI +2,52 %).",
- lesson:"Un écart de prix sans rien derrière est une vitrine.",src:"capacity-niche/docs/FINDINGS-niche.md"},
-{id:"#18",fam:"v1",t:"Suivre la couverture des teneurs de marché",hook:"Les market makers d’options doivent se couvrir, et ça bouge le marché.",v:"kill",m:1,key:"prédit la vol (t ≈ −16), pas le sens",
- idea:"Quand le « gamma » des teneurs de marché d’options est positif, leur couverture amortit les mouvements ; négatif, elle les amplifie. Utiliser cette donnée (GEX) pour trader l’indice.",
- why:"Flux forcé et insensible au prix : les dealers doivent se couvrir, quoi qu’il arrive.",
- found:"Le GEX prédit vraiment la volatilité du lendemain (corrélation −0,26, t ≈ −16), aussi bien avant qu’après 2021.",
- kill:"Il ne dit rien du sens : la stratégie de bascule perd 6,66 %/an. Transformer une prévision de volatilité en argent revient à vendre des options, donc à retomber sur la thèse #4.",
- lesson:"Prédire l’ampleur des mouvements n’est pas prédire leur sens.",src:"gex-gamma/docs/FINDINGS.md"},
-
-{id:"#4",fam:"v2",t:"Vendre de l’assurance sur la volatilité",hook:"Le VIX surestime la volatilité à venir : jouer l’assureur.",v:"down",vl:"Faux GO",m:3,key:"Sharpe 1,86… puis −95 %",
- idea:"La volatilité que le marché anticipe (VIX) est en moyenne plus haute que celle qui se réalise. La vendre revient à encaisser une prime, comme un assureur.",
- why:"La prime est documentée : t = 4,03 sur 36 ans de données, DSR 0,977.",
- found:"Le premier test disait GO : Sharpe 1,86, t = 11.",
- kill:"La version achetable (l’ETF SVXY) a perdu 95 %, dont −83 % en une seule journée, le 5 février 2018. Le Sharpe et le t ne voient pas ce risque de queue.",
- lesson:"Pour un vendeur d’assurance, la catastrophe fait partie du produit. Premier faux GO attrapé par le programme.",src:"vol-risk-premium/docs/FINDINGS.md"},
-{id:"#5a",fam:"v2",t:"Ne détenir les actions que la nuit",hook:"Presque toute la hausse boursière se fait entre la clôture et l’ouverture.",v:"down",m:2,key:"+10-14 %/an brut → −2,5 % net",
- idea:"Acheter l’indice au dernier prix du soir, le revendre à l’ouverture le lendemain matin, tous les jours.",
- why:"L’effet est connu : sur les actions US, la séance de jour rapporte presque rien, la nuit presque tout.",
- found:"Effet réel et robuste : +10 à 14 %/an, t > 5 sur SPY, QQQ et IWM.",
- kill:"252 allers-retours par an à 5 points de base chacun font 12,6 %/an de frais. Net : −2,5 %. Il faudrait des coûts de 1,3 pb pour que ça marche.",
- lesson:"Un effet réel qui oblige à trader tous les jours paie d’abord le courtier.",src:"calendar-premium/docs/FINDINGS-overnight.md"},
-{id:"#5b",fam:"v2",t:"Acheter la veille des annonces de la Fed",hook:"Les actions montaient avant chaque décision de la banque centrale.",v:"kill",m:1,key:"+31 pb → +2,3 pb par annonce",
- idea:"Être acheteur d’actions dans les 24 heures qui précèdent chaque décision de politique monétaire de la Fed.",
- why:"L’anomalie a été publiée (Lucca et Moench) et semblait solide : +31 pb par annonce de 1994 à 2014, t = 3,34.",
- found:"262 annonces assemblées, les réunions d’urgence exclues.",
- kill:"Depuis la publication (2015) : +2,3 pb, t = 0,20. L’effet a fondu de 93 %. Ce n’est pas un manque de données.",
- lesson:"Publier une anomalie la fait disparaître, et on peut le voir en direct.",src:"calendar-premium/docs/FINDINGS-fomc.md"},
-{id:"#6",fam:"v2",t:"Encaisser le financement crypto (cash-and-carry)",hook:"Acheter le bitcoin, vendre le même en contrat : prix neutralisé, loyer encaissé.",v:"kill",vl:"GO → KILL",m:3,key:"+10,5 %/an → +3,8 % récent",
- idea:"Détenir du bitcoin au comptant et vendre la même quantité en contrat perpétuel. Le prix s’annule, et on encaisse le « funding » que paient les acheteurs à levier.",
- why:"C’est un transfert de risque structurel, neutre au marché (corrélation au bitcoin +0,09). Pas une prédiction.",
- found:"Seul survivant du premier tri : +10,5 %/an net, positif dans chaque régime, même le marché baissier de 2022. Rejoué avec de vrais prix et de vrais frais, le chiffre tient.",
- kill:"Sur les 24 derniers mois : +3,8 %/an, sous la barre des 8 %. Et si l’exchange a plus de 3,6 % de chances par an de faire faillite (FTX), le gain est effacé.",
- lesson:"Structurel ne veut pas dire gratuit : la prime est arbitrée jusqu’à son coût, ici le risque de faillite de la plateforme.",src:"carry/docs/FINDINGS-phase2.md"},
-{id:"#7",fam:"v2",t:"Parier sur le retour du ratio BTC/ETH",hook:"Si deux actifs vont ensemble, leur écart doit se refermer.",v:"kill",m:1,key:"ADF p = 0,38 puis 0,77",
- idea:"Acheter le bitcoin quand il est « trop bas » par rapport à l’ether, et l’inverse, en pariant que leur ratio revient à sa moyenne.",
- why:"Classique du trading de paires : deux actifs liés finissent par se rapprocher.",
- found:"Le ratio ne revient à aucune moyenne (test ADF), ni avant 2022 ni après, même en laissant le ratio de couverture libre. Temps de retour estimé : 305 à 572 jours.",
- kill:"Pas de niveau d’équilibre, donc rien vers quoi revenir. Tué en 30 minutes, sans backtest.",
- lesson:"Tester la condition nécessaire avant de construire la stratégie fait gagner des semaines.",src:"relative-value/docs/FINDINGS-rv.md"},
-{id:"#9",fam:"v2",t:"Attendre que le stETH revienne à 1 ETH",hook:"Un jeton censé valoir 1 ETH qui se vend moins cher.",v:"kill",m:3,key:"t = 3,14 sur un seul épisode",
- idea:"Le stETH (ether « staké ») est remboursable 1 pour 1 en ETH. Quand il se vend sous 1 ETH, l’acheter et attendre.",
- why:"La convergence est garantie par le protocole lui-même.",
- found:"+76,8 % net, t = 3,14. Sur le papier, un succès.",
- kill:"Les 26 épisodes de décote datent tous d’avant avril 2023, quand les retraits n’étaient pas encore ouverts. Depuis, la décote ne dépasse jamais 0,40 %.",
- lesson:"Le mécanisme qui garantit la convergence la détruit dès qu’il fonctionne.",src:"lst-convergence/docs/FINDINGS-lst.md"},
-{id:"#11",fam:"v2",t:"Classer les cryptos par financement",hook:"Acheter les contrats qui paient peu, vendre ceux qui paient beaucoup.",v:"kill",m:2,key:"+52 %/an brut → −20,6 % net",
- idea:"Parmi 18 contrats perpétuels, être acheteur de ceux au funding le plus bas et vendeur de ceux au funding le plus haut, rebalancé toutes les 8 heures.",
- why:"Extension naturelle du #6, sans dépendre d’un seul actif.",
- found:"Le brut est réel et fort : +51,9 %/an, t = 3,43.",
- kill:"Rebalancer toutes les 8 heures coûte environ 72 %/an de frais. Net : −20,6 %. Et la moitié du gain vient de deux tokens (ETC, BNB).",
- lesson:"Un gain brut réel, exactement annulé par le coût de le capter.",src:"funding-xs/docs/FINDINGS-xs.md"},
-{id:"#11 v2",fam:"v2",t:"Le même, lissé sur 7 jours",hook:"Rebalancer moins souvent pour faire tomber le mur des frais.",v:"kill",m:5,key:"frais 72 % → 3,25 %/an",
- idea:"Reprendre le #11 avec un signal lissé sur 7 jours, pour trader beaucoup moins.",
- why:"Si les frais étaient le seul problème, les réduire devait suffire.",
- found:"Le mur des frais disparaît (3,25 %/an) et le brut reste à +38,8 %/an. Mais ce gain est surtout une assurance contre les krachs crypto, portée par quelques épisodes.",
- kill:"Concentré (t = 1,58 sans les deux meilleurs), en déclin (−4,3 % sur 12 mois), et les contrats perpétuels ne sont pas accessibles proprement à un résident français.",
- lesson:"Réduire la friction révèle parfois ce qu’elle cachait : ici, un risque, pas un avantage.",src:"funding-xs/docs/FINDINGS-xs-v2.md"},
-{id:"#12",fam:"v2",t:"Vendre la volatilité crypto, avec filet",hook:"La prime de vol crypto est trois à cinq fois celle des actions.",v:"kill",m:3,key:"+25 pts (2021) → +4,5 pts (2024+)",
- idea:"Reprendre le #4 là où la prime est la plus grosse, en achetant une protection contre le krach pour limiter la perte maximale.",
- why:"Avec une prime assez grasse, on peut payer le filet et garder un gain.",
- found:"La prime existe (DSR 0,998), mais elle baisse d’année en année, de +25 points pendant le krach de 2021 à +4,5 depuis 2024.",
- kill:"En marché mûr (2023+), +5,23 points sur BTC (t = 1,88, non significatif), +1,35 sur ETH : le niveau des actions. Le filet n’est même pas payable.",
- lesson:"Sur un marché jeune, séparer ses débuts de sa maturité. La prime qui fond, c’est l’arbitrage qui arrive.",src:"vol-risk-premium/docs/FINDINGS-crypto.md"},
-{id:"#13",fam:"v2",t:"Momentum entre cryptos",hook:"Acheter les cryptos les plus fortes du mois, vendre les plus faibles.",v:"kill",m:1,key:"t = 0,84 · 2023+ : −19,4 %/an",
- idea:"Sur 75 contrats perpétuels, être acheteur du tiers le plus performant sur 4 semaines et vendeur du tiers le moins performant, sans exposition au marché.",
- why:"Le momentum est l’une des anomalies les plus robustes en actions. La neutralité au marché retire l’effet de mode.",
- found:"+14 %/an brut, mais t = 0,84. Tout le gain vient de 2021.",
- kill:"Depuis 2023, net −19,4 %/an. Construction saine (vraiment neutre au bitcoin), donc pas un bug : il n’y a rien.",
- lesson:"En crypto, tester la période mûre (2023+) est devenu obligatoire : beaucoup d’« edges » ne sont que la jeunesse du marché.",src:"xs-momentum/docs/FINDINGS.md"},
-{id:"#17",fam:"v2",t:"Le carry des devises",hook:"Emprunter en yen, placer en dollar australien, encaisser l’écart de taux.",v:"kill",m:1,key:"Sharpe 0,21 · t = 0,99",
- idea:"Parmi six devises majeures, être acheteur des trois à taux élevé et vendeur des trois à taux bas.",
- why:"Deuxième prime macro classique après la tendance, et totalement décorrélée d’elle (+0,01).",
- found:"+1,35 %/an net, DSR 0,754.",
- kill:"La décennie des taux zéro (2009-2021) a supprimé l’écart de taux à encaisser. Découper l’échantillon pour garder les bonnes années serait tricher.",
- lesson:"Être décorrélé ne sert à rien si la prime elle-même est absente.",src:"fx-carry/docs/FINDINGS.md"},
-
-{id:"#8",fam:"etang",t:"Fonds fermés décotés",hook:"Des fonds cotés sous la valeur de ce qu’ils contiennent.",v:"kill",vl:"Faux GO",m:2,key:"t = 7,13 → −0,64",
- idea:"Un fonds fermé (CEF) cote souvent sous la valeur de ses actifs. Acheter les plus décotés, vendre les plus chers, attendre que l’écart se referme.",
- why:"Aucun arbitragiste ne peut corriger l’écart (pas de création ni de rachat de parts), et l’énigme dure depuis trente ans.",
- found:"Premier GO provisoire du programme : +8,41 %/an, t = 7,13, DSR 1,000, positif dans les trois régimes.",
- kill:"Entrer un mois plus tard inverse le résultat (−4,01 %). La « convergence » était un rebond entre prix acheteur et vendeur : le backtest achetait à un prix qu’on n’aurait jamais obtenu. Version réalisable : −0,64 %.",
- lesson:"Le faux positif le plus convaincant du programme. Un t de 7 ne vaut rien sans test de la friction réelle.",src:"cef-discount/docs/FINDINGS-cef.md"},
-{id:"#10",fam:"etang",t:"Parier contre les outsiders sur Polymarket",hook:"Les parieurs surpaient les longshots : les leur vendre.",v:"kill",m:1,key:"biais inversé, t = +2,26",
- idea:"Dans les paris, les issues improbables sont souvent trop chères (biais favori-outsider). Les vendre systématiquement.",
- why:"Polymarket n’a pas de marge de bookmaker, et on imaginait une foule de parieurs du dimanche.",
- found:"3 082 marchés résolus. Le biais est inversé : les issues sous 10 % gagnent plus souvent que leur prix ne l’indique.",
- kill:"Vendre les outsiders aurait perdu. L’effet inverse, trouvé après coup, est mangé par le spread.",
- lesson:"Une contrepartie qu’on croit naïve ne l’est pas forcément : ici, crypto-natifs et arbitragistes.",src:"prediction-markets/docs/FINDINGS-pm.md"},
-{id:"#16",fam:"etang",t:"Battre les bookmakers récréatifs",hook:"Les books grand public cotent pour plaire, pas pour être justes.",v:"kill",m:4,key:"+2,37 % chez Bet365, −3,18 % chez Pinnacle",
- idea:"Exploiter le biais favori-outsider des bookmakers grand public sur le football européen.",
- why:"Premier marché du programme où la contrepartie est prouvée amatrice : de l’argent récréatif.",
- found:"21 727 matchs, 5 ligues, 2012-2024. Le biais est réel : les outsiders gagnent moins que leur probabilité (t jusqu’à −3,3).",
- kill:"Aux cotes de clôture de Pinnacle (le book « sharp »), parier les favoris rend −1,09 %. Le seul gain (+2,37 %) se fait chez le book grand public… qui limite les gagnants. Les mêmes paris chez Pinnacle perdent 3,18 %.",
- lesson:"L’avantage n’existe qu’au guichet qui vous ferme la porte.",src:"sportsbook-bias/docs/FINDINGS.md"},
-
-{id:"#14",fam:"v3",t:"Farmer les airdrops",hook:"Utiliser un protocole avant son token pour être récompensé.",v:"kill",m:3,key:"8,4 €/h au mieux",
- idea:"Interagir avec des protocoles crypto avant leur lancement de token, pour recevoir une distribution gratuite (airdrop).",
- why:"Les institutions sont absentes par construction : un protocole récompense des utilisateurs, pas des fonds.",
- found:"15 grands airdrops 2020-2025, en supposant qu’on se qualifie à tous : 8,4 €/h, sous le seuil fixé de 15 €/h.",
- kill:"53 % du gain vient de deux jackpots (dYdX, Hyperliquid). Scénario réaliste : −1 050 $. Et la médiane des tokens a perdu 93 % depuis sa distribution.",
- lesson:"L’absence des gros est compensée par la défense anti-multi-comptes du protocole. Le reste est une loterie.",src:"airdrop-ev/docs/FINDINGS.md"},
-{id:"#15",fam:"v3",t:"Fournir de la liquidité sur Uniswap",hook:"Tenir le guichet d’échange et encaisser les frais.",v:"down",m:4,key:"frais > pertes… au niveau du pool",
- idea:"Déposer des jetons dans un pool Uniswap V3 concentré sur une fourchette de prix, et toucher les frais des échanges.",
- why:"L’inverse de l’arbitrage : on encaisse au lieu de payer. Trop complexe pour le grand public, trop petit pour un desk.",
- found:"Au niveau du pool entier, les frais dépassent les pertes infligées par les arbitragistes (la « LVR »). Premier test d’edge qui passe.",
- kill:"Ce surplus est récolté par les fournisseurs actifs et ceux qui déposent juste avant un gros échange. Un particulier passif sur Ethereum perd tout en frais de gas.",
- lesson:"L’avantage existe ; la question est de savoir qui le capte.",src:"univ3-lvr/docs/FINDINGS.md"},
-{id:"#23",fam:"v3",t:"Les rendements complexes de Pendle",hook:"Des jetons DeFi qui rapportent plus qu’un prêt classique.",v:"kill",m:3,key:"prime 1,1-2,1 % < assurance 3,4 %",
- idea:"Acheter des « Principal Tokens » Pendle adossés à des stablecoins, qui rapportent plus qu’un dépôt USDC sur Aave.",
- why:"Les fonds réglementés ne peuvent pas porter ce risque de smart contract : la prime devrait rester grasse.",
- found:"La prime brute est réelle, même en marché mûr : +3,7 % en médiane.",
- kill:"Là où le risque est assurable (Nexus Mutual), l’assurance coûte plus que la prime. Là où la prime est grasse (+4 à 6 %), personne n’accepte d’assurer.",
- lesson:"Le prix d’un risque se lit sur le marché de l’assurance. Ici, il est juste.",src:"pendle/docs/FINDINGS.md"},
-{id:"#29",fam:"v3",t:"Uniswap, mais sur un réseau bon marché",hook:"Refaire le #15 là où le gas coûte mille fois moins.",v:"kill",vl:"GO → KILL",m:1,key:"frais / pertes = 0,90-0,94",
- idea:"Fournir de la liquidité sur Base et Arbitrum, en couvrant l’exposition au prix de l’ETH.",
- why:"Si le gas était le seul obstacle au #15, le supprimer devait libérer l’avantage.",
- found:"Les premières phases disaient GO : environ 30 %/an estimés, concurrence des gros déposants faible (moins de 4 %).",
- kill:"Rejouée position par position sur le vrai parcours de l’ETH en 2024, la liquidité touche moins de frais qu’elle ne perd, à toutes les largeurs de fourchette. Le seul net positif restant, c’est du funding, déjà tué au #6.",
- lesson:"Une mesure au niveau du pool entier surestimait. Il faut mesurer la forme exacte qu’on déploierait.",src:"univ3-l2/docs/FINDINGS-phase2.5.md"},
-{id:"—",fam:"v3",t:"Données « sales » et alternatives",hook:"Commits GitHub, embauches locales, dossiers judiciaires.",v:"unt",vl:"Rejeté au filtre",m:0,key:"écarté sans backtest",
- idea:"Exploiter des données difficiles à nettoyer, que les fonds refuseraient de maintenir à grande échelle.",
- why:"Un monopole d’ingénierie bricolée : l’information est publique mais illisible pour les gros.",
- found:"Passée au premier filtre (« l’information publique est-elle déjà mangée ? ») : oui, entièrement.",
- kill:"Les sources GitHub et LinkedIn sont déjà vendues sous forme de flux par des fournisseurs d’alt-data. Le monopole supposé n’existe pas.",
- lesson:"Avant de construire un pipeline, vérifier que quelqu’un ne le vend pas déjà.",src:"factor-harvest/EDGE-IDEAS-LOG.md"},
-
-{id:"#24",fam:"prop",t:"Réussir un challenge de prop firm",hook:"Payer un droit d’entrée, atteindre un objectif, gérer un compte financé.",v:"kill",m:0,key:"médiane = perte du droit d’entrée",
- idea:"Passer l’évaluation d’une prop firm (FTMO, Topstep…) : atteindre +10 % avant de perdre −10 %, puis trader le capital de la firme contre un partage des gains.",
- why:"Frais remboursés au premier gain, partage 80-90 % : un profil asymétrique qui pourrait valoir le coup même sans grand avantage.",
- found:"Simulation Monte Carlo de tout le parcours, avec les vraies règles. Sans avantage, on perd tout le droit d’entrée environ 90 % du temps. La moyenne positive (+416 $ chez FTMO) vient de 10 % de chanceux.",
- kill:"Même avec le suivi de tendance, la probabilité de finir gagnant est de 23 %. Chez Topstep (perte maximale qui suit le pic), l’espérance tombe à environ 0 $.",
- lesson:"Le challenge ne crée pas d’avantage : il transforme l’absence d’avantage en loterie à marge maison.",src:"prop-firm-gate/docs/FINDINGS.md"},
-{id:"#26",fam:"prop",t:"Enchaîner les comptes financés",hook:"En jeu répété, c’est l’espérance qui compte, pas la médiane.",v:"kill",vl:"GO → KILL",m:5,key:"stratégie +EV interdite noir sur blanc",
- idea:"Répéter l’opération : sur un compte financé à perte maximale fixe, extraire le coussin de gains, puis recommencer avec un nouveau compte.",
- why:"La simulation disait GO : +668 $ par achat, robuste aux frais, au délai de paiement et aux annulations. Premier GO du programme.",
- found:"Restait une inconnue : la firme peut-elle annuler les gains ? Plutôt que de le tester en réel, lecture des conditions générales.",
- kill:"FTMO interdit nommément les « one-sided bets » et l’« account rolling ». La version autorisée est celle du #24, négative. Aucune stratégie n’est à la fois permise et gagnante.",
- lesson:"Épuiser la source primaire avant de dire « ça ne se tranche qu’en réel ».",src:"prop-firm-gate/docs/FINDINGS-repeated.md"},
-{id:"#33",fam:"prop",t:"Tournois et concours gratuits",hook:"Des prix réels sans mise de départ.",v:"kill",m:5,key:"fermé sur les trois branches",
- idea:"Participer à des tournois de trading gratuits qui versent de vrais gains.",
- why:"Pas de droit d’entrée : chaque gain serait du profit pur.",
- found:"Les gains en cash sont des montants marketing, le reste est du crédit ou des tickets.",
- kill:"Les gros concours sont fermés aux résidents français (règles ESMA). Côté crypto, le prix est lui-même un mini-compte de prop firm, qui ramène au #24.",
- lesson:"L’objectif « toucher un payout » est fermé sur ses trois branches (#24, #26, #33).",src:"prop-firm-gate/docs/FINDINGS-freeroll.md"},
-
-{id:"#25",fam:"v4",t:"Contrer les ETF à levier en fin de séance",hook:"Les ETF ×3 doivent acheter quand ça monte, vendre quand ça baisse.",v:"kill",m:2,key:"pari de nuit : t = −3,2",
- idea:"Un ETF à levier doit rééquilibrer en clôture, dans le sens du mouvement du jour. Parier sur un retour le lendemain.",
- why:"Flux mécanique, calculable à l’avance, insensible au prix.",
- found:"Le flux est réel : des centaines de milliards d’exposition sur QQQ, SOXX, SPY.",
- kill:"Il ne laisse aucune trace : effet insignifiant (t = −0,6), plus fort là où il y a le moins d’ETF à levier, et le pari de nuit perd (t = −3,2). La liquidité l’absorbe.",
- lesson:"Un flux public et daté, même forcé, n’est pas une arme.",src:"eod-flow/docs/FINDINGS.md"},
-{id:"#27",fam:"v4",t:"Les SPAC sous la valeur de leur trésorerie",hook:"Des coquilles cotées moins que le cash qu’elles détiennent.",v:"kill",m:2,key:"+85 à 145 pb < barre de 200 pb",
- idea:"Acheter un SPAC (société vide cotée) sous la valeur de son compte séquestre. Au pire, on demande le remboursement du cash.",
- why:"La perte est bornée par contrat. Enfin un plancher solide, après le #26.",
- found:"La décote est réelle et robuste (t de +11 à +15), et ce n’est pas un rebond de prix.",
- kill:"Le rendement au-delà des bons du Trésor est de +145 pb/an, et +85 pb si le SPAC prolonge son délai (le cas courant). Sous la barre fixée à 200 pb.",
- lesson:"Honnête, sûr, et trop maigre : un placement monétaire amélioré, pas un avantage.",src:"spac-trust/docs/FINDINGS.md"},
-{id:"#28",fam:"v4",t:"La dérive après les résultats",hook:"Après une bonne surprise, le cours continue de monter des semaines.",v:"kill",m:1,key:"t = +0,01 sur 58 917 publications",
- idea:"Acheter les sociétés qui battent les attentes, vendre celles qui déçoivent, et tenir quelques semaines (PEAD).",
- why:"L’anomalie la plus publiée de la finance académique.",
- found:"58 917 publications de résultats, S&P 500 et 400, 2004-2026.",
- kill:"Écart nul : +0,00 %, t = +0,01. En grandes capitalisations, un calcul naïf donnait t = 2,4 ; avec des erreurs-types par mois, 0,65.",
- lesson:"L’anomalie la plus célèbre est absente de l’univers qu’on peut vraiment trader.",src:"pead/docs/FINDINGS.md"},
-{id:"#30",fam:"v4",t:"Le carry de l’énergie",hook:"Les contrats pétroliers en « backwardation » rapportent en roulant.",v:"down",m:1,key:"apport au portefeuille : +0,04",
- idea:"Être acheteur des contrats énergie dont le prix à terme est sous le prix au comptant, vendeur des autres.",
- why:"Prime de carry classique, et décorrélée des actions comme du trend.",
- found:"La version symétrique (les deux côtés paient) est fausse. Reste un résidu côté acheteur, réel et décorrélé.",
- kill:"DSR sous 0,95, plat de 2009 à 2019, limité à l’énergie. Ajouté au portefeuille : +0,04 de Sharpe, sous la barre.",
- lesson:"Une prime réelle mais étroite reste trop mince pour mériter sa place.",src:"commodity-carry/docs/FINDINGS.md"},
-{id:"#31",fam:"v4",t:"Assurer les ouragans (cat bonds)",hook:"Prêter aux assureurs contre le risque de catastrophe naturelle.",v:"down",m:3,key:"+2,56 %/an < 3 %, asymétrie −2,95",
- idea:"Détenir des obligations catastrophe, qui paient un coupon élevé tant qu’aucun ouragan majeur ne frappe.",
- why:"Le risque climatique n’a presque rien à voir avec la bourse.",
- found:"La meilleure décorrélation de tout le programme (corrélation aux actions +0,10).",
- kill:"+2,56 %/an au-delà du cash (t = 1,51), sous la barre de 3 %. Tout le gain vient du marché tendu d’après 2022. Et la queue est lourde (asymétrie −2,95).",
- lesson:"Décorrélé, mais trop maigre pour payer son risque de catastrophe.",src:"ils-catbond/docs/FINDINGS.md"},
-{id:"#32",fam:"v4",t:"L’arbitrage de fusions",hook:"Acheter la cible d’un rachat sous le prix d’offre.",v:"unt",m:0,key:"0 cible rachetée sur 10 dans les données",
- idea:"Quand une petite société reçoit une offre de rachat en cash, son cours reste un peu sous le prix proposé. Acheter et attendre la clôture du deal.",
- why:"Les petits deals sont trop petits pour les fonds spécialisés.",
- found:"Les sources gratuites (yfinance, Stooq) effacent les sociétés une fois rachetées.",
- kill:"Or c’est justement le cas gagnant : les deals conclus disparaissent, seuls restent les échecs. Le biais va dans un sens précis ; aucun calcul honnête n’est possible.",
- lesson:"Si l’issue gagnante fait disparaître l’action des données, il faut des données payantes ou abandonner.",src:"factor-harvest/merger-arb/docs/FINDINGS.md"},
-{id:"#35",fam:"v4",t:"Les anges déchus",hook:"Obligations dégradées vendues de force par les fonds prudents.",v:"kill",m:3,key:"alpha +1,77 %, mais DSR 0,887",
- idea:"Quand une obligation passe de « qualité » à « haut rendement », les fonds contraints par leur mandat doivent la vendre. Se mettre en face.",
- why:"Premier flux forcé par une contrainte juridique, pas par une date publique.",
- found:"L’alpha survit au bêta de marché : +1,77 %/an, t = 2,27.",
- kill:"DSR 0,887 sous 0,95. Tout vient de deux vagues de dégradations (énergie 2015-16, Covid 2020), et la prime est éteinte depuis 2022. Corrélée aux actions à +0,75.",
- lesson:"Réelle hier, arbitrée aujourd’hui, et de toute façon redondante avec les actions.",src:"fallen-angels/docs/FINDINGS.md"},
-{id:"#39",fam:"v4",t:"Capturer le dividende en PEA",hook:"En PEA, le dividende arrive sans impôt ; le cours ne baisse pas d’autant.",v:"kill",m:2,key:"sans TTF +0,32 % · avec TTF −0,08 %",
- idea:"Le jour du détachement, le cours baisse d’environ 85-90 % du dividende seulement. En PEA, on touche le dividende entier : acheter la veille au soir, revendre le matin.",
- why:"Premier avantage propre au résident français que le programme mesure : il existe bel et bien.",
- found:"2 173 détachements du SBF 120. Hors taxe, le gain est net et significatif : +0,32 % par événement, t = 4,55.",
- kill:"La taxe sur les transactions financières (0,40 % à l’achat, PEA compris) reprend tout : −0,08 %, négatif 10 années sur 12.",
- lesson:"L’État reprend exactement l’avantage qu’il accorde. Et vérifier la qualité des données période par période : 2005-08 était faussé.",src:"dividend-pea/docs/FINDINGS.md"},
-{id:"#40",fam:"v4",t:"Le même, sur les petites valeurs sans taxe",hook:"Sous 1 milliard de capitalisation, pas de TTF.",v:"unt",m:0,key:"85 événements < 100 requis",
- idea:"Reprendre le #39 sur les sociétés trop petites pour être soumises à la TTF.",
- why:"Sans la taxe, le #39 était gagnant.",
- found:"455 sociétés, données fiables cette fois. Mais le cours y baisse aussi d’environ 0,9 fois le dividende : pas de trace d’un effet « petite taille ».",
- kill:"Avec les filtres fixés d’avance (rendement ≥ 3 %, liquidité suffisante, depuis 2015), seulement 85 événements, sous les 100 requis. Les résultats n’ont pas été lus.",
- lesson:"Environ 7 occasions par an : même un succès pèserait peu. À retester vers 2028, avec la même règle.",src:"dividend-pea/docs/FINDINGS-smallcap.md"},
-
-{id:"#22",fam:"construction",t:"Assembler les primes en portefeuille",hook:"60/40 + tendance + carry, avec des poids fixés d’avance.",v:"keep",vl:"Gardé, faible",m:0,key:"2008 : −9,9 % au lieu de −16,7 %",
- idea:"Combiner les primes réelles trouvées en route, sans optimiser les poids sur les données.",
- why:"Des primes trop faibles seules peuvent s’additionner si elles ne bougent pas ensemble.",
- found:"60/40 + tendance coupe environ la moitié de la perte en 2008 et en 2022 (−10,1 % au lieu de −16,4 %).",
- kill:"Le carry dilue : décorrélé de la tendance, mais corrélé à +0,41 au 60/40. Et la tendance dilue en marché calme. Un DSR de 1,000 a été rétrogradé : il mesurait le portefeuille, pas l’apport de la poche.",
- lesson:"Diversifier ne paie que si l’ajout est décorrélé du cœur du portefeuille, pas seulement des autres ajouts.",src:"risk-premia-portfolio/docs/FINDINGS.md"},
-{id:"#22b",fam:"construction",t:"Remplacer le carry par plus décorrélé",hook:"Essayer carry énergie et cat bonds à la place.",v:"keep",vl:"Inchangé",m:0,key:"apport : −0,14",
- idea:"Remplacer le carry de devises par les deux primes les moins corrélées au cœur (#30, #31).",
- why:"Si la corrélation était le problème, des primes vraiment décorrélées devaient l’ajouter.",
- found:"Excellente protection en 2022 (−1,5 % au lieu de −16,4 %).",
- kill:"Elles diluent quand même : trop faibles en elles-mêmes. Apport au portefeuille : −0,14.",
- lesson:"La décorrélation est nécessaire, pas suffisante : il faut aussi une prime propre positive.",src:"risk-premia-portfolio/docs/FINDINGS.md"},
-{id:"#34",fam:"construction",t:"Lever le portefeuille à 1,5×",hook:"Le plafond vient de la volatilité, pas du Sharpe.",v:"keep",vl:"Extension",m:0,key:"+10,0 %/an · perte max −29 %",
- idea:"Appliquer un levier constant de 1,5× au 60/40 + tendance, financé au taux réel.",
- why:"Un portefeuille au bon rapport rendement/risque mais trop calme peut être levé.",
- found:"+2,7 points par an, soit +10,0 %/an net, robuste aux deux moitiés d’échantillon et à un financement cher. À 2×, la perte max (−38 %) franchit le seuil de ruine fixé.",
- kill:"Toute la fenêtre 2006-2026 est un seul régime. Le #37 réécrit le risque.",
- lesson:"Le levier se juge sur la pire perte, pas sur le rendement.",src:"risk-premia-portfolio/docs/FINDINGS-lever.md"},
-{id:"#36",fam:"construction",t:"Moduler le levier selon la volatilité",hook:"Lever plus quand c’est calme, moins quand ça secoue.",v:"kill",m:0,key:"apport négatif sur 4 fenêtres",
- idea:"Viser une volatilité de 10 % en ajustant le levier chaque mois.",
- why:"Un premier diagnostic affichait Sharpe 1,16 et perte max −17 %, meilleur partout.",
- found:"Tout venait de la fenêtre : le calcul de préchauffage retirait 2008 d’un seul côté de la comparaison.",
- kill:"À volatilité égale, le Sharpe baisse sur les quatre fenêtres testées. En 2008, pire : −22,8 % contre −16,0 %, car la volatilité passée était basse juste avant le krach.",
- lesson:"Comparer toujours sur la même fenêtre. Un avantage qui vient du découpage n’en est pas un.",src:"risk-premia-portfolio/docs/FINDINGS-voltarget.md"},
-{id:"#37",fam:"construction",t:"Le portefeuille face à un siècle",hook:"Et si 2006-2026 était une période trop gentille ?",v:"keep",vl:"Confirmé",m:0,key:"+1,76 pt/an sur 1926-2006",
- idea:"Rejouer le portefeuille levé sur des données reconstituées depuis 1926 (Ken French, FRED, AQR).",
- why:"Tout le programme reposait sur une seule fenêtre de 20 ans.",
- found:"Le levier paie aussi hors fenêtre, positif sur 86 % des périodes de 15 ans. La tendance a un t de 5,4 sur 41 ans.",
- kill:"Deux chiffres de risque étaient trop optimistes : en stagflation (1966-81), 16 ans sous le cash ; pertes max de −48 % réel en 1974 et −71 % type 1929. Et la tendance décline : Sharpe ≈ 0 depuis 2016.",
- lesson:"Le déploiement est confirmé, mais avec des pertes de planification bien plus lourdes.",src:"risk-premia-portfolio/docs/FINDINGS-secular.md"},
-{id:"#41",fam:"construction",t:"De l’or contre la stagflation",hook:"10 % d’or pour boucher le trou des années 1970.",v:"down",vl:"Non ajouté",m:3,key:"1968-81 : +1,51 pt/an · ensuite : < cash",
- idea:"Mettre 10 % d’or dans le portefeuille pour le protéger d’une stagflation.",
- why:"L’or a sauvé les portefeuilles dans les années 1970.",
- found:"En 1968-81, +1,51 point par an et une perte max réelle ramenée de −48 % à −39 %.",
- kill:"Dans chaque épisode d’inflation au-dessus de 5 % depuis 1982 (1982, 1989-91, 2021-23), l’or fait moins bien que la même part en cash. En 2022, strictement pareil.",
- lesson:"La protection des années 1970 vient de la fin de Bretton Woods : un événement unique. Toujours comparer un « diversifiant » à la même part en cash.",src:"risk-premia-portfolio/docs/FINDINGS-gold.md"}
-];
-
-const GLOSS = [
- ["Edge","Avantage répétable : une manière de trader qui rapporte plus qu’elle ne coûte, en moyenne, sur la durée."],
- ["Brut / net","Brut : avant frais. Net : après frais, spread, glissement, financement et taxes. Seul le net compte."],
- ["t-stat","Combien de fois le gain moyen dépasse sa propre incertitude. Sous 2, on ne distingue pas le résultat du hasard."],
- ["Sharpe","Rendement au-delà du cash divisé par la volatilité. 0,5 est honnête, 1 est très bon sur la durée."],
- ["DSR","Deflated Sharpe Ratio : probabilité que le meilleur résultat soit réel une fois corrigé du nombre de variantes testées. Barre : 0,95."],
- ["Pré-enregistrement","Écrire et dater la règle et les critères de mort avant de voir les données, pour ne pas ajuster après coup."],
- ["Gate","Un test éliminatoire, fixé d’avance. Échouer un gate, c’est un KILL."],
- ["Régime","Une période de marché au comportement homogène : bull, krach, taux zéro, inflation…"],
- ["Faux GO","Un premier résultat positif qui s’effondre dès qu’on durcit le test."],
- ["Prime de risque","Rémunération pour porter un risque que d’autres veulent éviter. Réelle, mais pas gratuite."],
- ["Priced-in","Déjà dans le prix : l’information est publique, le marché l’a intégrée avant vous."],
- ["Bid-ask bounce","Le prix enregistré alterne entre prix acheteur et vendeur. Un backtest peut « gagner » ce rebond sans qu’on puisse jamais l’obtenir."],
- ["Point de base (pb)","Un centième de pour cent. 200 pb = 2 %."],
- ["Drawdown","Perte depuis le plus haut précédent. La pire perte est le « max drawdown »."],
- ["Queue (risque de)","Les événements rares et violents. Une stratégie peut gagner 99 jours et tout perdre le centième."],
- ["Carry","Gain encaissé simplement en détenant une position : écart de taux, loyer du financement, roulement des contrats."],
- ["Funding","Paiement périodique entre acheteurs et vendeurs de contrats perpétuels crypto, pour coller au prix comptant."],
- ["VRP","Prime de risque de volatilité : l’écart entre la volatilité anticipée par les options et celle qui se réalise."],
- ["LVR","Perte d’un fournisseur de liquidité face aux arbitragistes qui l’échangent à un prix déjà périmé."],
- ["Biais du survivant","Ne regarder que ce qui a survécu : les tokens qui ont fait ×100, pas les milliers qui ont disparu."],
- ["Sleeve","Une poche du portefeuille dédiée à une stratégie, ici le suivi de tendance."],
- ["60/40","Portefeuille de référence : 60 % actions, 40 % obligations."]
-];
-
-/* ---- chart: le t qui fond ---- */
+/* ---------- graphique : le t qui fond ---------- */
 (function(){
-  const rows = [
-    ["Suivre la tendance (#1)","levier empilé 6,3×","levier honnête",2.05,1.87],
-    ["Dérive post-résultats (#28)","t « poolé »","erreurs-types par mois",2.4,0.65],
-    ["Momentum crypto (#13)","brut","net de frais",0.84,0.24],
-    ["Bookmakers (#16)","chez Bet365","mêmes paris chez Pinnacle",2.00,-2.90],
-    ["Dividende PEA (#39)","sans la TTF","avec la TTF",4.55,-1.1],
-    ["Fonds fermés (#8)","backtest","entrée réaliste, long seul",7.13,-0.64]
+  const rows=[
+    ["Suivre la tendance","#1","levier empilé 6,3×","levier honnête",2.05,1.87],
+    ["Dérive post-résultats","#28","t « poolé »","erreurs-types par mois",2.4,0.65],
+    ["Momentum crypto","#13","brut","net de frais",0.84,0.24],
+    ["Bookmakers","#16","chez Bet365","mêmes paris chez Pinnacle",2.00,-2.90],
+    ["Dividende en PEA","#39","sans la taxe TTF","avec la taxe TTF",4.55,-1.1],
+    ["Fonds fermés","#8","backtest","entrée réaliste, long seul",7.13,-0.64]
   ];
-  const svg=document.getElementById("melt"), NS="http://www.w3.org/2000/svg";
-  const W=760, L=210, R=30, top=34, rh=50, H=top+rows.length*rh+34;
-  const x0=-4, x1=8, sx=v=>L+(v-x0)/(x1-x0)*(W-L-R);
-  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
-  const el=(t,a,txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;svg.appendChild(e);return e;};
-  const bottom=top+rows.length*rh;
-  for(let v=-4;v<=8;v+=2){
-    el("line",{x1:sx(v),x2:sx(v),y1:top-8,y2:bottom,stroke:"var(--rule)","stroke-width":v===0?1.5:1});
-    el("text",{x:sx(v),y:bottom+20,"text-anchor":"middle","font-family":"IBM Plex Mono, monospace","font-size":12,fill:"var(--muted)"},(v>0?"+":v<0?"−":"")+Math.abs(v));
+  const fmt=v=>(v<0?"−":"")+Math.abs(v).toFixed(2).replace(".",",");
+  const box=document.getElementById("chart"), tip=document.getElementById("tip"), NS="http://www.w3.org/2000/svg";
+  const W=780,L=230,R=36,T=40,RH=54,B=T+rows.length*RH,H=B+36;
+  const x0=-4,x1=8,sx=v=>L+(v-x0)/(x1-x0)*(W-L-R);
+  const svg=document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);svg.setAttribute("role","img");
+  svg.setAttribute("aria-label","Six t-stats, avant et après correction honnête ; détail dans le tableau");
+  const el=(p,t,a,txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;p.appendChild(e);return e;};
+  for(let v=x0;v<=x1;v+=2){
+    el(svg,"line",{x1:sx(v),x2:sx(v),y1:T-6,y2:B,stroke:"var(--line)","stroke-width":v===0?1.6:1});
+    el(svg,"text",{x:sx(v),y:B+22,"text-anchor":"middle","font-size":12,fill:"var(--muted)"},(v>0?"+":v<0?"−":"")+Math.abs(v));
   }
-  el("line",{x1:sx(2),x2:sx(2),y1:top-14,y2:bottom,stroke:"var(--kill)","stroke-width":2});
-  el("text",{x:sx(2)+6,y:top-18,"font-family":"IBM Plex Mono, monospace","font-size":11,fill:"var(--kill)"},"seuil t = 2");
-  el("text",{x:W-R,y:top-18,"text-anchor":"end","font-family":"IBM Plex Mono, monospace","font-size":11,fill:"var(--muted)"},"t-stat →");
+  el(svg,"line",{x1:sx(2),x2:sx(2),y1:T-16,y2:B,stroke:"var(--ink)","stroke-width":1.5});
+  el(svg,"text",{x:sx(2)+7,y:T-20,"font-size":12,"font-weight":600,fill:"var(--ink)"},"seuil t = 2");
+  el(svg,"text",{x:0,y:B+22,"font-size":12,fill:"var(--muted)"},"t-stat");
   rows.forEach((r,i)=>{
-    const y=top+i*rh+rh/2;
-    if(i) el("line",{x1:0,x2:W-R,y1:top+i*rh,y2:top+i*rh,stroke:"var(--rule)","stroke-dasharray":"2 4"});
-    el("text",{x:0,y:y-3,"font-family":"Source Serif 4, Georgia, serif","font-size":14,"font-weight":600,fill:"var(--ink)"},r[0]);
-    el("text",{x:0,y:y+14,"font-family":"IBM Plex Mono, monospace","font-size":10.5,fill:"var(--muted)"},r[1]+" → "+r[2]);
-    const a=sx(r[3]), b=sx(r[4]);
-    el("line",{x1:a,x2:b,y1:y,y2:y,stroke:"var(--accent)","stroke-width":2.5,"stroke-opacity":.45});
-    el("circle",{cx:a,cy:y,r:6,fill:"var(--paper)",stroke:"var(--muted)","stroke-width":2});
-    el("circle",{cx:b,cy:y,r:6.5,fill:"var(--accent)"});
-    const fmt=v=>(v<0?"−":"")+Math.abs(v).toFixed(2).replace(".",",");
-    const left=b<a;
-    el("text",{x:b+(left?-11:11),y:y+4,"text-anchor":left?"end":"start","font-family":"IBM Plex Mono, monospace","font-size":12,"font-weight":500,fill:"var(--accent)"},fmt(r[4]));
-    el("text",{x:a+(left?11:-11),y:y+4,"text-anchor":left?"start":"end","font-family":"IBM Plex Mono, monospace","font-size":11,fill:"var(--muted)"},fmt(r[3]));
+    const y=T+i*RH+RH/2, a=sx(r[4]), b=sx(r[5]), left=b<a;
+    const g=el(svg,"g",{class:"row-hit",tabindex:0,"aria-label":`${r[0]} : ${r[2]} t = ${fmt(r[4])}, ${r[3]} t = ${fmt(r[5])}`});
+    el(g,"rect",{class:"hl",x:0,y:T+i*RH+2,width:W-R+10,height:RH-4,rx:8,fill:"transparent"});
+    el(g,"text",{x:10,y:y+5,"font-size":15,"font-weight":600,fill:"var(--ink)"},r[0]);
+    el(g,"text",{x:L-18,y:y+5,"text-anchor":"end","font-size":12,fill:"var(--muted)"},r[1]);
+    el(g,"line",{x1:a,x2:b,y1:y,y2:y,stroke:"var(--muted)","stroke-width":2,"stroke-opacity":.5});
+    el(g,"circle",{cx:a,cy:y,r:7,fill:"var(--surface)",stroke:"var(--c-before)","stroke-width":2.5});
+    el(g,"circle",{cx:b,cy:y,r:8,fill:"var(--c-after)",stroke:"var(--surface)","stroke-width":2});
+    el(g,"text",{x:b+(left?-14:14),y:y+5,"text-anchor":left?"end":"start","font-size":13,"font-weight":600,fill:"var(--ink)"},fmt(r[5]));
+    const show=()=>{const bb=box.getBoundingClientRect(), gb=g.getBoundingClientRect();
+      tip.innerHTML=`<b>${r[0]} (${r[1]})</b><br>${r[2]} : t = ${fmt(r[4])}<br>${r[3]} : t = ${fmt(r[5])}`;
+      tip.style.left=Math.min(Math.max((a+b)/2/W*gb.width+gb.left-bb.left+box.scrollLeft,130),bb.width-130)+"px";
+      tip.style.top=(gb.top-bb.top+10)+"px"; tip.classList.add("on");};
+    const hide=()=>tip.classList.remove("on");
+    g.addEventListener("mouseenter",show);g.addEventListener("mouseleave",hide);
+    g.addEventListener("focus",show);g.addEventListener("blur",hide);
   });
+  box.prepend(svg);
+  document.querySelector("#tbl tbody").innerHTML=rows.map(r=>`<tr><td>${r[0]} (${r[1]})</td><td>${r[2]}</td><td class="n">${fmt(r[4])}</td><td>${r[3]}</td><td class="n">${fmt(r[5])}</td></tr>`).join("");
 })();
 
-/* ---- modes ---- */
+/* ---------- état et filtres ---------- */
 const state={v:"all",m:0,q:""};
-const modesEl=document.getElementById("modes");
+const norm=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+let visible=[];
+
+const causeList=document.getElementById("causeList");
+const max=Math.max(...Object.keys(MODES).map(k=>F.filter(f=>f.m==k).length));
 Object.entries(MODES).forEach(([k,o])=>{
   const n=F.filter(f=>f.m==k).length;
   const b=document.createElement("button");
-  b.type="button"; b.className="mode"; b.id="mode-"+k; b.setAttribute("aria-pressed","false");
-  b.innerHTML=`<span class="n mono">${n}</span><h3>${o.name}</h3><p>${o.desc}</p><small>Filtrer le registre →</small>`;
-  b.addEventListener("click",()=>{state.m = state.m==k?0:+k; render(); if(state.m) document.getElementById("registre").scrollIntoView();});
-  modesEl.appendChild(b);
+  b.type="button";b.className="cause";b.id="cause-"+k;b.setAttribute("aria-pressed","false");
+  b.innerHTML=`<div><h3>${o.name}</h3><p>${o.desc}</p></div><div class="track" aria-hidden="true"><i style="width:${n/max*100}%"></i></div><span class="n">${n}</span>`;
+  b.addEventListener("click",()=>{state.m=state.m==k?0:+k;render();if(state.m)document.getElementById("registre").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});});
+  causeList.appendChild(b);
 });
+const unclassed=F.filter(f=>!f.m).length;
+document.getElementById("causeFoot").textContent=`Les ${unclassed} autres étiquettes sortent de ce classement : primes trop faibles, études impossibles à trancher avec des données gratuites, et les pièces du portefeuille gardé.`;
 
-/* ---- verdict chips ---- */
-const vEl=document.getElementById("vchips");
-[["all","Tout"],["kill","KILL"],["down","Rétrogradé"],["unt","Non testable"],["keep","Gardé"]].forEach(([k,l])=>{
-  const b=document.createElement("button"); b.type="button"; b.className="chip"; b.id="v-"+k; b.dataset.v=k;
-  const n=k==="all"?F.length:F.filter(f=>f.v===k).length;
-  b.textContent=`${l} · ${n}`;
-  b.addEventListener("click",()=>{state.v=k;render();});
-  vEl.appendChild(b);
+const vchips=document.getElementById("vchips");
+[["all","Toutes"],["kill","KILL"],["down","Rétrogradées"],["unt","Non testables"],["keep","Gardées"]].forEach(([k,l])=>{
+  const b=document.createElement("button");b.type="button";b.className="chip";b.dataset.v=k;
+  b.textContent=`${l} (${k==="all"?F.length:F.filter(f=>f.v===k).length})`;
+  b.addEventListener("click",()=>{state.v=k;render();});vchips.appendChild(b);
 });
-document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value.trim().toLowerCase();render();});
+document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value.trim();render();});
 
-const norm=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
-function fiche(f){
-  const d=document.createElement("details"); d.className="fiche"; d.id="f-"+(f.id.replace(/[^a-z0-9]/gi,"")||"alt");
-  const vl=f.vl||VERD[f.v];
-  const mchip=f.m?`<span class="mchip">▸ ${MODES[f.m].name}</span>`:"";
-  const lbl=f.v==="keep"?"La limite":"Ce qui l’a tuée";
-  d.innerHTML=`<summary>
-    <span class="fid">${f.id}</span>
-    <span class="ftitle"><h4>${f.t}</h4><p>${f.hook}</p></span>
-    <span class="fkey">${f.key}<br>${mchip}</span>
-    <span class="stamp v-${f.v}">${vl}</span>
-  </summary>
-  <div class="fbody">
-    <div><h5>L’idée</h5><p>${f.idea}</p></div>
-    <div><h5>Pourquoi y croire</h5><p>${f.why}</p></div>
-    <div><h5>Ce qu’on a trouvé</h5><p>${f.found}</p></div>
-    <div><h5>${lbl}</h5><p>${f.kill}</p></div>
-    <div class="lesson"><h5>À retenir</h5><p>${f.lesson}</p></div>
-    <p class="src">Source : code python/${f.src}</p>
-  </div>`;
-  return d;
+function tagHTML(f,i){
+  return `<div class="cell"><article class="tag">
+    <div class="no">N° <b>${f.id.replace("#","")}</b></div>
+    <h3>${f.t}</h3>
+    <div class="field"><span>Cause du décès</span><span class="hw">${cause(f)}</span></div>
+    <div class="field"><span>Mesure</span><span class="fig">${f.key}</span></div>
+    <span class="stamp v-${f.v}">${f.vl||VLABEL[f.v]}</span>
+  </article><button type="button" class="open" data-i="${i}" aria-label="Lire le rapport : ${f.t}"></button></div>`;
 }
 const reg=document.getElementById("reg");
 function render(){
-  document.querySelectorAll("#vchips .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.v===state.v));
-  document.querySelectorAll(".mode").forEach(b=>b.setAttribute("aria-pressed",b.id==="mode-"+state.m));
+  vchips.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.v===state.v));
+  causeList.querySelectorAll(".cause").forEach(c=>c.setAttribute("aria-pressed",c.id==="cause-"+state.m));
   const q=norm(state.q);
-  const list=F.filter(f=>(state.v==="all"||f.v===state.v)&&(!state.m||f.m===state.m)&&(!q||norm([f.id,f.t,f.hook,f.key,f.idea,f.why,f.found,f.kill,f.lesson].join(" ")).includes(q)));
-  reg.innerHTML="";
+  visible=F.filter(f=>(state.v==="all"||f.v===state.v)&&(!state.m||f.m===state.m)&&(!q||norm([f.id,f.t,f.hook,f.key,f.idea,f.why,f.found,f.kill,f.lesson,cause(f)].join(" ")).includes(q)));
+  let html="",i=0;
   FAM.forEach(([k,name,blurb])=>{
-    const items=list.filter(f=>f.fam===k); if(!items.length) return;
-    const s=document.createElement("div"); s.className="family";
-    s.innerHTML=`<div class="family-head"><h3>${name}</h3><p>${blurb}</p></div>`;
-    items.forEach(f=>s.appendChild(fiche(f)));
-    reg.appendChild(s);
+    const items=visible.filter(f=>f.fam===k); if(!items.length) return;
+    html+=`<div class="fam"><div class="fam-head"><h3>${name}</h3><p>${blurb}</p></div><div class="grid">`;
+    items.forEach(f=>{html+=tagHTML(f,visible.indexOf(f));});
+    html+=`</div></div>`;
   });
-  if(!list.length) reg.innerHTML=`<p class="empty">Aucune fiche ne correspond. Essayez un autre mot, ou revenez sur « Tout ».</p>`;
-  const extra=state.m?` · ${MODES[state.m].name}`:"";
-  document.getElementById("count").textContent=`${list.length} / ${F.length} fiches${extra}`;
-  document.getElementById("toggleAll").textContent="Tout déplier";
+  reg.innerHTML=html||`<p class="empty">Aucune étiquette ne correspond. Essayez un autre mot, ou revenez à « Toutes ».</p>`;
+  document.getElementById("count").textContent=`${visible.length} sur ${F.length} étiquettes`+(state.m?`, cause : ${MODES[state.m].name.toLowerCase()}`:"");
 }
-document.getElementById("toggleAll").addEventListener("click",e=>{
-  const all=[...reg.querySelectorAll("details")]; const open=!all.every(d=>d.open);
-  all.forEach(d=>d.open=open); e.target.textContent=open?"Tout replier":"Tout déplier";
-});
-render();
+reg.addEventListener("click",e=>{const b=e.target.closest(".open");if(b)openReport(+b.dataset.i);});
 
-/* ---- glossary ---- */
-const g=document.getElementById("gloss");
-GLOSS.forEach(([t,d])=>{const w=document.createElement("div");w.innerHTML=`<dt>${t}</dt><dd>${d}</dd>`;g.appendChild(w);});
+/* ---------- rapport ---------- */
+const dlg=document.getElementById("report");let cur=-1,opener=null;
+const $=id=>document.getElementById(id);
+function fill(i){
+  const f=visible[i];cur=i;
+  $("rep-no").textContent=f.id.replace("#","");$("rep-title").textContent=f.t;$("rep-hook").textContent=f.hook;
+  const s=$("rep-stamp");s.className="stamp v-"+f.v;s.textContent=f.vl||VLABEL[f.v];
+  $("rep-cause").textContent=cause(f);$("rep-key").textContent=f.key;$("rep-fam").textContent=famName(f.fam);
+  $("rep-idea").textContent=f.idea;$("rep-why").textContent=f.why;$("rep-found").textContent=f.found;
+  $("rep-kill-h").textContent=f.v==="keep"?"La limite":"Ce qui l’a tuée";$("rep-kill").textContent=f.kill;
+  $("rep-lesson").textContent=f.lesson;$("rep-src").textContent="Source : code python/"+f.src;
+  $("prev").disabled=i<=0;$("next").disabled=i>=visible.length-1;
+  history.replaceState(null,"","#e-"+f.id.replace(/[^a-z0-9]/gi,"").toLowerCase());
+  dlg.querySelector(".rep").scrollTop=0;dlg.scrollTop=0;
+}
+function openReport(i){
+  opener=document.activeElement;fill(i);
+  if(!dlg.open)dlg.showModal();
+  const top=dlg.querySelector(".rep");top.setAttribute("tabindex","-1");top.focus({preventScroll:true});dlg.scrollTop=0;
+}
+$("prev").onclick=()=>cur>0&&fill(cur-1);
+$("next").onclick=()=>cur<visible.length-1&&fill(cur+1);
+$("close").onclick=()=>dlg.close();
+dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close();});
+dlg.addEventListener("keydown",e=>{if(e.key==="ArrowRight"&&cur<visible.length-1)fill(cur+1);if(e.key==="ArrowLeft"&&cur>0)fill(cur-1);});
+dlg.addEventListener("close",()=>{history.replaceState(null,"",location.pathname+location.search);opener&&opener.focus&&opener.focus();});
+
+render();
+(function(){const m=location.hash.match(/^#e-(.+)$/);if(!m)return;const i=visible.findIndex(f=>f.id.replace(/[^a-z0-9]/gi,"").toLowerCase()===m[1]);if(i>=0)openReport(i);})();
+
+/* ---------- glossaire ---------- */
+$("gloss").innerHTML=GLOSS.map(([t,d])=>`<div><dt>${t}</dt><dd>${d}</dd></div>`).join("");
 </script>
