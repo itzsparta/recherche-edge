@@ -308,5 +308,16 @@ const GLOSS = [
  ["LVR","Perte d’un fournisseur de liquidité face aux arbitragistes qui l’échangent à un prix déjà périmé."],
  ["Biais du survivant","Ne regarder que ce qui a survécu : les tokens qui ont fait ×100, pas les milliers qui ont disparu."],
  ["Sleeve","Une poche du portefeuille dédiée à une stratégie, ici le suivi de tendance."],
- ["60/40","Portefeuille de référence : 60 % actions, 40 % obligations."]
+ ["60/40","Portefeuille de référence : 60 % actions, 40 % obligations."],
+ ["Test ADF","Test statistique de stationnarité : une série stationnaire revient vers un niveau moyen. p < 0,05 : on peut y croire."],
+ ["Cointégration","Deux prix qui dérivent chacun mais dont une combinaison reste stable. Condition nécessaire d’un trading de paires."],
+ ["Walk-forward","Juger une stratégie uniquement sur une période postérieure à celle qui a servi à la construire."],
+ ["Markout","Mesure du gain d’une contrepartie : on regarde où va le prix quelques minutes après chaque échange."],
+ ["AUC","Capacité d’une variable à séparer deux groupes. 0,5 = hasard, 1 = séparation parfaite."],
+ ["Monte Carlo","Simulation d’un grand nombre de parcours aléatoires pour obtenir la distribution complète des issues."],
+ ["TTF","Taxe française sur les transactions financières : 0,40 % à l’achat des actions de plus d’un milliard de capitalisation."],
+ ["Backwardation / contango","Courbe des contrats à terme descendante (backwardation) ou montante (contango). Détermine le gain de roulement."],
+ ["t par cohorte mensuelle","t-stat calculé sur une série de résultats mois par mois, pour ne pas compter plusieurs fois des événements qui se chevauchent."],
+ ["Data-snooping","Chercher dans les données jusqu’à trouver quelque chose, puis présenter la trouvaille comme une hypothèse."],
+ ["Look-ahead","Utiliser dans un backtest une information qu’on n’aurait pas eue au moment de décider."]
 ];
