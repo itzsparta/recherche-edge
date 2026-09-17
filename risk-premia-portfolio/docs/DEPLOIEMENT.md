@@ -2,7 +2,8 @@
 
 **Statut (2026-09-11) : plan opérationnel, PAS une étude.** Aucun edge testé, aucun gate, aucun
 verdict. Le deliverable est déjà validé (#22 construction, #34 levier constant 1,5, #36 vol-target
-KILL). Ce document répond à « comment le détenir concrètement », avec un contrôle chiffré que les
+KILL, #37 stress séculaire CONFIRMÉ, #41 or non ajouté). Ce document répond à « comment le détenir
+concrètement », avec un contrôle chiffré que les
 véhicules achetables reproduisent le backtest : `python deploy_check.py` (descriptif, poids fixés
 par arithmétique avant run, cache `data/deploy_px.csv`).
 
@@ -136,7 +137,9 @@ stagflation devient insupportable, le seul substitut qui fasse aussi bien est de
 
 Le +10 %/an du backtest contient le bull US post-2009 (FINDINGS-lever, caveat 3 : si l'excès futur
 du 60/40 n'est que de 4 %, le levier 1,5 rend ~5,5 % net). Fourchette de planification :
-**~5,5 % à 10 %/an**, drawdowns de −30 % possibles.
+**~5,5 % à 10 %/an**, drawdown de planification **−40 %** (−70 % dans un 1929, #37). Le bas de la
+fourchette n'est pas un plancher : en stagflation 1966-81, 16 ans à +5,2 %/an nominal, sous le cash,
+soit −1,65 %/an réel (#37).
 
 | Versement | 10 ans @5,5 % / @10 % | 20 ans @5,5 % / @10 % | 30 ans @5,5 % / @10 % |
 |---|---|---|---|
@@ -144,5 +147,5 @@ du 60/40 n'est que de 4 %, le levier 1,5 rend ~5,5 % net). Fourchette de planifi
 | 500 €/mois | 79 k€ / 100 k€ | 214 k€ / 359 k€ | 445 k€ / 1 031 k€ |
 
 (Nominal, avant impôts, sans capital initial.) Sur 10 ans, le montant versé pèse plus que le
-rendement ; sur 30 ans, c'est la durée. Aucun levier de marché identifié ne bat ces deux-là (36
-études, 0 edge déployable).
+rendement ; sur 30 ans, c'est la durée. Aucun levier de marché identifié ne bat ces deux-là (40
+études, 0 edge déployable, 2026-09-12).
