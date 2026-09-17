@@ -30,8 +30,22 @@ assurance trend) avec un levier modéré (FINDINGS-lever, caveat 4).
   perte maximale = capital investi. Aucun seuil de capital (pas de contrat à 33 k€).
 
 **Enveloppe : compte-titres.** Le PEA ne peut porter ni l'un ni l'autre (fonds irlandais/
-luxembourgeois, actions US, futures). Courtier : accès Xetra ou Borsa Italiana pour WTEF
-(Interactive Brokers : oui), Euronext Paris pour DBMFE (tout courtier français).
+luxembourgeois, actions US, futures).
+
+**Courtier (2026-09-17) : Trade Republic, ordre « Direct Price » à 2 €, cours limité** — WTEF sur
+Xetra, DBMFE sur Euronext Paris. Critères : les deux places sur un seul compte ; IFU fourni et pas de
+3916-bis **si l'IBAN est FR** (à vérifier à l'ouverture). Écartés : courtiers français sur Xetra
+(BoursoBank 11,95 €, Bourse Direct 15 € minimum par ordre = 3 à 7,5 % d'un versement) ; IBKR et
+Degiro (coût voisin ou supérieur, pas d'IFU, 3916-bis chaque année, plus-values déclarées à la main).
+- **Pas d'achat programmé gratuit tant que non mesuré** : il s'exécute au prix LS Exchange, et le
+  spread d'un fonds de 18 M€ peut dépasser les 2 € économisés. Mesure : prix obtenu vs cotation Xetra
+  au même instant. Le cours limité plafonne le prix payé, il ne réduit pas le spread Xetra lui-même
+  (non chiffré : aucune donnée publique trouvée).
+- **Non vérifié : DBMFE (LU2951555403) chez Trade Republic.** Si absent : DBMFE sur un CTO BoursoBank
+  **à ouvrir** (seul le PEA existe ; formule Découverte, 1,99 € jusqu'à 500 €). La bande 75-85 % se
+  calcule alors sur la somme des deux comptes.
+- Les frais portent sur le versement, une seule fois (2 € / 500 € = 0,4 %) ; ce n'est pas un coût
+  annuel sur l'encours comme le TER.
 
 ## Contrôle : les véhicules reproduisent-ils le backtest ?
 
@@ -107,7 +121,8 @@ stagflation devient insupportable, le seul substitut qui fasse aussi bien est de
 ## Règles d'exploitation
 
 1. **Achat initial** : 80 % WTEF / 20 % DBMFE.
-2. **Apports** : chaque versement va sur la ligne sous-pondérée (rééquilibrage sans vente).
+2. **Apports** : chaque versement va **en entier** sur la ligne sous-pondérée (rééquilibrage sans
+   vente), soit un seul ordre. Versement < 400 € : grouper tous les deux mois (2 € ≤ 0,5 %).
 3. **Rééquilibrage forcé** seulement si WTEF sort de la bande **75-85 %** ; sinon rien. (Le
    backtest rééquilibre mensuellement ; la bande est une simplification déclarée, non testée —
    effet attendu négligeable sur deux lignes.)
