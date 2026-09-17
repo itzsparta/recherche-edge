@@ -37,10 +37,14 @@ Xetra, DBMFE sur Euronext Paris. Critères : les deux places sur un seul compte 
 3916-bis **si l'IBAN est FR** (à vérifier à l'ouverture). Écartés : courtiers français sur Xetra
 (BoursoBank 11,95 €, Bourse Direct 15 € minimum par ordre = 3 à 7,5 % d'un versement) ; IBKR et
 Degiro (coût voisin ou supérieur, pas d'IFU, 3916-bis chaque année, plus-values déclarées à la main).
-- **Pas d'achat programmé gratuit tant que non mesuré** : il s'exécute au prix LS Exchange, et le
-  spread d'un fonds de 18 M€ peut dépasser les 2 € économisés. Mesure : prix obtenu vs cotation Xetra
-  au même instant. Le cours limité plafonne le prix payé, il ne réduit pas le spread Xetra lui-même
-  (non chiffré : aucune donnée publique trouvée).
+- **Test d'exécution de WTEF** (spread Xetra d'un fonds de 18 M€ non public, non chiffré) :
+  - achat programmé (0 €, prix LS Exchange) : tester sur un **montant minimal**, relever l'heure
+    d'exécution, comparer à la cotation Xetra du même instant ; aucun versement complet avant ;
+  - Best Price (1 €, Trade Republic contrepartie sur carnet agrégé, « hors frais tiers et
+    spreads ») : même comparaison sur un ordre ;
+  - Direct Price (2 €) sur Xetra = **défaut**. Le cours limité est un coupe-circuit contre un carnet
+    vide ; il ne réduit pas le spread de la place.
+- IFU : pré-remplissage de la déclaration non vérifié, à contrôler la première année.
 - **Non vérifié : DBMFE (LU2951555403) chez Trade Republic.** Si absent : DBMFE sur un CTO BoursoBank
   **à ouvrir** (seul le PEA existe ; formule Découverte, 1,99 € jusqu'à 500 €). La bande 75-85 % se
   calcule alors sur la somme des deux comptes.
@@ -122,7 +126,8 @@ stagflation devient insupportable, le seul substitut qui fasse aussi bien est de
 
 1. **Achat initial** : 80 % WTEF / 20 % DBMFE.
 2. **Apports** : chaque versement va **en entier** sur la ligne sous-pondérée (rééquilibrage sans
-   vente), soit un seul ordre. Versement < 400 € : grouper tous les deux mois (2 € ≤ 0,5 %).
+   vente), soit un seul ordre, d'au moins 400 € (2 € ≤ 0,5 %) : versement de 200-399 € → tous les
+   deux mois ; < 200 € → tous les trois mois ou plus.
 3. **Rééquilibrage forcé** seulement si WTEF sort de la bande **75-85 %** ; sinon rien. (Le
    backtest rééquilibre mensuellement ; la bande est une simplification déclarée, non testée —
    effet attendu négligeable sur deux lignes.)
