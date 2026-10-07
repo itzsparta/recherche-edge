@@ -819,3 +819,729 @@ P1 d'abord (argent réel en jeu, ~1 j), puis P3 (seule arme neuve, kill cheap). 
 décision budget de Rémi. Aucun résultat regardé avant spec : P3 exige sa SPEC pré-enregistrée avant
 tout pull.
 
+---
+
+## 2026-09-16 — Session automatisée de scouting (tâche planifiée)
+
+### Contexte lu avant de proposer
+
+- RESEARCH-ROADMAP.md intégral relu (41 études, 0 edge déployable) + queue ouverte du 2026-09-11
+  (P1-P5, ce log) + FINDINGS des pistes #30 (commodity-carry, DOWNGRADE DSR 0.895), #31 (ILS
+  cat-bond, DOWNGRADE sub-hurdle), #32 (merger-arb, UNTESTABLE mur délistés).
+- Motif unifié confirmé sans exception sur 41 études : tout edge à **information/prix public
+  continu** est mangé (no-edge brut, friction, ou tail/non-répétabilité). Les 2 étangs à
+  contrepartie non-optimisatrice testés (CEF, Polymarket) sont morts aussi.
+- Queue déjà ouverte non actionnée : P5 (VRP×GEX interaction, prior bas, kill cheap ~2h), P4
+  (décision budget data payante — bloque #30/#31/#32/PEAD/trend futures back-adjusté).
+- Filtre appliqué à toute nouvelle piste avant écriture : (1) info/prix public déjà mangé ? (2)
+  data accessible gratuitement ou déjà dispo aujourd'hui ?
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — SCPI (immobilier non coté FR) : décote marché secondaire vs NAV, crise 2023-2025
+
+- **Thèse.** Plusieurs grandes SCPI (Primonial, Corum, Sofidy…) ont révisé leur NAV −10 à −17 %
+  depuis 2023 (immobilier de bureau + taux). Les demandes de retrait forment une **file d'attente**
+  (délai de retrait plusieurs mois) : vendeurs structurellement forcés (besoin de liquidité, pas de
+  vue sur le prix). La NAV elle-même est une **expertise immobilière** (mise à jour trimestrielle,
+  sticky), pas un prix de marché continu — le prix de compensation sur le marché secondaire peut
+  diverger de la NAV publiée.
+- **Filtre 1 (info/prix public mangé ?) — PASSE.** Contrairement à toutes les pistes mortes du
+  programme, il n'y a **pas de prix continu public** ici : la NAV est une estimation d'expert
+  décalée, et le prix de compensation secondaire n'est pas un flux temps réel que des algos
+  institutionnels peuvent arbitrer. Les fonds ne sont structurellement pas acheteurs sur ce marché
+  (les SCPI sont un produit retail par construction — pas d'AP, pas de short possible côté
+  institutionnel). Famille distincte de tout ce qui a été tué (cf. la même logique CEF #8, mais ici
+  sans cotation continue du tout, contrairement au CEF listé).
+- **Filtre 2 (data gratuite/déjà dispo ?) — ÉCHOUE aujourd'hui.** Pas d'API centralisée pour les
+  prix d'exécution du marché secondaire ni l'historique NAV par SCPI : données éparpillées dans les
+  bulletins trimestriels PDF de ~180 sociétés de gestion. ASPIM/IEIF agrègent mais l'accès complet
+  est payant. Construire un panel exploitable = plusieurs jours de scraping PDF, hors budget frugal
+  du jour.
+- **Verdict : REJET (filtre 2) pour aujourd'hui**, mais **flag conservé** — c'est la seule famille
+  structurellement neuve trouvée cette session (opacité + file d'attente forcée ≠ prix public
+  continu). À traiter comme **P4-bis** : décision budget/scraping avant toute mini-spec, même
+  logique que le mur data #30/#31/#32.
+
+#### Piste B — OPRA (offre publique de rachat) small-cap FR : capture pré-offre
+
+- **Thèse.** Rachat d'actions à prix fixe annoncé par l'émetteur lui-même ; fenêtre entre annonce et
+  clôture d'offre sur des small-caps peu suivies.
+- **Filtre 1 — ÉCHOUE.** Même famille que merger-arb (#32) et SPAC (#27) : événement de prix **daté
+  et public** dès l'annonce, spread résiduel = prime de risque de deal-break déjà pricée par les
+  mêmes acteurs (arbitrageurs de fusion). Aucun mécanisme neuf vs les 2 pistes déjà mortes/bloquées.
+- **Filtre 2 — même mur.** Univers small-cap FR délistées = même problème de survivorship/données
+  que #32 (UNTESTABLE, mur délistés déjà documenté).
+- **Verdict : REJET direct (filtre 1 + redondance filtre 2).** Pas de spec écrite — risque de
+  reproduire une étude déjà classée mur-de-données sans apporter d'arme neuve.
+
+#### Piste C — Choix de domiciliation ETF (Irlande vs Luxembourg) pour retenue à la source
+
+- **Thèse.** Un ETF domicilié en Irlande récupère le taux conventionnel US (15 %) sur dividendes vs
+  30 % pour un domicile moins favorable ; écart mécanique en faveur du résident FR.
+- **Verdict : REJET — pas un mécanisme testable par la machine gate-kill.** C'est un choix de
+  produit statique (sélection du bon ETF), pas un signal répété avec un null à falsifier (ni t-stat,
+  ni DSR, ni miroir long/short possibles — un seul choix, pas un trade). Même distinction que le
+  programme a déjà faite entre backtest de prix (xs-momentum #13) et ledger d'EV opérationnel
+  (airdrop #14) : ceci n'est ni l'un ni l'autre, c'est de l'allocation, hors périmètre du programme
+  edge.
+
+### Verdict du jour : **no candidate**
+
+Aucune piste ne survit aux deux filtres avec une mini-spec exploitable aujourd'hui. La piste A (SCPI)
+est la seule famille structurellement neuve identifiée en 42 sessions (opacité NAV + file d'attente
+forcée, par opposition à tout prix public continu déjà mangé) mais elle est bloquée par le même type
+de mur data que #30/#31/#32 — pas un mur définitif, un mur de **budget/scraping**. Aucune spec
+falsifiable écrite tant que ce mur n'est pas levé (même règle que P4 : décision de Rémi avant tout
+pull de données).
+
+### Résumé 3 lignes
+
+3 pistes examinées (SCPI marché secondaire, OPRA small-cap, domiciliation ETF) — 2 rejetées au
+filtre 1/redondance, 1 (SCPI) bloquée au filtre 2 données. Aucune mini-spec falsifiable produite
+aujourd'hui = **no candidate**, résultat valide. Seul point actionnable neuf : SCPI marché secondaire
+mérite une décision budget/scraping (P4-bis), à traiter avec le mur data existant #30/#31/#32.
+
+---
+
+## 2026-09-20 — Session automatisée de scouting (tâche planifiée)
+
+### Contexte lu avant de proposer
+
+- RESEARCH-ROADMAP.md intégral (41 études, 0 edge déployable) + ce log jusqu'à la session du
+  2026-09-16 (verdict **no candidate** : SCPI flaggée P4-bis mais bloquée filtre 2, OPRA et
+  domiciliation ETF rejetées au filtre 1/hors-périmètre).
+- Motif unifié inchangé sur 41 études : tout edge à **information/prix public continu** est mangé
+  (no-edge brut, friction, ou tail/non-répétabilité). Les deux seuls signes de vie transitoires
+  restent le **carry structurel** (#6, réel mais tail exchange) et l'**opacité de prix** (CEF #8,
+  réel mais bid-ask bounce).
+- Queue ouverte non actionnée, revue avant de proposer du neuf : **P4** (budget data payante —
+  débloquerait #32 merger-arb, SPAC Gate D, survivorship PEAD, trend futures back-adjusté), **P4-bis**
+  (SCPI marché secondaire, bloqué filtre 2), **P5** (interaction VRP×GEX, prior bas, kill cheap ~2h,
+  data déjà sur disque `DIX.csv`/VIX/SVXY — seule piste pré-spécifiée non encore run).
+- Filtre appliqué à toute piste neuve avant écriture : (1) info/prix public déjà mangé ? (2) data
+  accessible gratuitement ou déjà dispo aujourd'hui ?
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Buyback drift : dérive post-annonce de rachat d'actions (France)
+
+- **Mécanisme candidat.** Après l'annonce d'un programme de rachat d'actions "open market", le titre
+  sur-performe en moyenne sur les 1-3 ans suivants (Ikenberry, Lakonishok & Vermaelen 1995) : signal
+  managérial crédible + pression d'achat réelle mais discrétionnaire (le rythme d'exécution n'est pas
+  connu à l'avance). Univers France (SBF 120) jamais testé par le programme.
+- **Filtre 1 (info/prix public mangé ?) : ÉCHOUE.** L'effet est un facteur systématique documenté et
+  packagé depuis 20 ans (ETF "shareholder yield" / "net share issuance" — PKW, facteurs AQR/DFA
+  quality-shareholder-yield). Les fonds smart-beta répliquent ce signal à l'échelle mondiale, Europe
+  incluse. Ce n'est pas une contrainte de mandat ni une opacité de prix nouvelle : c'est une variante
+  directe de la piste 1 (prime documentée, compressée par la réplication systématique).
+- **REJET.** Même famille que la piste 1 (trend/premia documentés) déjà tuée sous sa forme la plus
+  favorable ; aucune arme structurelle neuve identifiée pour justifier un re-test régional France.
+
+---
+
+#### Piste B — Marchés de "bribe" de gouvernance DeFi (vote-buying veToken)
+
+- **Mécanisme candidat.** Les détenteurs de tokens de gouvernance verrouillés (veCRV, veBAL) reçoivent
+  des paiements ("bribes", via Votium/Hidden Hand) pour orienter leur vote de répartition des
+  émissions vers certains pools. Le rendement total (staking + bribes) peut excéder le rendement de
+  base et fluctue selon la concurrence pour les votes — mécanisme jamais testé par le programme
+  (distinct de Pendle #23, qui pricait un risque actuariel, pas un marché de vote).
+- **Filtre 1 (info/prix public mangé ?) : ÉCHOUE.** Ce marché est dominé depuis 2020 par des
+  agrégateurs DeFi-natifs à capital important (Convex Finance TVL plusieurs milliards $, Redacted
+  Cartel) dont le métier exclusif est d'accumuse le pouvoir de vote et d'arbitrer le prix du bribe par
+  unité de vote. La barrière n'est pas une absence d'acteur optimisateur (comme le sont les fonds
+  réglementés sur Pendle) mais une **présence dominante d'acteurs spécialisés mieux capitalisés qu'un
+  solo** — structure inverse de ce qui a fait persister le carry ou l'inefficience Pendle.
+- **REJET.** Contrepartie optimisatrice dominante identifiée dès le filtrage ; pas de niche solo.
+
+---
+
+#### Piste C (reprise de P4-bis) — SCPI marché secondaire : re-test du mur data
+
+- Le 2026-09-16, cette piste avait passé le filtre 1 (opacité de NAV + file d'attente forcée = famille
+  structurellement neuve, aucun prix continu public à arbitrer) mais avait échoué le filtre 2 par
+  manque de temps pour vérifier l'existence d'une source gratuite.
+- **Vérification ciblée aujourd'hui (recherche web, ~5 min) : mur CONFIRMÉ, pas levé.** Aucune API
+  publique ou jeu de données bulk gratuit trouvé sur data.gouv.fr (l'API "info-financière" AMF couvre
+  les émetteurs cotés, pas les SCPI). Les agrégateurs (2ndMarket, Louve Invest, ASPIM/IEIF) exposent
+  des tableaux de consultation manuelle ou des simulateurs, pas de série historique téléchargeable —
+  construire un panel exploitable resterait plusieurs jours de scraping PDF par société de gestion.
+- **Verdict : toujours REJET filtre 2 aujourd'hui.** Statut inchangé depuis le 2026-09-16 : décision
+  de budget/scraping à prendre par Rémi avant toute mini-spec (même règle que P4).
+
+### Verdict du jour : **no candidate**
+
+Aucune piste neuve ne survit aux deux filtres avec une mini-spec actionnable aujourd'hui. Les deux
+pistes nouvelles (buyback France, bribe markets DeFi) échouent au filtre 1 pour la même raison
+structurelle : un acteur optimisateur bien capitalisé (smart-beta systématique pour le buyback,
+agrégateurs DeFi natifs pour les bribes) occupe déjà exactement la niche visée — contraste net avec
+le carry ou Pendle, où l'acteur optimisateur était **structurellement absent**, pas juste concurrent.
+La piste SCPI reste bloquée au même mur data qu'il y a 4 jours ; aucune nouvelle information ne change
+sa classification P4-bis. Aucune régression : le programme ne re-teste aucune piste déjà tuée.
+
+**Point actionnable inchangé** : **P5** (interaction VRP×GEX) demeure la seule piste pré-spécifiée,
+peu coûteuse (~2h), non encore run — prior bas mais c'est la prochaine étape naturelle si Rémi veut
+consommer le budget d'une session (hors scope "proposition écrite seule" d'aujourd'hui).
+
+### Résumé 3 lignes
+
+2 pistes neuves rejetées au filtre 1 (buyback France = variante compressée piste 1, déjà capturée par
+les ETF shareholder-yield ; bribe markets DeFi = niche déjà dominée par agrégateurs natifs
+sur-capitalisés, pas une absence d'acteur). SCPI (P4-bis) re-vérifiée : mur data gratuite confirmé,
+statut inchangé. **No candidate** aujourd'hui — résultat valide, motif unifié tient sans exception sur
+41 études ; seul reste actionnable = P5 (VRP×GEX, cheap, en attente).
+
+---
+
+## 2026-09-21 — Session automatisée de scouting (tâche planifiée)
+
+### Contexte lu avant de proposer
+
+- RESEARCH-ROADMAP.md intégral (41 études, 0 edge déployable) + ce log jusqu'à la session du
+  2026-09-20 (verdict **no candidate** : buyback France et bribe markets DeFi rejetés filtre 1, SCPI
+  re-vérifiée mur data toujours fermé).
+- Queue ouverte non actionnée, revue avant de proposer du neuf : **P4** (budget data payante délistés,
+  bloque #32/SPAC Gate D/survivorship PEAD/trend futures), **P4-bis** (SCPI, mur data confirmé deux
+  fois), **P5** (interaction VRP×GEX, pré-spécifiée depuis le 2026-09-11, ~2 h, data déjà sur disque
+  `DIX.csv`/VIX/SVXY — seule piste prête à courir, jamais lancée faute de budget-temps de session).
+- Filtre appliqué à toute piste neuve avant écriture : (1) info/prix public déjà mangé ? (2) data
+  accessible gratuitement ou déjà dispo aujourd'hui ?
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Décote de holding (Eurazeo, Wendel, GBL, Ackermans & van Haaren) vs NAV des participations cotées
+
+- **Mécanisme candidat.** Ces holdings cotent structurellement sous la somme de leurs participations
+  (décote 20-40 %), sans mécanisme de création/rachat façon ETF — même absence structurelle d'AP que
+  le CEF (piste 8).
+- **Filtre 1 (info/prix public mangé ?) : ÉCHOUE.** Contrairement au CEF (piste 8, petits fonds sous
+  le radar), ces holdings sont liquides (1-8 Md€ de capitalisation), couverts par des analystes
+  sell-side dédiés, et la décote est documentée depuis 30 ans comme **compensation rationnelle** du
+  risque de gouvernance (contrôle familial verrouillé, primes de contrôle inaccessibles, fiscalité de
+  plus-value latente au niveau holding) — pas une inefficience. Des fonds « special situations »
+  européens suivent spécifiquement ce segment. C'est l'anti-value-trap (gate E de la piste 8) qui
+  tuerait cette piste d'emblée : la décote est justifiée, pas une convergence à capter.
+- **REJET.** Même mécanisme structurel que #8 (déjà tué), mais à une échelle de liquidité où le tueur
+  « décote justifiée » domine au lieu du bounce microstructure — aucune arme neuve, verdict identique
+  attendu sans lancer de run.
+
+---
+
+#### Piste B — Arbitrage convertibles micro-cap FR (delta-hedge vs emprunt de titre)
+
+- **Mécanisme candidat.** Les fonds convertible-arb institutionnels ont besoin de liquidité pour
+  shorter le delta ; les émissions micro-cap (<50 M€) seraient sous-couvertes.
+- **Filtre 1 : AMBIGU en apparence, mais échoue en pratique.** La barrière (taille d'émission) est
+  réelle, mais le mécanisme de capture (short delta) exige d'emprunter le titre sous-jacent — exactement
+  le point qui a tué la piste 3 (capacité fantôme, spread réel mais rien derrière). Sur un micro-cap
+  FR, le prêt-emprunt est soit indisponible soit à un coût qui dépasse la mispricing visée.
+- **REJET.** Variante directe de la piste 3 déjà tuée : la même contrainte qui écarte l'institutionnel
+  (illiquidité du sous-jacent) empêche aussi le solo d'exécuter la jambe de couverture.
+
+---
+
+#### Piste C — Décote des droits préférentiels de souscription (DPS) sur augmentations de capital small/micro-cap FR ★ CANDIDATE
+
+- **Filtre 1 (info/prix public mangé ?) : AMBIGU — passe prudemment.** L'annonce de l'augmentation de
+  capital et sa parité sont publiques (BALO/AMF), mais ce n'est pas l'objet du pari : le pari porte sur
+  le **prix de marché du droit lui-même** pendant sa fenêtre de négociation (10-15 séances), qui peut
+  diverger de sa valeur théorique `(cours ex-droit − prix de souscription) / parité`. Deux mécanismes
+  non-prédictifs plausibles : (a) désintérêt mécanique de l'actionnariat retail dominant (vend au
+  premier prix ou laisse expirer, sans lien avec une vue sur le titre), (b) contrainte OPCVM/UCITS sur
+  la détention d'instruments assimilés à des dérivés de courte durée, qui limite la participation
+  institutionnelle activement arbitragiste.
+- **Filtre 2 (data gratuite ?) : PASSE avec effort.** Dates + paramètres d'émission via avis
+  BALO/AMF (gratuit) ; cours du droit et de l'action pendant la fenêtre via Euronext historical data /
+  Boursorama (gratuit, à scraper). Univers estimé ~15-30 opérations DPS/an sur small/micro-cap FR,
+  2015-2026.
+- **PASSE les deux filtres prudemment**, avec un doute explicite en filtre 1 tranché ci-dessous par le
+  Gate de contrôle (D).
+
+---
+
+### Mini-spec piste C — Arbitrage DPS small/micro-cap FR
+
+#### Hypothèse d'edge
+
+Pendant la fenêtre de négociation d'un droit préférentiel de souscription sur une augmentation de
+capital small/micro-cap FR, le prix coté du droit est en moyenne **inférieur** à sa valeur théorique.
+Acheter le droit sous-évalué (et, si économiquement viable, souscrire ou revendre immédiatement après
+exercice) capte l'écart net de frais.
+
+#### Source de l'inefficience structurelle — pourquoi NON entièrement arbitrée
+
+1. **Forced-selling comportemental, pas informationnel.** Le vendeur marginal (actionnaire retail) ne
+   vend pas sur une vue de prix — il se débarrasse d'un instrument qu'il ne comprend pas ou qu'il ne
+   veut pas exercer (il n'a pas le cash pour souscrire). C'est un flux mécanique proche de la famille
+   « flux forcés » (piste 2) mais sans date de résultat public à anticiper : rien à « pricer en avance ».
+2. **Contrainte de mandat.** Un droit de souscription est structurellement proche d'un warrant court
+   terme ; certains OPCVM UCITS le classent hors univers investissable ou le liquident au plus vite
+   après attribution, sans chercher le meilleur prix (contrainte de compliance, pas d'EV).
+3. **Taille d'émission sous le radar des arbitragistes dédiés.** Une levée <20-30 M€ ne justifie pas la
+   mise en place d'un desk spécialisé pour quelques jours de fenêtre.
+
+#### Falsifiabilité — pourquoi ça peut mourir
+
+- Le « discount » mesuré est un artefact de calage (mauvais cours de référence ex-droit, délai de
+  détachement mal aligné) → à vérifier avant tout calcul de rendement.
+- Discount réel mais **inférieur aux frais de courtage + au spread bid-ask du droit lui-même** (souvent
+  très illiquide) → net ≤ 0, tueur le plus probable.
+- **Capacité fantôme** (leçon piste 3) : la taille exécutable réelle sur un droit à volume quotidien
+  minuscule peut être proche de zéro même si le % de discount est net positif.
+- Échantillon annuel faible (15-30 opérations/an) → puissance statistique limitée, risque qu'un
+  drop-top-3 tue tout le résultat (leçon piste 9/LST : t élevé sur peu d'épisodes ≠ edge).
+- Si le discount est identique sur les grandes capitalisations (SG, Elior…) où des desks arb sont déjà
+  actifs → ce n'est pas un effet de taille/capacité, juste un artefact de mesure (Gate D ci-dessous).
+
+#### Data source
+
+| Source | Données | Accès |
+|--------|---------|-------|
+| BALO / AMF (info-financière) | Avis d'augmentation de capital : date, prix de souscription, parité | Gratuit, API/consultation |
+| Euronext historical data / Boursorama | Cours quotidien du droit (ISIN dédié) et de l'action pendant la fenêtre | Gratuit (scraping léger) |
+
+#### Gates de décision — pré-enregistrés ici avant tout run
+
+| Gate | Critère PASS | Critère KILL |
+|------|-------------|--------------|
+| **(A) Discount brut** | moyenne `(valeur théorique − prix coté)/valeur théorique > 0`, t>2, sur toute la fenêtre | brut≤0 ou t≤2 |
+| **(B) Net>0** | après frais de courtage réalistes ×2 + spread bid-ask observé sur le droit (pas hypothétique) | net≤0 → frais mangent tout |
+| **(C) Pas de concentration** | drop-top-3 opérations : le résultat survit | meurt → bruit d'échantillon |
+| **(D) Contrôle taille** | discount significativement plus grand sur small/micro-cap que sur grandes caps à desk arb actif (SG, Elior…) | même ampleur partout → artefact de mesure, pas un effet de capacité |
+| **(E) Capacité réelle** | volume $ exécutable réel sur le droit (pas le théorique) > seuil minimal | capacité fantôme (leçon piste 3) |
+| **(F) DSR** | DSR(best, N=3 fenêtres d'entrée J1/J2/Jmid) > 0.95 | <0.95 → overfit |
+
+#### Coût d'implémentation
+
+~150-200 lignes (scraping BALO/AMF + Euronext/Boursorama). Estimation 1-2 jours. Aucun levier ; taille
+de position bornée par le montant de l'émission elle-même (contrainte dure, pas juste théorique).
+
+#### Honnêteté brutale
+
+Prior de survie ~15-20 %. Le tueur le plus probable est un mélange de (B) et (E) : même si le discount
+existe sur le papier, le droit lui-même est si peu liquide que la taille réellement exécutable est
+proche de zéro — exactement le motif « capacité fantôme » qui a déjà tué la piste 3 et menacé la piste B
+(convertibles, rejetée ci-dessus pour la même raison). C'est la première fois que ce motif est testé sur
+un instrument dérivé de très courte durée plutôt que sur un carnet d'ordres au comptant ; s'il meurt de
+la même façon, ce sera une confirmation supplémentaire du motif unifié plutôt qu'un résultat nouveau.
+
+---
+
+### Verdict du jour : **1 candidate produite (Piste C — DPS small/micro-cap FR)**
+
+2 pistes rejetées en filtrage direct (décote de holding = variante liquide de #8 avec tueur "décote
+justifiée" au lieu du bounce ; convertibles micro-cap = variante de la piste 3, même contrainte
+d'emprunt de titre qui tue capacité institutionnelle ET solo). La piste C (DPS) est la première
+proposition du programme sur un instrument dérivé de courte durée plutôt qu'une action/un fonds au
+comptant — mécanisme comportemental + contrainte de mandat distincts de tout ce qui a été testé, mais
+prior de survie bas (même motif de capacité fantôme attendu). Aucun run lancé aujourd'hui (hors budget
+temps de la tâche) : la mini-spec est pré-enregistrée, prête à exécuter en 1-2 jours si Rémi valide.
+
+**Backlog toujours ouvert, inchangé** : P4 (budget data payante), P4-bis (SCPI, mur confirmé), P5
+(VRP×GEX, ~2h, seule piste déjà prête à courir sans nouvelle spec).
+
+### Résumé 3 lignes
+
+2 pistes neuves rejetées au filtre 1 (holding discount FR = variante liquide de #8, tueur "décote
+justifiée" ; convertibles micro-cap = variante piste 3, capacité fantôme côté couverture). **1 candidate
+produite** : arbitrage DPS small/micro-cap FR — mécanisme comportemental + contrainte de mandat neuf,
+data gratuite mais à assembler, prior de survie ~15-20 % (tueur attendu = capacité fantôme, motif déjà
+vu ×2). Aucun run aujourd'hui ; backlog P4/P4-bis/P5 toujours en attente d'une décision de Rémi.
+
+---
+
+## 2026-09-24 — Session automatisée de scouting (tâche planifiée)
+
+### Contexte lu avant de proposer
+
+- RESEARCH-ROADMAP.md intégral (41 études, 0 edge déployable) + ce log jusqu'à la session du
+  2026-09-21 (1 candidate produite : DPS small/micro-cap FR, mini-spec pré-enregistrée, jamais lancée).
+- Backlog ouvert, non actionné, revu avant de proposer du neuf : **P4** (budget data payante délistés,
+  bloque #32/SPAC/PEAD/trend futures), **P4-bis** (SCPI marché secondaire, mur data gratuite confirmé
+  deux fois : 09-16 et 09-20), **P5** (interaction VRP×GEX, pré-spécifiée depuis 09-11, data déjà sur
+  disque, jamais lancée), **Piste C** (DPS small/micro-cap FR, spec écrite 09-21, jamais lancée).
+- Filtre appliqué à toute piste neuve : (1) info/prix public déjà mangé ? (2) data accessible
+  gratuitement ou déjà dispo aujourd'hui ?
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Dérive de fin de lock-up sur IPO actions (lock-up expiry drift)
+
+- **Mécanisme candidat.** À l'expiration du lock-up post-IPO (~180 j), les insiders/pré-IPO investors
+  peuvent vendre ; la pression d'offre anticipée crée un excès de rendement négatif autour de la date.
+  Documenté (Field & Hanley 2009, Bradley et al. 2001) comme effet de flux (courbe de demande à pente
+  négative), pas purement informationnel.
+- **Filtre 1 (info/prix public mangé ?) : ÉCHOUE, par analogie directe avec la piste 2 (unlocks
+  crypto) déjà tuée.** La date de lock-up est publique dès le prospectus d'IPO. Le short pré-expiry est
+  une stratégie event-driven documentée et pratiquée depuis 20+ ans (hedge funds dédiés). La piste 2 a
+  montré sur les unlocks crypto que toute la dérive a lieu **avant** la date publique et que le résiduel
+  post-date est ≈ zéro — même structure d'anticipation ici, aucune raison qu'un solo capture un résidu
+  que les funds event-driven laissent sur la table.
+- **REJET** sans nouveau run — variante actions du mécanisme piste 2, verdict générique déjà établi.
+
+---
+
+#### Piste B — Seuil de capitalisation PEA-PME (5 Md€) : flux forcé réglementaire
+
+- **Mécanisme candidat.** Le PEA-PME (enveloppe fiscale française) restreint l'éligibilité aux
+  entreprises sous un seuil de taille (capitalisation/critères PME-ETI UE). Une société qui franchit le
+  seuil à la hausse perdrait son éligibilité → vente forcée par les détenteurs PEA-PME, indépendante du
+  prix — famille "flux forcé par mandat" (comme #35 fallen angels), jamais testée sur ce seuil précis.
+- **Filtre 1 : ÉCHOUE — le mécanisme de flux forcé n'existe pas tel qu'imaginé.** Vérification de la
+  règle : l'éligibilité PEA-PME est appréciée à l'**achat** ; une position déjà détenue qui franchit le
+  seuil est généralement conservable (pas de vente forcée rétroactive), seul le réinvestissement de
+  nouveaux versements dans ce titre serait bloqué. Sans obligation de vente, il n'y a pas de contrepartie
+  insensible au prix — juste une hypothétique baisse de la demande marginale, beaucoup plus faible et
+  non datée précisément. Le segment est en outre déjà surveillé par des gérants small/mid-cap dédiés
+  (Amiral Gestion, Sycomore, Moneta) qui suivent ces franchissements de seuil pour leurs propres mandats.
+- **REJET.** Pas de mécanisme de flux forcé daté, contrairement à l'hypothèse de départ — le filtre 1
+  échoue pour une raison structurelle (règle mal identifiée), pas seulement pour cause de crowding.
+
+---
+
+#### Piste C — Dérive post-spin-off sur les scissions d'entreprises européennes ★ examinée en détail
+
+- **Mécanisme candidat.** Après une scission (spin-off), l'entité détachée sous-performe/sur-performe
+  selon la littérature US (Cusatis-Miles-Woolridge 1993, McConnell-Ovtchinnikov 2004) : les fonds
+  indiciels qui ne peuvent pas détenir la nouvelle entité (hors indice, capitalisation trop faible,
+  mandat géographique) la vendent mécaniquement dès l'attribution, indépendamment du prix. Aux US, ce
+  signal est désormais packagé (Invesco S&P Spin-Off ETF, ex-CSD) → mangé. **Le sous-univers européen
+  n'a, à notre connaissance, aucun véhicule indiciel dédié** — arme potentiellement encore ouverte.
+- **Filtre 1 : PASSE prudemment.** Le mécanisme de flux forcé (mandat indiciel, pas timing) est réel et
+  distinct des unlocks/DPS déjà traités. Pas de réplication systématique identifiée sur le segment
+  européen spécifiquement.
+- **Filtre 2 (data gratuite ?) : ÉCHOUE aujourd'hui — même mur que la SCPI (P4-bis).** Il n'existe pas
+  de base téléchargeable gratuite des scissions européennes (dates, ratio de distribution, tickers) ;
+  contrairement aux unlocks crypto (DefiLlama) ou aux fusions US (EDGAR 8-K structuré), l'information est
+  dispersée dans des communiqués de presse et prospectus par émetteur, sur ~15-25 ans et ~10-20 pays. Un
+  panel exploitable (même seulement 30-50 événements) demanderait plusieurs jours de recherche manuelle
+  — hors budget frugal du jour, même ordre de grandeur que le mur SCPI.
+- **Verdict : REJET (filtre 2) pour aujourd'hui, flag conservé** — troisième famille bloquée par le même
+  type de mur (données événementielles non structurées, pas de wall définitif). À regrouper avec P4-bis
+  sous une même décision budget/scraping si Rémi veut lever ce mur un jour (SCPI + spin-offs EU +
+  probablement OPRA/retrait obligatoire partagent le même goulot : événements corporate FR/UE sans API
+  publique structurée).
+
+### Verdict du jour : **no candidate**
+
+Aucune piste neuve ne produit de mini-spec actionnable aujourd'hui. Piste A tombe par analogie directe
+avec un mécanisme déjà tué (pas besoin de re-tester). Piste B tombe sur une prémisse fausse (pas de
+vente forcée réelle une fois vérifiée la règle — leçon : vérifier le mécanisme juridique/réglementaire
+avant d'écrire un "pourquoi ça résisterait", pas après). Piste C est la plus intéressante structurellement
+mais rejoint le mur data déjà identifié pour la SCPI — troisième cas qui suggère que **la frontière
+restante du programme n'est plus "trouver un mécanisme neuf" mais "financer/automatiser l'accès aux
+événements corporate non-US non structurés"**, un problème de données, pas de méthode.
+
+**Observation méta (honnêteté brutale).** Cinq sessions consécutives (09-11 partiel, 09-16, 09-20, 09-21,
+09-24) produisent soit "no candidate" soit un candidat à prior de survie ~15-20 % jamais lancé. L'espace
+des mécanismes structurels accessibles à data gratuite semble proche de l'épuisement. Le backlog actionnable
+(P5 VRP×GEX : ~2h, données déjà sur disque ; Piste C DPS 09-21 : spec prête) contient plus de valeur
+immédiate que continuer à générer des pistes candidates non lancées — recommandation : la prochaine session
+devrait **lancer un run du backlog existant** plutôt qu'ajouter une 5ᵉ piste non testée à la pile, sauf
+décision contraire de Rémi.
+
+**Backlog inchangé, désormais à 5 éléments non actionnés** : P4 (budget data payante), P4-bis (SCPI, mur
+confirmé ×2), P5 (VRP×GEX, prête, ~2h), Piste C/DPS (09-21, prête, 1-2 j), flag spin-offs EU (nouveau,
+même mur que P4-bis).
+
+### Résumé 3 lignes
+
+3 pistes neuves examinées : lock-up expiry actions (rejet par analogie directe avec unlocks #2 déjà
+tué), seuil PEA-PME (rejet — vérification de la règle infirme l'hypothèse de vente forcée), spin-off
+drift européen (mécanisme structurel plausible mais mur data identique à la SCPI). **No candidate**
+aujourd'hui — résultat valide. Recommandation explicite : le backlog existant (P5, DPS) contient plus
+de valeur qu'une nouvelle piste non lancée ; prioriser son exécution avant d'élargir encore la liste.
+
+---
+
+## 2026-10-02 — Session automatisée de scouting (tâche planifiée)
+
+### Contexte lu avant de proposer
+
+- RESEARCH-ROADMAP.md (41 études, 0 edge déployable ; dernière = #41 or) + ce log jusqu'au 2026-09-24
+  (no candidate ; reco méta : exécuter le backlog plutôt qu'empiler des pistes). Depuis, seule
+  c2c-dispersion a bougé (tâche 0 réfutée, arrêtée avant collecte). P5 (VRP×GEX) et DPS jamais lancés.
+- Grep du repo : aucune étude ni piste antérieure sur les futures de dividende ou les autocalls.
+- Filtres : (1) info/prix public déjà mangé ? (2) data gratuite ou déjà disponible ?
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Flux de couverture des autocalls près des barrières (Euro Stoxx 50)
+
+- **Mécanisme.** Les émetteurs d'autocalls sont courts gamma près des barrières knock-in. Leur
+  couverture amplifie les mouvements autour de niveaux d'indice connus.
+- **Filtre 1 : ÉCHOUE.** Même famille que GEX #18 : la position des dealers prédit la variance, pas la
+  moyenne. Les barrières agrégées ne sont pas publiques en gratuit (filtre 2 KO aussi).
+- **REJET.**
+
+#### Piste B — Chasse aux barrières knock-out des turbos retail
+
+- **Mécanisme.** Les KO de turbos se regroupent sur des niveaux ronds. L'émetteur (B-book) aurait
+  intérêt à pousser le sous-jacent à travers.
+- **Filtre 1 : ÉCHOUE.** Stop-clustering documenté (Osler 2003), terrain HFT. Contrepartie = émetteur
+  à marge maison (motif #16, axe prop clos).
+- **Filtre 2 : ÉCHOUE.** Pas de distribution historique gratuite des encours par barrière.
+- **REJET.**
+
+#### Piste C — Prime de couverture sur les futures de dividende Euro Stoxx 50 (FEXD) ★ CANDIDATE
+
+- **Mécanisme.** Les banques qui émettent des autocalls (produit retail européen et asiatique) sont
+  structurellement longues des dividendes futurs : le produit ne verse pas les dividendes au porteur.
+  Elles couvrent ce risque en **vendant** des futures de dividende. Ce flux suit les volumes d'émission
+  retail (demande de coupons), pas une vue sur le prix. La littérature (van Binsbergen-Brandt-Koijen
+  2012 ; Kragt-de Jong-Driessen, *The dividend term structure*) relie la décote des dividendes longs à
+  cette pression de couverture.
+- **Filtre 1 : PASSE prudemment.** Le prix est public et continu : le filtre devrait tuer. Mais la
+  contrepartie n'optimise pas le prix, c'est un hedger contraint, comme dans le carry (#6) et la VRP
+  (#4/#12). Ces deux pistes avaient une prime **réelle**, tuée par le tail ou la faiblesse. Le tueur
+  attendu est donc connu : prime ≈ risque (bêta actions + coupes de dividende en crise : 2009, et 2020
+  avec la recommandation BCE aux banques). L'arbitrage est freiné par la charge en capital d'un risque
+  de flux actions sur 2-5 ans (FRTB). Le motif « prix public mangé » cible l'edge informationnel ; ici
+  le pari porte sur une prime de transfert de risque.
+- **Filtre 2 : PASSE sous condition.** Investing.com publie l'historique quotidien des contrats
+  génériques FEXD (c1, c2…) avec téléchargement. Le téléchargement exige un compte gratuit que Rémi
+  doit créer (je n'en crée pas). Barchart ne montre que 3 mois. Le prix de règlement final de chaque
+  contrat de décembre = dividendes réalisés : pas besoin d'autre source pour le réalisé.
+- **Accès.** Eurex, 100 € par point d'indice (~16 k€ de notionnel par contrat à ~160 points),
+  disponible chez IBKR pour un résident FR. Hors PEA : CTO uniquement, flat tax sur les gains.
+
+### Mini-spec piste C — Futures de dividende Euro Stoxx 50
+
+#### Hypothèse d'edge
+
+Un long roulé sur le contrat FEXD de décembre à horizon 2-3 ans, tenu jusqu'à sa première année, gagne
+un excès de rendement positif. Cet excès n'est **pas** expliqué par le bêta Euro Stoxx 50. Il améliore
+le deliverable #22 levé 1,5× quand on l'ajoute comme sleeve.
+
+#### Source de l'inefficience — pourquoi elle ne serait pas arbitrée
+
+1. Vendeur structurel insensible au prix : couverture des émetteurs d'autocalls, volume dicté par la
+   demande retail de coupons.
+2. Acheteurs naturels rares : pensions et hedge funds paient une charge en capital pour un risque
+   actions de plusieurs années, avec un tail de crise concentré.
+3. Taille solo négligeable devant l'open interest : pas de capacité fantôme à craindre (contrairement
+   à la piste 3 et au DPS du 09-21).
+
+#### Pourquoi ça peut mourir (tueurs pré-déclarés)
+
+- La prime n'est que du bêta actions (gate B).
+- Le tail 2020 détruit le profil levé : le contrat 2020 a perdu une large part de sa valeur (chiffre à
+  mesurer, pas supposé).
+- La prime a été arbitrée depuis sa publication (~2012) : déclin McLean-Pontiff (gate E).
+- Puissance : FEXD existe depuis 2008, donc ~17 échéances indépendantes seulement.
+
+#### Data
+
+| Source | Données | Accès |
+|--------|---------|-------|
+| Investing.com | FEXD génériques c1-c4 quotidiens, 2008+ | Gratuit, compte requis (Rémi) |
+| yfinance `^STOXX50E` | Indice prix pour le bêta | Gratuit |
+| €STR / EONIA (BCE SDW) | Rendement du collatéral | Gratuit |
+| Disque | Série du deliverable #22 | Déjà disponible |
+
+Point d'attention : vérifier le raccord des génériques au roll de décembre (saut de contrat, pas un
+rendement). Reconstruire le rendement contrat par contrat avant toute stat.
+
+#### Gates pré-enregistrés (avant tout téléchargement)
+
+| Gate | PASS | KILL |
+|------|------|------|
+| (A) Prime brute | excès mensuel moyen du long roulé > 0, t NW (lag 12) > 2 sur 2008-2026 | t ≤ 2 |
+| (B) Alpha | alpha vs SX5E (régression mensuelle, NW lag 3) > 0 et t > 2 | alpha ≤ 0 ou t ≤ 2 = bêta déguisé |
+| (C) Tail au levier tenable | 1× notionnel collatéralisé : maxDD > −35 % (critère de ruine #34), 2009 et 2020 inclus | maxDD ≤ −35 % |
+| (D) Valeur en sleeve | 10 % dans le deliverable #22 (1,5×) : ΔSharpe ≥ +0,05 et maxDD dégradé de moins de 2 pts | ΔSharpe < 0,05 |
+| (E) Déclin | 2016+ pas significativement inférieur à 2008-2015 (Welch t < 2) | déclin significatif = arbitrée |
+| (F) Overfit | DSR > 0,95 avec N = 3 tenors testés (Z+1, Z+2, Z+3) | DSR < 0,95 |
+| Coûts | IBKR + Eurex ~3 €/contrat/côté, spread 0,3 point (30 €) par roll, déduits en net | — |
+
+Pas de miroir long/short : c'est une prime, le short perd par construction. Le contrôle équivalent est
+(B) + (E). Si moins de 15 échéances indépendantes exploitables : **UNTESTABLE**, pas de lecture.
+
+#### Coût d'implémentation
+
+~0,5 jour. Un script ~120 lignes : chargement CSV Investing, reconstruction par contrat, stats, sleeve.
+Bloqué uniquement par la création du compte Investing par Rémi.
+
+#### Honnêteté brutale
+
+Prior de survie ~15 %. Tueur le plus probable : (B), la prime est du bêta actions au sortir de 2009 et
+2020. Sinon (C)/(D) : le tail 2020 annule le gain en sleeve. C'est le troisième test du motif « prime
+réelle de hedger tuée par le tail » (après #6 et #4/#12). Un KILL ne serait pas un résultat neuf, mais
+il coûte une demi-journée et ferme proprement une famille jamais touchée.
+
+### Verdict du jour : **1 candidate (Piste C — FEXD)**
+
+Backlog jamais lancé : P4, P4-bis (SCPI), P5 (VRP×GEX, ~2 h), DPS (1-2 j), spin-offs UE, FEXD (~0,5 j).
+Ordre conseillé, par coût croissant : P5, puis FEXD, puis DPS. La reco du 09-24 tient : exécuter avant
+d'ajouter.
+
+### Résumé 3 lignes
+
+2 pistes rejetées : barrières autocall (famille GEX #18, variance sans moyenne) et chasse aux KO turbos
+(B-book, pas de data). 1 candidate : prime de couverture des futures de dividende FEXD, data gratuite
+via Investing (compte à créer par Rémi), prior ~15 %, tueur attendu = bêta ou tail 2020. Backlog à 6
+éléments jamais lancés : exécuter P5 puis FEXD avant toute nouvelle piste.
+
+---
+
+## 2026-10-05 — Session automatisée de scouting (tâche planifiée)
+
+### Contexte lu avant de proposer
+
+- RESEARCH-ROADMAP.md (41 études, 0 edge déployable) + ce log jusqu'au 2026-10-02 (candidate FEXD ;
+  backlog P4, P4-bis, P5, DPS, spin-offs UE, FEXD jamais lancé).
+- Grep du repo : aucune étude ni piste antérieure sur les déclarations de dirigeants (MAR art. 19),
+  le dividende en actions (scrip) ou l'effet tax-loss de janvier.
+- Filtres : (1) info/prix public déjà mangé ? (2) data gratuite ou déjà disponible ?
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Arbitrage du dividende en actions (option scrip, décote légale jusqu'à 10 %)
+
+- **Mécanisme.** Plusieurs sociétés FR proposent le dividende en actions à un prix d'émission décoté.
+  L'actionnaire choisit cash ou actions en fin de fenêtre : il détient une option gratuite.
+- **Filtre 1 : ÉCHEC.** Les desks de dividend arbitrage connaissent ce trade. La décote se reflète
+  dans le coût de prêt-emprunt du titre autour de la date ex. Le retail ne peut pas prêter ses titres.
+- **Ordre de grandeur.** Gain ≈ rendement × décote ≈ 4 % × 8 % ≈ 0,3 % de la position par événement,
+  avec un risque marché d'environ un mois. Quelques événements par an seulement.
+- **Filtre 2 : ÉCHEC partiel.** yfinance ne donne pas les termes de l'option. Il faut les lire à la
+  main dans les communiqués. **REJET.** C'est une optimisation de rendement pour un porteur existant,
+  pas un edge.
+
+#### Piste B — Effet tax-loss / janvier sur les small caps FR
+
+- **Filtre 1 : ÉCHEC.** L'effet est documenté depuis les années 1970 et décroît. Il appartient à la
+  famille calendrier (#5, KILL). En PEA, la motivation fiscale n'existe pas. Prior < 5 %. **REJET.**
+
+#### Piste C — Achats « opportunistes » des dirigeants (déclarations AMF, MAR art. 19) ★ CANDIDATE
+
+- **Filtre 1 : SURVIT SOUS CONDITION.** L'information est publique : c'est le motif unifié qui a tué
+  #2. Mais la piste a deux protections structurelles, déclarées ci-dessous. La littérature
+  (Cohen-Malloy-Pomorski 2012 aux US, études UK) montre que l'essentiel de la réaction arrive dès J0-J1.
+  Un drift résiduel est donc l'hypothèse fragile, à tester comme telle.
+- **Filtre 2 : SURVIT.** Les déclarations AMF (BDIF) sont gratuites mais publiées en PDF semi-structuré.
+  Les prix viennent de yfinance `.PA`, avec le risque connu des titres délistés (voir gate F).
+
+### Mini-spec piste C — Achats opportunistes des dirigeants, Euronext Paris + Growth
+
+#### Hypothèse d'edge
+
+Un achat de dirigeant **non routinier** (pas d'achat le même mois calendaire les 3 années
+précédentes, définition CMP 2012), ou un **cluster** (≥ 2 dirigeants distincts en 30 jours), prédit un
+rendement anormal positif sur J+1 → J+63. J0 = date de **publication AMF**, pas la date de transaction.
+Le drift doit survivre aux coûts réels des small/micro-caps.
+
+#### Source de l'inefficience — pourquoi elle ne serait pas arbitrée
+
+1. **Capacité.** Le signal se concentre dans les micro-caps. Un fonds ne peut pas y placer de taille.
+   Un compte à 5 k€ par ligne le peut. C'est le même argument que #3, à vérifier contre le même tueur
+   (profondeur fantôme).
+2. **Saleté de la donnée.** Les déclarations sont des PDF hétérogènes. Il faut les parser, dédupliquer
+   et séparer achats, exercices d'options et attributions gratuites. C'est la « prime de saleté » V3.
+3. **Mandat.** Beaucoup de fonds small-cap ont un plancher de liquidité ou de capitalisation qui exclut
+   Euronext Growth.
+
+Aucun de ces trois points n'est garanti. Si le drift existe aussi sur le SBF 120, la capacité n'est pas
+la raison, et le tueur « priced-in » de #2 redevient le suspect principal.
+
+#### Pourquoi ça peut mourir (tueurs pré-déclarés)
+
+- **T1 priced-in.** La réaction est entièrement à J0. Le CAR de J+1 à J+63 vaut ≈ 0.
+- **T2 coûts.** Le spread des micro-caps (Corwin-Schultz sur OHLC quotidien) mange le drift.
+- **T3 survivant.** Les faillites manquantes dans yfinance gonflent le CAR. Ce biais va **dans le sens
+  de l'hypothèse**, donc il faut le traiter d'abord.
+- **T4 bêta small-cap.** Le « drift » n'est que la prime de taille de la période. Le benchmark taille
+  doit l'absorber.
+
+#### Data
+
+| Source | Contenu | Coût |
+|---|---|---|
+| AMF BDIF (déclarations des dirigeants) | Date de publication, déclarant, nature, prix, volume | Gratuit, scraping + parsing PDF |
+| yfinance `.PA` | OHLC + volume quotidien, 2012-2025 | Gratuit, trous sur les délistés |
+| Indices CAC Small / CAC Mid & Small | Benchmark taille | Gratuit (Euronext / Investing) |
+
+#### Gates pré-enregistrés (avant tout téléchargement de prix)
+
+- **F (data, en premier).** ≥ 95 % des événements ont un prix sur la fenêtre complète, ou le délisting est
+  expliqué (OPA = prix d'offre, faillite = −100 %). Sinon : **UNTESTABLE**, branche P4 (base payante).
+- **A (signal).** CAR(J+1, J+63) des achats opportunistes vs benchmark taille ajusté du bêta > 0,
+  t > 3 (erreurs clusterisées par mois, seuil Harvey-Liu-Zhu), n ≥ 300 événements.
+- **B (miroir et placebo).** Les achats routiniers donnent un CAR ≈ 0 (|t| < 1,5). Des dates placebo
+  tirées dans les mêmes titres donnent ≈ 0. Si les routiniers « marchent » autant, c'est de la prime de
+  taille (T4) : KILL.
+- **C (net).** CAR net de l'aller-retour estimé (Corwin-Schultz, plancher 1 %) > 0, t > 2. Position
+  ≤ 10 % de l'ADV sur 5 jours, à 5 k€ par ligne.
+- **D (régime).** Le résultat est > 0 sur 2012-2018 **et** sur 2019-2025. Pas de dépendance à une seule
+  année (retirer la meilleure ne doit pas faire passer t sous 2).
+- **E (DSR).** Portefeuille calendaire mensuel, N essais = 6 (2 signaux × 3 horizons 21/63/126 j,
+  déclarés ici). DSR ≥ 0,95.
+- **Lecture honnête.** Le trade est long-only et loge en PEA (pas d'impôt, pas de financement). Il reste
+  exposé au bêta small-cap, sans couverture possible en PEA. Rapporter le Sharpe couvert (short CAC hors
+  PEA) **et** non couvert. Comparer ce dernier au deliverable #22 levé 1,5×, pas au cash.
+
+#### Coût d'implémentation
+
+- Scraper + parser BDIF : 1-1,5 j (le plus gros risque technique est le parsing des PDF antérieurs à 2017).
+- Event study + gates : ~0,5 j, en réutilisant `overfit_audit.py`.
+- Main-d'œuvre en live : quelques ordres par mois, flux AMF automatisable. Le coût opérationnel est faible
+  et respecte la contrainte main-d'œuvre.
+
+#### Honnêteté brutale
+
+Prior ~10 %. Le tueur le plus probable est T1 : marché efficient sur une info publique, comme pour #2.
+T2 vient ensuite : la profondeur fantôme des micro-caps, comme pour #3. Cette piste combine deux motifs
+déjà tueurs. Elle n'est retenue que parce qu'elle est la seule du jour à avoir un mécanisme nommé et une
+data gratuite. Elle ne passe pas devant le backlog.
+
+### Verdict du jour : **1 candidate faible (Piste C — achats de dirigeants AMF)**
+
+Backlog jamais lancé : P4, P4-bis, P5 (~2 h), DPS (1-2 j), spin-offs UE, FEXD (~0,5 j), dirigeants AMF
+(~2 j). L'ordre conseillé reste P5, puis FEXD, puis DPS. Le gate F des dirigeants peut servir de test
+à faible coût du mur data délistés FR, partagé avec DPS.
+
+### Résumé 3 lignes
+
+2 pistes rejetées : arbitrage scrip (desks de dividend arb, ~0,3 %/événement) et tax-loss janvier
+(famille calendrier #5). 1 candidate faible : achats opportunistes de dirigeants via les déclarations
+AMF, prior ~10 %, tueurs attendus = priced-in J0 et spread micro-cap. Backlog à 7 éléments : exécuter avant d'ajouter.
+
+
+
+---
+
+## 2026-10-06 — Session automatisée de scouting (tâche planifiée)
+
+Lu avant de proposer : `RESEARCH-ROADMAP.md` (40 études, 0 edge), les rejets et candidates des logs du 2026-09-16 → 10-05. Le backlog contient déjà 7 pistes spécifiées jamais lancées (P4, P4-bis, P5, DPS, spin-offs UE, FEXD, dirigeants AMF). Ajouter une 8e spec sans en exécuter une n'apporte rien.
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Sous-évaluation des IPO françaises via l'offre à prix ouvert (OPO) retail
+- Mécanisme : décote d'introduction (littérature : +5-10 % au J1 sur Euronext), part retail de l'allocation.
+- Filtre 1 (info publique mangée) : **échoue en partie**. Le prospectus, la fourchette et le carnet sont publics, et les banques fixent le prix pour garantir un J1 positif. Surtout, l'allocation retail est **rationnée** (ordres A1/A2 servis partiellement), donc l'avantage de capacité du solo est neutralisé : on ne choisit pas la taille.
+- Filtre 2 (data) : liste des IPO Euronext gratuite, mais **~8-15 IPO/an**, soit N < 100 sur 10 ans. Même cas que #40 : sous-puissant avant tout run.
+- **REJET** (N trop petit + capacité d'allocation non contrôlée). Aucun run possible à la barre t > 3.
+
+#### Piste B — Écart de prix OPA / retrait obligatoire sur small caps FR (stub vs prix d'offre)
+- Mécanisme : après une OPA, le titre cote sous le prix de l'offre ou du retrait obligatoire ; capter l'écart jusqu'au règlement.
+- Filtre 1 : même famille que le merger-arb #32. Les arbitragistes event-driven fixent déjà l'écart, et le risque résiduel (offre non réussie) est le prix de l'écart.
+- Filtre 2 : **mur data délistés** (feedback gelé). L'issue gagnante = délisting, et yfinance/Stooq perdent la jambe gagnante : biais directionnel dans le sens de l'hypothèse.
+- **REJET** (filtre 2, identique à #32 UNTESTABLE).
+
+#### Piste C — Réaction aux relèvements du taux du Livret A / LEP (formule officielle, publiée à l'avance)
+- Mécanisme : taux fixé par formule publique (inflation + €STR), annoncé aux dates connues ; position sur les flux bancaires ou obligataires.
+- Filtre 1 : **échoue net**. La formule est publique et mécanique, les prévisions de taux sont consensuelles. Aucune contrepartie contrainte nommée, et aucun instrument coté qui encaisse l'écart.
+- **REJET** (filtre 1, aucun mécanisme structurel).
+
+### Verdict du jour : **no candidate**
+
+Aucune des trois pistes ne passe à la fois « info/prix public déjà mangé ? » et « data gratuite exploitable ». Piste A tombe sur N (comme #40), B sur le mur délistés (comme #32), C sur l'absence de mécanisme. Je n'invente pas de spec.
+
+Recommandation honnête : cesser de générer des pistes tant que le backlog n'est pas consommé. Ordre conseillé inchangé : P5 (~2 h), puis FEXD (~0,5 j), puis DPS, puis dirigeants AMF. Le gate F des dirigeants AMF sert aussi de test à faible coût du mur data délistés FR.
+
+### Résumé 3 lignes
+
+3 pistes rejetées : IPO/OPO FR (N < 100, allocation rationnée), OPA/retrait obligatoire (mur data délistés, = #32), taux Livret A (formule publique, aucun mécanisme).
+Verdict : no candidate. Rien à committer, aucun run lancé.
+Backlog de 7 pistes à exécuter avant d'en ajouter une nouvelle (P5 d'abord).
