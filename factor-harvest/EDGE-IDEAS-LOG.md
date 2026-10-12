@@ -1545,3 +1545,189 @@ Recommandation honnête : cesser de générer des pistes tant que le backlog n'e
 3 pistes rejetées : IPO/OPO FR (N < 100, allocation rationnée), OPA/retrait obligatoire (mur data délistés, = #32), taux Livret A (formule publique, aucun mécanisme).
 Verdict : no candidate. Rien à committer, aucun run lancé.
 Backlog de 7 pistes à exécuter avant d'en ajouter une nouvelle (P5 d'abord).
+
+
+---
+
+## 2026-10-09 — Session automatisée de scouting (tâche planifiée)
+
+Lu avant de proposer : `RESEARCH-ROADMAP.md` (40 études, 0 edge) et les logs du 2026-06-23 → 10-06. Backlog toujours à 7 pistes spécifiées jamais lancées (P4, P4-bis, P5, DPS, spin-offs UE, FEXD, dirigeants AMF). Aucune des pistes ci-dessous n'apparaît dans les logs. Seule l'inclusion d'indices S&P/Russell y figure, comme effet disparu.
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Prime A/H (actions chinoises doubles cotées) : tilt long des H décotées vs leur A
+- Mécanisme : contrôles de capitaux et non-fongibilité. La même société cote 20-40 % plus cher en A (Shanghai/Shenzhen) qu'en H (Hong Kong), et aucun arbitragiste ne peut convertir. L'inefficience est donc structurelle, pas une simple lenteur.
+- Filtre 1 : **échoue en partie**. Le mécanisme est réel, mais la jambe qui capte l'écart est un short sur l'A. Il est indisponible ou très restreint pour un particulier via Stock Connect. Il reste un tilt long-seul sur les H décotées, soit un **facteur value + bêta Chine** sans couverture. La prime est un indice Hang Seng publié depuis 2007, donc connue.
+- Filtre 2 : yfinance couvre les paires survivantes. Les H délistées ou privatisées disparaissent (**mur délistés**, biais directionnel favorable à l'hypothèse). Univers liquide ~40-60 paires : sous-puissant sur coupe transversale mensuelle.
+- **REJET** (filtre 1 : jambe courte inaccessible, résidu = value déguisé ; filtre 2 : mur délistés).
+
+#### Piste B — Spread actions de préférence / ordinaires (VW, Henkel, Fresenius, Schaeffler, Porsche SE)
+- Mécanisme : le spread reflète la prime de contrôle (droit de vote) et reste non arbitrable faute de conversion.
+- Filtre 1 : **échoue**. Les desks de stat arb tradent ces paires depuis 20 ans. Le spread est une compensation rationnelle (gouvernance, événements de contrôle), comme la décote de holding déjà rejetée le 2026-09-21. N ≈ 15 paires.
+- **REJET** (filtre 1 + N trop petit).
+
+#### Piste C — Réforme TSE Japon (P/B < 1) : engagement de gouvernance des small caps
+- Mécanisme : pression réglementaire publique pour relever le ROE et racheter des titres.
+- Filtre 1 : **échoue net**. Réforme annoncée en 2023, très médiatisée, flux étrangers massifs et déjà tradés. Le catalyseur a été consommé. Univers ~600 titres, data JPX gratuite mais le signal est public depuis trois ans.
+- **REJET** (filtre 1, priced-in).
+
+### Verdict du jour : **no candidate**
+
+Aucune piste ne passe les deux filtres. A est la seule avec un vrai mécanisme structurel. Elle meurt sur l'accessibilité de la jambe qui capte l'écart, et le résidu long-seul est un facteur value, pas un edge neuf. Je n'invente pas de spec.
+
+Recommandation inchangée : arrêter de générer des pistes jusqu'à consommation du backlog (P5 ~2 h, puis FEXD ~0,5 j, puis DPS, puis dirigeants AMF). Rien committé, aucun run lancé.
+
+### Résumé 3 lignes
+
+3 pistes rejetées : prime A/H (jambe short inaccessible + mur délistés), pref/ord (stat arb existant, N≈15), réforme TSE Japon (priced-in).
+Verdict : no candidate. Rien committé, aucun run lancé.
+Backlog de 7 pistes à exécuter avant d'en ajouter (P5 d'abord).
+
+---
+
+## 2026-10-10 — Session automatisée de scouting (tâche planifiée)
+
+Lu avant de proposer : `RESEARCH-ROADMAP.md` (41 études, 0 edge ; piste 2 « flux forcés », bilan #25 LETF) et les logs du 2026-06-23 → 10-09. Backlog toujours à 7 pistes spécifiées jamais lancées. Vérifié par grep : ni le rebalancement des pensions, ni l'enchère de clôture Euronext, ni le réinvestissement des dividendes n'apparaissent dans les logs. Le « Goldman roll » est déjà rejeté (2026-06-23) et la famille calendrier est KILL (#5).
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Rebalancement de fin de mois/trimestre des fonds de pension (actions vs obligations) ★ candidate faible
+- Mécanisme : les pensions et fonds diversifiés ont des poids cibles (ex. 60/40). Quand les actions battent les obligations sur le mois ou le trimestre, ils **doivent** vendre des actions et acheter des obligations autour de la date de fin de période. Référence : Harvey, Mazzoleni, Melone (2025), « The Unintended Consequences of Rebalancing » ; Etula et al. (2020) sur la liquidité de fin de mois.
+- Filtre 1 (info publique mangée ?) : **passe de justesse**. Le signal (écart de performance actions − obligations depuis le début de la période) est public et trivial à calculer. Mais la contrepartie est nommée, insensible au prix et contrainte par mandat. Surtout, sa taille (~20 000 Md$ d'actifs de pension) est d'un autre ordre que le `G` des LETF de #25 (100-300 Md$). C'est le seul cas du programme où « flux > capital d'arbitrage » est plausible a priori. Contre : la publication date de 2025, donc la décroissance post-publication (McLean-Pontiff) a commencé, et #25 a montré qu'un flux public et daté est absorbé sur les instruments les plus liquides.
+- Filtre 2 (data) : **passe**. SPY/IEF/TLT ajustés via yfinance depuis 2003 (ou ES=F/ZN=F), ~280 fins de mois, ~90 fins de trimestre. Aucun mur délistés (indices).
+- **SURVIT aux deux filtres, prior faible (≤ 10 %).**
+
+#### Piste B — Déséquilibre de l'enchère de clôture Euronext (fixing 17h30) les jours de rebalancement d'indices
+- Mécanisme : les trackers CAC/Stoxx/MSCI doivent exécuter au fixing ; fournir la liquidité contre le déséquilibre publié.
+- Filtre 1 : **échoue**. Même famille que #25 (flux public et daté, absorbé). Les teneurs de marché voient le déséquilibre indicatif en temps réel, un solo non.
+- Filtre 2 : **échoue**. Les données de déséquilibre d'enchère et l'intraday Euronext sont payantes.
+- **REJET** (filtres 1 et 2).
+
+#### Piste C — Pression d'achat par réinvestissement des dividendes (Hartzmark-Solomon 2022, « Predictable Price Pressure »)
+- Mécanisme : les jours de gros versements de dividendes, les investisseurs réinvestissent, ce qui pousse le marché agrégé.
+- Filtre 1 : **échoue**. Le calendrier des versements est public, l'effet est publié depuis 2022 et porte sur l'indice agrégé, l'instrument le plus liquide (même sous-type #2 absorbé que #25). L'effet est de quelques bp par jour, sous le coût d'un aller-retour quotidien levé.
+- **REJET** (filtre 1).
+
+### Mini-spec piste A — Flux de rebalancement des pensions (pré-enregistrée avant tout téléchargement)
+
+#### Hypothèse d'edge
+Sur les 3 derniers jours de bourse d'un mois, le rendement de la jambe actions − obligations (duration-ajustée) est **négativement** relié à l'écart de performance actions − obligations cumulé depuis le début du mois (signal `s`). Mesure principale : fin de mois. Fin de trimestre rapportée en secondaire (effet attendu plus fort, N plus petit).
+
+#### Source de l'inefficience — pourquoi elle ne serait pas arbitrée
+1. Contrepartie contrainte : mandats à poids cibles et rebalancement calendaire, imposés par la gouvernance des fonds et non par un calcul de prix.
+2. Taille : le flux potentiel (dizaines de Md$ par fin de mois selon le papier) dépasse le capital que les desks consacrent à ce trade risqué en bêta.
+3. Risque porté par l'arbitragiste : la jambe est directionnelle sur 3 jours (bêta actions/taux), donc chère en capital pour un desk à VaR limitée. C'est la seule raison qui ne dépend pas de la lenteur des autres.
+
+#### Pourquoi ça peut mourir (tueurs pré-déclarés)
+- Absorption, comme #25 : ES et ZN sont les contrats les plus liquides du monde.
+- Front-running des banques déjà documenté : l'effet migre **avant** la fenêtre (dérive pré-fenêtre, comme les unlocks).
+- Publication 2025 : l'échantillon post-publication est trop court pour juger ; un PASS ne vaut que sur l'historique.
+- Un PASS pourrait n'être qu'un reversal court terme générique actions/obligations. Le contrôle exige que l'effet soit concentré en fin de période et absent les autres jours.
+
+#### Data
+yfinance : SPY, IEF (ou TLT) ajustés 2003-2026. Option de contrôle : ES=F/ZN=F. Coût nul. €STR/Fed funds (FRED) pour le coût de financement.
+
+#### Gates pré-enregistrés
+| Gate | PASS | KILL |
+|------|------|------|
+| G1 signal | pente de `r(fenêtre)` sur `s`, Newey-West, t ≤ −3 | t > −3 |
+| G2 miroir | même signe et significatif (t ≤ −2) séparément pour `s > 0` et `s < 0` | un seul côté porte l'effet |
+| G3 placebo | même régression sur les 3 jours d'une fenêtre milieu de mois : t > −1,5 | effet aussi fort hors fin de mois (= reversal générique) |
+| G4 dose-réponse | rendement monotone sur les quintiles de `|s|` | non monotone ou inversée (comme #25) |
+| G5 régime | même signe sur 2003-2014 et 2015-2026, chaque t ≤ −2 | une sous-période porte tout |
+| G6 DSR | DSR > 0,95 avec N essais = 4 (fenêtres 1/3/5 jours + variante trimestre) | DSR ≤ 0,95 |
+| G7 net levé | stratégie vol-ciblée 10 %, coûts ETF 2 bp/jambe/trade + financement €STR sur la jambe courte : Sharpe net > 0,3 ET corrélation < 0,3 avec le deliverable | Sharpe net ≤ 0,3 |
+
+Règle : un seul KILL sur G1-G4 ou G7 = KILL de la piste. G5 et G6 en échec = DOWNGRADE (non déployable).
+
+#### Coût d'implémentation
+~1 h : un script de ~150 lignes, data gratuite, aucun compte requis pour le test. Le déploiement réel exigerait des futures (IBKR, fork déjà ouvert) ou des ETF avec short, ~12 trades/an × 2 jambes, quasi nul en temps humain (contrainte main-d'œuvre respectée).
+
+#### Honnêteté brutale
+Prior ≤ 10 %. C'est la même famille « flux forcé daté » que les unlocks (priced-in) et #25 (absorbé). La seule différence défendable est l'ordre de grandeur du flux et le risque bêta porté par l'arbitragiste. Un KILL confirmerait le motif sur l'actif le plus gros du monde, ce qui fermerait la famille « flux forcés » de façon définitive. C'est une info utile, mais pas neuve. Elle passe devant le backlog uniquement parce qu'elle coûte moins cher (~1 h vs 2 h pour P5).
+
+### Verdict du jour : **1 candidate faible (Piste A — rebalancement des pensions)**
+
+B et C rejetées (flux daté absorbé, data payante pour B). A survit aux deux filtres grâce à la taille de la contrepartie et au coût en capital du trade pour les desks. Prior ≤ 10 %. Rien committé, aucun run lancé.
+
+### Résumé 3 lignes
+
+3 pistes examinées : enchère de clôture Euronext (data payante + absorbé), réinvestissement des dividendes (publié, absorbé), rebalancement des pensions (survit).
+Verdict : 1 candidate faible (prior ≤ 10 %), gates G1-G7 pré-enregistrés, test ~1 h en data gratuite.
+Rien committé, aucun run lancé ; à arbitrer contre le backlog de 7 pistes (P5 d'abord).
+
+---
+
+## 2026-10-12 — Session automatisée de scouting (tâche planifiée)
+
+Lu avant de proposer : `RESEARCH-ROADMAP.md` (41 études, 0 edge) et les logs du 2026-09-16 → 10-10. Le backlog compte maintenant 8 pistes spécifiées jamais lancées (P4, P4-bis, P5, DPS, spin-offs UE, FEXD, dirigeants AMF, rebalancement des pensions). Vérifié par grep : ni le cycle des adjudications du Trésor US, ni l'extension de duration des indices obligataires n'apparaissent dans les logs. Le Goldman roll est déjà rejeté (2026-06-23) et l'inclusion d'indices actions est notée comme effet disparu.
+
+### Pistes examinées + verdict filtre
+
+#### Piste A — Cycle des adjudications du Trésor US (Lou, Yan, Zhang 2013, RFS, « Anticipated and Repeated Shocks in Liquid Markets ») ★ candidate faible
+- Mécanisme : avant chaque adjudication de coupons, les primary dealers doivent absorber l'offre nouvelle avec un bilan limité. Les taux montent dans les jours qui précèdent (concession), puis le prix récupère après le règlement. Le calendrier est public des semaines à l'avance.
+- Filtre 1 (info publique mangée ?) : **passe de justesse**. Le calendrier est public et le papier date de 2013. Mais ce que capte le trade n'est pas une information : c'est la rémunération du stockage d'inventaire. Le capital d'arbitrage qui pourrait l'écraser est le bilan des dealers. Depuis 2014, le ratio de levier SLR rend ce bilan cher, ce qui est une contrainte réglementaire et non une lenteur. Contre : c'est le marché le plus liquide du monde, et la famille « flux daté » est morte deux fois (unlocks, #25).
+- Filtre 2 (data) : **passe**. Taux FRED (DGS10, DGS30) et ETF IEF/TLT via yfinance, gratuits. Historique des adjudications (date, taille, part des primary dealers) gratuit via l'API TreasuryDirect / Fiscal Data. Aucun mur délistés. Accès à l'API à vérifier au premier appel (non testé aujourd'hui).
+- Atout propre : le deliverable détient déjà une jambe Treasury futures (#22 levé 1,5×). Le déploiement serait un **overlay de timing** sur une jambe existante (moduler le poids autour des adjudications), sans short nouveau ni compte nouveau.
+- **SURVIT aux deux filtres, prior faible (≤ 15 %).**
+
+#### Piste B — Extension de duration de fin de mois des indices obligataires (Bloomberg US Aggregate)
+- Mécanisme : à chaque fin de mois, l'indice intègre les nouvelles émissions et sa duration s'allonge. Les fonds passifs obligataires doivent alors acheter du long.
+- Filtre 1 : **échoue**. Le flux est connu à l'avance au jour près, publié par l'indexeur, et tradé par chaque desk taux depuis des décennies. C'est le sous-type #2 « flux daté absorbé » de #25. De plus, il chevauche presque entièrement la fenêtre de la piste « rebalancement des pensions » du 2026-10-10. Il ne serait pas identifiable séparément.
+- **REJET** (filtre 1 + confondu avec une spec existante).
+
+#### Piste C — Repondération annuelle des indices matières premières (BCOM / S&P GSCI, 6e-10e jour ouvré de janvier)
+- Mécanisme : les fonds indiciels matières premières rebalancent leurs poids une fois par an, sur une fenêtre publiée.
+- Filtre 1 : **échoue**. C'est la même famille que le Goldman roll déjà rejeté : fenêtre publique, poids cibles publiés à l'automne, front-running documenté.
+- Filtre 2 : **échoue**. Un événement par an et par contrat donne N ≈ 25 par matière première sur 25 ans. C'est sous-puissant, comme #40.
+- **REJET** (filtres 1 et 2).
+
+### Mini-spec piste A — Concession des adjudications du Trésor US (pré-enregistrée avant tout téléchargement)
+
+#### Hypothèse d'edge
+Sur les adjudications de coupons 10 ans et 30 ans (émissions nouvelles et réouvertures), le rendement excédentaire de la jambe duration (IEF ou ZN, TLT ou ZB) est **négatif** sur la fenêtre [t−5, t−1] avant l'adjudication et **positif** sur [t, t+3] après. Mesure principale : 10 ans, environ 12 adjudications par an, soit N ≈ 400 sur 1990-2026 via les taux FRED, et ≈ 280 sur 2003-2026 via IEF.
+
+#### Source de l'inefficience — pourquoi elle ne serait pas arbitrée
+1. Contrepartie contrainte : les primary dealers sont tenus de soumissionner. Ils absorbent l'offre que la demande finale ne prend pas, quel que soit le prix.
+2. Capital d'arbitrage rationné : stocker de la duration avant l'adjudication consomme du bilan. Depuis le SLR (2014), ce bilan a un coût réglementaire explicite. La concession est son prix.
+3. Le trade est directionnel sur la duration pendant 5 jours. Il est donc coûteux en VaR pour un desk, mais quasi gratuit pour un overlay sur une jambe obligataire déjà détenue. C'est le seul argument qui ne repose pas sur la lenteur des autres.
+
+#### Tueurs pré-déclarés
+- Absorption, comme #25 : le marché est le plus liquide du monde, et l'effet publié en 2013 a eu 13 ans pour décroître.
+- Confusion avec les autres chocs : FOMC, chiffres d'emploi et CPI tombent souvent dans les mêmes fenêtres. Contrôle : exclure les fenêtres qui contiennent un FOMC ou un NFP, et rapporter les deux versions.
+- Chevauchement des tenors : 2, 3, 5 et 7 ans tombent dans les mêmes semaines. Le test isole donc le 10 ans et le 30 ans, et rapporte le reste en secondaire.
+- Un PASS sur 1990-2013 seul ne vaut rien. Le gate de régime l'exige sur la période post-publication.
+
+#### Data
+FRED : DGS10, DGS30, DTB3 (financement), dates FOMC. yfinance : IEF, TLT ajustés (2002+) ; option ZN=F/ZB=F. TreasuryDirect / Fiscal Data : dates d'adjudication, montant offert, part allouée aux primary dealers. Coût nul.
+
+#### Gates pré-enregistrés
+| Gate | PASS | KILL |
+|------|------|------|
+| G1 concession | rendement excédentaire moyen de [t−5, t−1] vs jours hors fenêtre, Newey-West, t ≤ −3 | t > −3 |
+| G2 miroir | rebond post-adjudication [t, t+3] de signe opposé, t ≥ 2 ; et G1 tenu séparément sur 10 ans et sur 30 ans (t ≤ −2 chacun) | une seule jambe ou un seul tenor porte l'effet |
+| G3 placebo | 1 000 jeux de fausses dates, même jour de semaine et même mois : G1 réel sous le 1er percentile | G1 réel dans la distribution placebo |
+| G4 dose-réponse (test du mécanisme) | concession monotone sur les terciles de part allouée aux primary dealers (ou de taille d'adjudication / encours) | plate ou inversée |
+| G5 régime | même signe sur 1990-2013 et 2014-2026 (post-SLR, post-publication), t ≤ −2 sur 2014-2026 | 2014-2026 non significatif |
+| G6 DSR | DSR > 0,95 avec N essais = 6 (fenêtres 3/5/7 jours × avec ou sans exclusion FOMC/NFP) | DSR ≤ 0,95 |
+| G7 net levé | overlay sur la jambe Treasury du deliverable : poids −50 % sur [t−5, t−1], +50 % sur [t, t+3], vol-ciblé, coûts 1 bp/trade sur futures + financement DTB3. Gain de Sharpe du deliverable > +0,05 ET Sharpe de l'overlay seul > 0,3 | gain ≤ +0,05 |
+
+Règle : un seul KILL sur G1-G4 ou G7 = KILL de la piste. G5 ou G6 en échec = DOWNGRADE (non déployable).
+
+#### Coût d'implémentation
+~1,5 h. Le script réutilise la structure de la piste « pensions » du 2026-10-10 (mêmes ETF, même financement, même Newey-West). Il ajoute un chargeur d'adjudications. Les deux pistes peuvent tourner dans un même run, ce qui fait baisser le coût marginal à ~45 min. Déploiement : ~24 ajustements de poids par an sur des futures déjà détenus, quasi nul en temps humain (contrainte main-d'œuvre respectée).
+
+#### Honnêteté brutale
+Prior ≤ 15 %. C'est la troisième piste « flux forcé daté » ; les deux premières sont mortes (priced-in, absorbée). Deux choses la distinguent : la contrepartie rationnée par une règle de bilan, et le fait qu'un overlay ne paie pas le coût de capital qui protège l'effet. G4 est le gate le plus informatif : s'il échoue, le mécanisme invoqué est faux, même si G1 passe. Sur le levier : l'overlay module une jambe déjà levée 1,5×, donc G7 se lit sur le deliverable levé et financé, pas sur un Sharpe brut. L'ordre de grandeur de la concession rapporté par le papier n'a pas été relu aujourd'hui ; il faut le relire avant le run pour fixer l'attente.
+
+### Verdict du jour : **1 candidate faible (Piste A — adjudications du Trésor US)**
+
+B rejetée (flux daté absorbé, confondu avec la piste « pensions »). C rejetée (famille Goldman roll, N ≈ 25). A survit aux deux filtres. Le mécanisme est un bilan rationné par une règle, et l'implémentation est un overlay sur une jambe déjà détenue. Prior ≤ 15 %. Rien committé, aucun run lancé.
+
+Recommandation : ne pas l'ajouter comme 9e spec isolée. La lancer **dans le même run** que la piste « pensions » (même data, même script). Un double KILL fermerait la famille « flux forcés » sur les deux plus gros marchés du monde, pour ~2 h au total.
+
+### Résumé 3 lignes
+
+3 pistes examinées : extension de duration des indices obligataires (absorbée, confondue avec « pensions »), repondération BCOM/GSCI (= Goldman roll, N ≈ 25), adjudications du Trésor US (survit).
+Verdict : 1 candidate faible (prior ≤ 15 %), gates G1-G7 pré-enregistrés, dont G4 qui teste le mécanisme ; overlay sur la jambe Treasury du deliverable.
+Rien committé, aucun run lancé ; à lancer avec la piste « pensions » dans un même run de ~2 h.
